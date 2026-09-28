@@ -14,12 +14,12 @@ Curso de japonés desde cero —primero los kana, después las palabras— hecho
 | `sw.js` | El *service worker*: guarda la app en el teléfono para que funcione sin conexión y maneja las versiones nuevas. |
 | `fuentes/` | Klee One, Shippori Mincho y Zen Kaku Gothic New, recortadas a lo que usa el curso, con sus licencias (SIL OFL 1.1). |
 | `iconos/` | El ícono (el wagasa del logo, solo, sobre crudo) en los tamaños que pide Android. |
-| `herramientas/` | Tres ayudantes para el armado: `version.py`, `fuentes.py` e `iconos.py` (ver abajo). |
+| `herramientas/` | Ayudantes para el armado: `version.py`, `fuentes.py`, `iconos.py` y `vista_previa.py` (ver abajo). |
 | `.nojekyll` | Le indica a GitHub Pages que publique los archivos tal cual, sin procesarlos. |
 
 ## Cómo se publica una versión nueva
 
-1. Los cambios se hacen en `index.html` y se prueban en la vista previa (el artefacto «Kasa», abierto en Chrome).
+1. Los cambios se hacen en `index.html` y se prueban en la vista previa (el artefacto «Kasa», abierto en Chrome), armada con `python3 herramientas/vista_previa.py`.
 2. Si el curso sumó caracteres nuevos (por ejemplo, kanji), se regeneran las tipografías:
    `python3 herramientas/fuentes.py`
 3. Se sube el número de versión, en `index.html` y en `sw.js` a la vez:
@@ -39,3 +39,4 @@ Requieren Python 3 con `pip install fonttools brotli playwright` y, para los íc
 - `herramientas/version.py`: sube el número de versión y pone la fecha de hoy.
 - `herramientas/fuentes.py`: baja las tipografías originales de Google Fonts y las recorta a los caracteres de `index.html`, más hiragana y katakana completos.
 - `herramientas/iconos.py`: dibuja el ícono a partir del paraguas del logo que está en `index.html`.
+- `herramientas/vista_previa.py`: arma la vista previa para el artefacto de claude.ai (el mismo `index.html`, con las tipografías adentro del archivo y sin manifiesto).
