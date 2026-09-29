@@ -40,7 +40,8 @@ Cada versión publicada se encuentra en el historial del repositorio («Commits�
 
 | Versión | Fecha | Commit | Qué trajo |
 |---|---|---|---|
-| 0.2.0 | 28/9/2026 | «0.2.0: …» | Instalación guiada: tarjeta «Instalá Kasa» en la principal cuando se abre en el navegador; versionado semántico |
+| 0.2.1 | 28/9/2026 | «0.2.1: …» | Arreglo: en Samsung Internet, «Instalar» lleva a Chrome (Android bloquea el paquete que arma Samsung) |
+| 0.2.0 | 28/9/2026 | 187c4d2 | Instalación guiada: tarjeta «Instalá Kasa» en la principal cuando se abre en el navegador; versionado semántico |
 | 0.1.1 | 28/9/2026 | 6f6a5a4 | Arreglo: el gesto de volver del teléfono sigue el camino de la app (en la app decía «Versión 2») |
 | 0.1.0 | 28/9/2026 | 7e90b99 | Primera app instalable: sin conexión, ícono, tipografías incluidas, versión en Ajustes (en la app decía «Versión 1») |
 
