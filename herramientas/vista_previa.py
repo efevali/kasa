@@ -2,8 +2,8 @@
 """Arma la vista previa de Kasa para publicarla como artefacto en claude.ai.
 
 La vista previa es el mismo index.html, con dos diferencias que pide el visor de artefactos:
-  - las tipografías van adentro del archivo (el visor no carga archivos de fuentes sueltos);
-  - sin manifiesto ni íconos (ahí no se instala nada; la fila de versión aparece sin botón).
+  - las tipografías y el ícono van adentro del archivo (el visor no carga archivos sueltos);
+  - sin manifiesto (ahí no se instala nada; la fila de versión aparece sin botón).
 
 Uso:  python3 herramientas/vista_previa.py [archivo de salida]
       (por defecto, vista-previa.html junto a la carpeta del repositorio, fuera de él)
@@ -28,6 +28,10 @@ def main():
 
     html, n = re.subn(r'url\(fuentes/([a-z0-9-]+\.woff2)\)', adentro, html)
     html = re.sub(r'<link rel="(manifest|icon|apple-touch-icon)"[^>]*>\n', '', html)
+    # el ícono que muestra la invitación a instalar también va adentro
+    with open(os.path.join(RAIZ, 'iconos', 'icono-192.png'), 'rb') as f:
+        icono = 'data:image/png;base64,' + base64.b64encode(f.read()).decode('ascii')
+    html = html.replace('src="iconos/icono-192.png"', f'src="{icono}"')
     os.makedirs(os.path.dirname(os.path.abspath(salida)), exist_ok=True)
     with open(salida, 'w', encoding='utf-8') as f:
         f.write(html)
