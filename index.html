@@ -40,6 +40,9 @@
      prácticas, «X de Y». A la derecha, el engranaje de Ajustes en la principal y la casita (いえ, techo de tejas
      y shōji) en todas las demás, que lleva al inicio. Se desplaza con el contenido: no queda fija.
    - «Volver» sigue abajo a la derecha (sube un nivel); la casita va directo al inicio.
+   - El gesto de volver del teléfono sigue el camino de la app (corregido el 28/9/2026): «Volver», la casita y «Salir»
+     retroceden en el historial en vez de sumarle pasos, así el gesto nunca rehace el camino hacia adelante y desde
+     la principal sale de la app.
    - Salir de una práctica ya empezada (pasada la primera pantalla), con «Salir», con la casita o con el gesto
      de volver del teléfono, pide confirmar: se pierde lo hecho en esa práctica y la lección queda como estaba.
      En el resultado ya no se pregunta, porque ya está guardado.
@@ -2002,7 +2005,7 @@ let remoteRef = null, writing = false, pendingWrite = false, remoteTimer = null;
 let syncMode = 'local';
 // App instalable: versión de este código (tiene que coincidir con VERSION de sw.js; herramientas/version.py
 // sube las dos juntas) y estado de la actualización. ok = hay service worker (solo en la app publicada).
-const KASA_VERSION = {n: 1, fecha: '28/9/2026'};
+const KASA_VERSION = {n: 2, fecha: '28/9/2026'};
 const APPV = {ok: false, reg: null, nueva: false, buscando: false, recargar: false, ultima: 0};
 
 function saveLocal(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){} }
@@ -3275,7 +3278,8 @@ function nextQuestion(){
 // Al terminar, la dirección de la práctica se reemplaza por la de su pantalla de origen (con una marca propia):
 // así el gesto de volver lleva a la lección y no abre una práctica nueva desde cero.
 function finRonda(){
-  try { history.replaceState(null, '', Q.back.replace(/\/$/, '') + '/fin-' + Q.id); } catch(e){}
+  const u = Q.back.replace(/\/$/, '') + '/fin-' + Q.id;
+  try { history.replaceState({ki:HIST.i}, '', u); HIST.pila[HIST.i] = u; histGuardar(); } catch(e){}
 }
 
 function renderResults(){
@@ -3495,7 +3499,7 @@ function saveWord(){
   if (id){
     const w = S.words.own.find(x => x.id === id);
     if (w) Object.assign(w, {k, es, ro, kata, kj});
-    touchWords(); save(); toast('Cambios guardados.'); location.hash = '#/palabras';
+    touchWords(); save(); toast('Cambios guardados.'); ir('#/palabras', true);
   } else {
     S.words.own.unshift({id: 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), k, es, ro, kata, kj, at: Date.now()});
     touchWords(); save();
@@ -3506,7 +3510,7 @@ function saveWord(){
 function deleteWord(id){
   S.words.own = S.words.own.filter(x => x.id !== id);
   delete S.words.stats['u:' + id];
-  touchWords(); save(); toast('Palabra borrada.'); location.hash = '#/palabras';
+  touchWords(); save(); toast('Palabra borrada.'); ir('#/palabras', true);
 }
 
 /* ---------- Salir de una práctica: confirmación ---------- */
@@ -3527,8 +3531,15 @@ function askLeave(href){
 // Gesto de volver: al empezar una práctica se suma una entrada al historial con la misma dirección (la «guardia»).
 // Volver desde ahí aterriza en la práctica misma: si hay algo que perder se pregunta y la guardia se repone; si no,
 // el gesto sigue de largo hasta la pantalla anterior. Si el navegador no deja sumar la entrada, todo sigue como antes.
-function armGuard(){ try { if (!(history.state && history.state.kasa === 'guardia')) history.pushState({kasa:'guardia'}, ''); } catch(e){} }
+function armGuard(){
+  try {
+    if (history.state && history.state.kasa === 'guardia') return;
+    history.pushState({kasa:'guardia', ki:HIST.i + 1}, '');
+    HIST.i++; HIST.pila.length = HIST.i; HIST.pila[HIST.i] = histDir(location.hash); histGuardar();
+  } catch(e){}
+}
 window.addEventListener('popstate', e => {
+  histMarcar();
   if (e.state && e.state.kasa === 'guardia') return;
   const parts = (location.hash || '#/').slice(1).split('/').filter(Boolean);
   if (parts[0] !== 'p' || !Q || Q.id !== parts[1]) return;              // otra pantalla: la navegación normal se ocupa
@@ -3599,8 +3610,62 @@ function vtCambio(update, animar){
 }
 window.addEventListener('popstate', e => { if (e.hasUAVisualTransition) VT.uaAt = Date.now(); });
 
+/* ---------- Historial: el gesto de volver sigue el camino de la app ----------
+   Cada entrada del historial lleva su posición (ki) y la app recuerda qué pantalla hay en cada una (también si la
+   página se recarga, por ejemplo al actualizar). Ir a una pantalla que ya está atrás en el historial («Volver», la
+   casita, «Salir», volver a la lección, otra lección ya abierta) retrocede hasta ella en lugar de sumar una entrada;
+   subir a una pantalla que no está atrás reemplaza la entrada actual. Así el gesto de volver del teléfono nunca
+   rehace el camino hacia adelante, y desde la principal sale de la app. Abrir una práctica siempre suma. */
+const HIST = {i:0, pila:[], listo:false, yendo:false};
+try { const g = JSON.parse(sessionStorage.getItem('kasa-historial') || 'null'); if (g && Array.isArray(g.pila)) HIST.pila = g.pila; } catch(e){}
+function histDir(h){ h = String(h || ''); return h === '' || h === '#' ? '#/' : h; }
+function histGuardar(){ try { sessionStorage.setItem('kasa-historial', JSON.stringify({pila:HIST.pila})); } catch(e){} }
+// Anota dónde estamos: en una entrada conocida (volver, adelantar, recargar) o en una nueva (un enlace, la primera carga)
+function histMarcar(){
+  const st = history.state;
+  if (st && typeof st.ki === 'number') HIST.i = st.ki;
+  else {
+    HIST.i = HIST.listo ? HIST.i + 1 : 0;
+    HIST.pila.length = HIST.i;
+    try { history.replaceState(Object.assign({}, st || {}, {ki:HIST.i}), ''); } catch(e){}
+  }
+  HIST.pila[HIST.i] = histDir(location.hash);
+  HIST.listo = true; HIST.yendo = false;
+  histGuardar();
+}
+// Subir: cerrar una capa o retroceder por el camino (lección → unidad → temario → principal)
+function esSubida(destino){
+  const d = direccion(VT.cur, pantallaDe(destino));
+  return d === 'down' || (d === 'back' && !!VT.cur && VT.cur.camino != null);
+}
+function ir(destino, subir){
+  const d = histDir(destino);
+  if (HIST.yendo || d === histDir(location.hash)) return;
+  if (d.indexOf('#/p/') !== 0){
+    for (let j = HIST.i - 1; j >= 0; j--){
+      if (HIST.pila[j] === d){ HIST.yendo = true; setTimeout(() => { HIST.yendo = false; }, 1500); history.go(j - HIST.i); return; }
+    }
+    if (subir){
+      try { history.replaceState({ki:HIST.i}, '', d); } catch(e){ location.hash = d; return; }
+      route(); return;
+    }
+  }
+  location.hash = d;
+}
+// Los enlaces de la app pasan por ir(), salvo que otro manejador ya los haya tomado (como la confirmación de salir
+// de una práctica): por eso se registra al final, después del manejador general de toques.
+function histClic(e){
+  if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest && e.target.closest('a[href^="#/"]');
+  if (!a) return;
+  e.preventDefault();
+  const d = a.getAttribute('href');
+  ir(d, esSubida(d));
+}
+
 /* ---------- Navegación ---------- */
 function route(){
+  histMarcar();
   if (VT.ignorar && location.hash === VT.ignorar){ VT.ignorar = null; return; }
   VT.ignorar = null;
   const antes = VT.cur;
@@ -3677,7 +3742,7 @@ document.addEventListener('click', e => {
     case 'close': closeSheet(true); break;
     case 'stay': closeSheet(true); break;
     // la hoja no se cierra antes: se va con la pantalla que sale
-    case 'leave': { const h = t.dataset.href || '#/'; if (location.hash === h) closeSheet(true); else location.hash = h; break; }
+    case 'leave': { const h = t.dataset.href || '#/'; if (histDir(location.hash) === histDir(h)) closeSheet(true); else ir(h, true); break; }
     case 'clear': { const r = t.closest('.sheet-back'); if (r && r._clear) r._clear(); break; }
     case 'guide': { const sqEl = t.closest('.sheet').querySelector('.trace-sq'); const hidden = sqEl.classList.toggle('hide-model'); t.setAttribute('aria-pressed', String(hidden)); t.textContent = hidden ? 'Mostrar modelo' : 'Ocultar modelo'; break; }
     case 'hitoread': { const q = Q && Q.items[Q.i]; if (q && q.type === 'hito'){ q.open = true; app.innerHTML = renderQuizScreen(); speak(q.ph.k); const b = app.querySelector('.hito-go'); if (b) b.focus({preventScroll:true}); } break; }
@@ -3750,6 +3815,7 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('input', e => { if (e.target && e.target.id === 'f-ro') updatePreview(); });
 window.addEventListener('hashchange', route);
+document.addEventListener('click', histClic);   // después del manejador general de toques (ver histClic)
 // Indicador de «hay más abajo»: degradé + flecha que salta tres veces al aparecer; se va al llegar al final
 const moreFade = document.createElement('div'); moreFade.id = 'more-fade';
 const moreBtn = document.createElement('button'); moreBtn.id = 'more-btn'; moreBtn.type = 'button'; moreBtn.setAttribute('aria-label', 'Ver más abajo');

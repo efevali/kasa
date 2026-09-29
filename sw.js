@@ -5,7 +5,7 @@
 
    VERSION tiene que coincidir con KASA_VERSION de index.html: herramientas/version.py sube las dos.
    Cualquier cambio en este archivo es lo que le avisa al teléfono que hay algo nuevo. */
-const VERSION = 1;
+const VERSION = 2;
 const CACHE = 'kasa-v' + VERSION;
 const ARCHIVOS = [
   './',
