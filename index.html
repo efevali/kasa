@@ -87,6 +87,13 @@
      lleva el mismo enlace a Chrome) y «Ahora no». Sin logos de marcas ajenas en el botón.
    - Vista previa: el artefacto «Kasa» de claude.ai muestra la fila de versión sin botón: ahí no se instala ni
      se actualiza.
+   - Mudanza (0.3.0, 1/10/2026): en la dirección anterior, kasalearn.github.io/kasa (organización kasalearn, que se
+     conserva para que nadie más tome ese nombre), quedó la página «Kasa se mudó», con el mismo crudo y el logo de
+     la apertura. Las apps instaladas allá la reciben como una versión más. Muestra cuántas lecciones aprobadas hay
+     guardadas y «Llevar mi progreso» (primario), que abre esta dirección en Chrome con «?traer=». Aquí se suma al
+     progreso que haya, con la regla de la sincronización (de cada lección, lo mejor de las dos), y al irse la
+     apertura una hoja con el molde de «Instalar Kasa» dice «Tu progreso llegó», cuántas lecciones trajo y cómo
+     desinstalar la anterior. Si el enlace llega roto, un aviso lo dice.
    Dibujos (enriquecimientos)
    - Lienzo 300x300 con fondo #D8EBE0 y esquinas de 24. Contorno #1F2A44 de 4 unidades (2.5 en pétalos
      y detalles chicos), uniones redondeadas. Colores planos, sin sombras ni degradés.
@@ -2039,7 +2046,7 @@ let remoteRef = null, writing = false, pendingWrite = false, remoteTimer = null;
 let syncMode = 'local';
 // App instalable: versión de este código, con versionado semántico MAYOR.MENOR.PARCHE (ver README). Tiene que
 // coincidir con VERSION de sw.js: herramientas/version.py sube las dos juntas. ok = hay service worker (app publicada).
-const KASA_VERSION = {v: '0.2.2', fecha: '1/10/2026'};
+const KASA_VERSION = {v: '0.3.0', fecha: '1/10/2026'};
 const APPV = {ok: false, reg: null, nueva: false, buscando: false, recargar: false, ultima: 0};
 
 function saveLocal(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){} }
@@ -2704,11 +2711,13 @@ function instalarHTML(){
 }
 function pintarInstalar(){ const el = document.getElementById('inst'); if (el) el.outerHTML = instalarHTML(); }
 function marcarInstalada(){ INST.lista = true; INST.aviso = null; if (document.querySelector('.inst-back')) closeSheet(true); pintarInstalar(); }
-function hojaInstalar(cuerpo, acciones){
+// La hoja de instalación lleva «inst-back»: se cierra sola si Kasa queda instalada. Otros avisos con el mismo
+// molde (título propio) no la llevan.
+function hojaInstalar(cuerpo, acciones, titulo){
   closeSheet();
   const el = document.createElement('div');
-  el.className = 'sheet-back inst-back';
-  el.innerHTML = '<div class="sheet conf" role="dialog" aria-modal="true" aria-labelledby="instT"><div class="inst-head"><img class="inst-ic" src="iconos/icono-192.png" alt=""><h2 id="instT">Instalar Kasa</h2></div>' + cuerpo +
+  el.className = 'sheet-back' + (titulo ? '' : ' inst-back');
+  el.innerHTML = '<div class="sheet conf" role="dialog" aria-modal="true" aria-labelledby="instT"><div class="inst-head"><img class="inst-ic" src="iconos/icono-192.png" alt=""><h2 id="instT">' + (titulo || 'Instalar Kasa') + '</h2></div>' + cuerpo +
     '<div class="actions stack">' + acciones + '</div></div>';
   document.body.appendChild(el);
   document.body.classList.add('sheet-open');
@@ -2745,6 +2754,55 @@ window.addEventListener('appinstalled', marcarInstalada);
 if (enNavegador() && typeof navigator.getInstalledRelatedApps === 'function'){
   navigator.getInstalledRelatedApps().then(l => { if (l && l.length) marcarInstalada(); }).catch(() => {});
 }
+
+/* ---------- Mudanza: traer el progreso de la dirección anterior ----------
+   Hasta el 1/10/2026 Kasa estaba en kasalearn.github.io/kasa. Ahí quedó una página de despedida (repositorio
+   kasalearn/kasa, de la organización kasalearn) que lee el progreso guardado en esa dirección y abre esta en Chrome
+   con «?traer=»: el progreso en base64url, comprimido («z», deflate) o sin comprimir («j»). Se suma al de acá con
+   la misma regla que la sincronización (mergeRemote: de cada lección, lo mejor de las dos; nada se pierde), se
+   saca de la dirección y, ya sin la apertura, una hoja cuenta qué llegó. */
+const TRAIDO = {estado: '', n: 0};   // estado: 'ok' o 'error' mientras falta mostrar la hoja
+async function leerTraido(q){
+  const tipo = q.charAt(0), b64 = q.slice(1).replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(b64 + '='.repeat((4 - b64.length % 4) % 4));
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  let texto;
+  if (tipo === 'z') texto = await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+  else if (tipo === 'j') texto = new TextDecoder().decode(bytes);
+  else throw new Error('formato');
+  const p = JSON.parse(texto);
+  if (!p || p.v !== 1 || typeof p.lessons !== 'object') throw new Error('formato');
+  return p;
+}
+async function traerProgreso(){
+  let q = null;
+  try { q = new URLSearchParams(location.search).get('traer'); } catch(e){}
+  if (!q) return;
+  try { history.replaceState(history.state, '', location.pathname + location.hash); } catch(e){}
+  try {
+    const p = await leerTraido(q);
+    TRAIDO.n = Object.keys(p.lessons).filter(id => LESSON[id] && p.lessons[id] && p.lessons[id].done).length;
+    mergeRemote(p); save(); applySettings();
+    if (!Q) route();
+    TRAIDO.estado = 'ok';
+  } catch(e){ TRAIDO.estado = 'error'; }
+  if (!document.getElementById('splash')) avisoTraido();
+}
+function avisoTraido(){
+  const est = TRAIDO.estado; if (!est) return;
+  TRAIDO.estado = '';
+  if (est === 'error'){ toast('No se pudo traer el progreso. Probá de nuevo desde la Kasa anterior.'); return; }
+  const n = TRAIDO.n;
+  const cuanto = n === 1 ? 'una lección aprobada' : n + ' lecciones aprobadas';
+  const nota = enNavegador()
+    ? 'Instalá esta Kasa con <b>«Instalar»</b>, en la principal. Después desinstalá la anterior (es la que ahora dice «Kasa se mudó»): mantené apretado su ícono y elegí <b>«Desinstalar»</b>.'
+    : 'Ya podés desinstalar la Kasa anterior (es la que ahora dice «Kasa se mudó»): mantené apretado su ícono y elegí <b>«Desinstalar»</b>.';
+  hojaAviso('Tu progreso llegó',
+    '<p class="inst-texto">' + (n ? 'Trajimos ' + cuanto + ' de la Kasa anterior.' : 'Trajimos tu progreso de la Kasa anterior.') + ' Seguís donde estabas.</p>' +
+    '<div class="inst-nota">' + nota + '</div>');
+}
+// Hoja con el ícono y un título, del mismo molde que «Instalar Kasa»
+function hojaAviso(titulo, cuerpo){ hojaInstalar(cuerpo, '<button class="btn primary wide center" data-act="close">Entendido</button>', titulo); }
 
 /* ---------- Unidad ---------- */
 function renderUnit(id){
@@ -3980,12 +4038,13 @@ applySettings();
 route();
 initSync();
 iniciarApp();
+traerProgreso();
 // Al irse la apertura, la barra del sistema pasa del crudo de la apertura al verde del panel de la barra superior
 function hideSplash(){
   const sp = document.getElementById('splash'); if (!sp || sp.classList.contains('out')) return;
   sp.classList.add('out'); setTimeout(() => sp.remove(), 400);
   const tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.setAttribute('content', '#D9E8DF');
-  setTimeout(avisoActualizada, 450);
+  setTimeout(() => { avisoActualizada(); avisoTraido(); }, 450);
 }
 setTimeout(hideSplash, 2000);
 // Detrás de la apertura, dos cosas para que la primera vez que se abre cada pantalla no haya destello:

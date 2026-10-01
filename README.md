@@ -7,7 +7,9 @@ Curso de japonés desde cero —primero los kana, después las palabras— hecho
 
 ## Dónde vive
 
-El repositorio está en la cuenta personal **efevali**, donde Kasa es uno de sus proyectos. Hasta el 1/10/2026 la cuenta se llamaba **kasalearn** y la app estaba en `kasalearn.github.io/kasa`: GitHub redirige los enlaces viejos al repositorio, pero no los de GitHub Pages, así que esa dirección ya no existe. Una app instalada desde ella sigue abriendo sin conexión, con la 0.2.1 y su progreso, pero ya no recibe versiones nuevas; el progreso no pasa a la dirección nueva, porque el teléfono lo guarda por dirección.
+El repositorio está en la cuenta personal **efevali**, donde Kasa es uno de sus proyectos. Hasta el 1/10/2026 la cuenta se llamaba **kasalearn** y la app estaba en `kasalearn.github.io/kasa`: GitHub redirige los enlaces viejos al repositorio, pero no los de GitHub Pages, así que esa dirección ya no existe. El teléfono guarda el progreso por dirección: no pasa solo de una a la otra.
+
+Para que nadie más pueda tomar ese nombre, **kasalearn** quedó como organización de GitHub de la cuenta efevali. Su repositorio `kasalearn/kasa` publica en la dirección vieja la página «Kasa se mudó»: las apps instaladas allá la reciben como una versión más, y su botón «Llevar mi progreso» abre la dirección nueva con el progreso en el enlace (`?traer=`), que la app suma al suyo. La organización se conserva aunque ya nadie use la dirección vieja.
 
 La única dirección escrita en los archivos es la del manifiesto (`related_applications`, con la que la tarjeta de instalación reconoce que Kasa ya está instalada). Si la cuenta vuelve a cambiar de nombre, se cambia ahí, en este README y en la guía de estilo de `index.html`.
 
@@ -46,7 +48,8 @@ Cada versión publicada se encuentra en el historial del repositorio («Commits�
 
 | Versión | Fecha | Commit | Qué trajo |
 |---|---|---|---|
-| 0.2.2 | 1/10/2026 | «0.2.2: …» | Mudanza a la cuenta personal: la app pasa a https://efevali.github.io/kasa/ (antes kasalearn.github.io/kasa) |
+| 0.3.0 | 1/10/2026 | «0.3.0: …» | Mudanza del progreso: la app suma el que trae la página «Kasa se mudó» de la dirección anterior y avisa «Tu progreso llegó» |
+| 0.2.2 | 1/10/2026 | a8f2179 | Mudanza a la cuenta personal: la app pasa a https://efevali.github.io/kasa/ (antes kasalearn.github.io/kasa) |
 | 0.2.1 | 28/9/2026 | 30afed6 | Arreglo: en Samsung Internet, «Instalar» lleva a Chrome (Android bloquea el paquete que arma Samsung) |
 | 0.2.0 | 28/9/2026 | 187c4d2 | Instalación guiada: tarjeta «Instalá Kasa» en la principal cuando se abre en el navegador; versionado semántico |
 | 0.1.1 | 28/9/2026 | 6f6a5a4 | Arreglo: el gesto de volver del teléfono sigue el camino de la app (en la app decía «Versión 2») |
