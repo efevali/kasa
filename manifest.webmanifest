@@ -18,6 +18,6 @@
     { "src": "iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "related_applications": [
-    { "platform": "webapp", "url": "https://kasalearn.github.io/kasa/manifest.webmanifest" }
+    { "platform": "webapp", "url": "https://efevali.github.io/kasa/manifest.webmanifest" }
   ]
 }

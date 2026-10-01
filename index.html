@@ -60,14 +60,17 @@
      pantalla. En las pantallas que se cierran bajando (capas), su flecha apunta hacia abajo (⌄); en el camino, ‹.
    - Una sola duración (0,2 s, «rápida») y una sola curva para todo, que frena al llegar y sin rebote. Con «reducir movimiento»
      del teléfono no hay animación. Si el gesto de volver ya dibuja su propio deslizamiento, la app no suma el suyo.
-   App instalable (desde el 28/9/2026; repositorio kasalearn/kasa en GitHub, publicado con GitHub Pages)
+   App instalable (desde el 28/9/2026; repositorio efevali/kasa en GitHub, publicado con GitHub Pages en
+   https://efevali.github.io/kasa/. La cuenta es personal y Kasa es uno de sus proyectos; hasta el 1/10/2026 se
+   llamaba kasalearn y la app estaba en kasalearn.github.io/kasa, dirección que ya no existe. La única dirección
+   escrita en el código es la del manifiesto, en «related_applications»: si la cuenta cambia, se cambia ahí.)
    - Ícono: el wagasa del logo solo, sin grillo ni letras, con sus colores, sobre crudo, dentro de la zona que
      ninguna forma de recorte de Android corta (herramientas/iconos.py). La pantalla de carga de Android usa el
      mismo crudo que la apertura, así que se ve el paraguas solo y después la apertura.
    - Barra del sistema: crudo durante la apertura; después, el verde del panel de la barra superior.
    - Funciona sin conexión: todo queda guardado en el teléfono (sw.js), también las tipografías, recortadas a lo
      que usa el curso (herramientas/fuentes.py). La voz depende del paquete de japonés del teléfono.
-   - Versión: última fila de Ajustes, «Versión 0.2.0» con su fecha. Versionado semántico MAYOR.MENOR.PARCHE (parche:
+   - Versión: última fila de Ajustes, «Versión» con su número y su fecha. Versionado semántico MAYOR.MENOR.PARCHE (parche:
      arreglos; menor: algo nuevo que no rompe lo anterior; mayor: el salto grande; la 1.0.0 es la versión estable y
      revisada). Al día: «Buscar» (busca en el momento). Con una
      nueva: línea verde «Hay una versión nueva» y «Actualizar» (primario), que reabre la app ya actualizada y avisa
@@ -2036,7 +2039,7 @@ let remoteRef = null, writing = false, pendingWrite = false, remoteTimer = null;
 let syncMode = 'local';
 // App instalable: versión de este código, con versionado semántico MAYOR.MENOR.PARCHE (ver README). Tiene que
 // coincidir con VERSION de sw.js: herramientas/version.py sube las dos juntas. ok = hay service worker (app publicada).
-const KASA_VERSION = {v: '0.2.1', fecha: '28/9/2026'};
+const KASA_VERSION = {v: '0.2.2', fecha: '1/10/2026'};
 const APPV = {ok: false, reg: null, nueva: false, buscando: false, recargar: false, ultima: 0};
 
 function saveLocal(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){} }

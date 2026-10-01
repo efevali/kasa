@@ -2,8 +2,14 @@
 
 Curso de japonés desde cero —primero los kana, después las palabras— hecho como app instalable (PWA) para Android.
 
-- **App:** https://kasalearn.github.io/kasa/ (se abre en Chrome y se instala con el botón «Instalar» de la principal, o desde el menú ⋮ → «Instalar app»)
+- **App:** https://efevali.github.io/kasa/ (se abre en Chrome y se instala con el botón «Instalar» de la principal, o desde el menú ⋮ → «Instalar app»)
 - **Vista previa:** el artefacto «Kasa» en claude.ai, donde se prueba cada cambio antes de publicarlo aquí.
+
+## Dónde vive
+
+El repositorio está en la cuenta personal **efevali**, donde Kasa es uno de sus proyectos. Hasta el 1/10/2026 la cuenta se llamaba **kasalearn** y la app estaba en `kasalearn.github.io/kasa`: GitHub redirige los enlaces viejos al repositorio, pero no los de GitHub Pages, así que esa dirección ya no existe. Una app instalada desde ella sigue abriendo sin conexión, con la 0.2.1 y su progreso, pero ya no recibe versiones nuevas; el progreso no pasa a la dirección nueva, porque el teléfono lo guarda por dirección.
+
+La única dirección escrita en los archivos es la del manifiesto (`related_applications`, con la que la tarjeta de instalación reconoce que Kasa ya está instalada). Si la cuenta vuelve a cambiar de nombre, se cambia ahí, en este README y en la guía de estilo de `index.html`.
 
 ## Qué hay en cada archivo
 
@@ -40,7 +46,8 @@ Cada versión publicada se encuentra en el historial del repositorio («Commits�
 
 | Versión | Fecha | Commit | Qué trajo |
 |---|---|---|---|
-| 0.2.1 | 28/9/2026 | «0.2.1: …» | Arreglo: en Samsung Internet, «Instalar» lleva a Chrome (Android bloquea el paquete que arma Samsung) |
+| 0.2.2 | 1/10/2026 | «0.2.2: …» | Mudanza a la cuenta personal: la app pasa a https://efevali.github.io/kasa/ (antes kasalearn.github.io/kasa) |
+| 0.2.1 | 28/9/2026 | 30afed6 | Arreglo: en Samsung Internet, «Instalar» lleva a Chrome (Android bloquea el paquete que arma Samsung) |
 | 0.2.0 | 28/9/2026 | 187c4d2 | Instalación guiada: tarjeta «Instalá Kasa» en la principal cuando se abre en el navegador; versionado semántico |
 | 0.1.1 | 28/9/2026 | 6f6a5a4 | Arreglo: el gesto de volver del teléfono sigue el camino de la app (en la app decía «Versión 2») |
 | 0.1.0 | 28/9/2026 | 7e90b99 | Primera app instalable: sin conexión, ícono, tipografías incluidas, versión en Ajustes (en la app decía «Versión 1») |
