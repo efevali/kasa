@@ -31,6 +31,11 @@
      24px en el panel de herramientas de la principal y en las hojas que suben desde abajo.
    - Colores: ai (índigo) para la acción principal, midori para lo correcto y lo nuevo, shu (bermellón)
      para errores y el sello de lección hecha. Fondo verde agua (--paper). Sin degradés.
+   - Ayuda «?» (2/10/2026): si una pantalla necesita explicar cómo se usa, la explicación no queda fija bajo el
+     título. Un botón redondo «?», a la derecha del título, la despliega en el lugar, en un recuadro azul suave, y la
+     vuelve a cerrar; abierto, el botón va relleno de ai. Se abre sola la primera vez que se entra (S.vistos) y
+     después arranca cerrada. Hoy solo la lleva Mis palabras; las pantallas con una o dos líneas de presentación,
+     no.
    - Tipografía: Klee One para japonés (forma manuscrita de libro escolar), Zen Kaku Gothic New para el resto.
      El logotipo かさ (apertura y barra superior) va en Shippori Mincho 700.
    - Excepción deliberada: los cuadros genkō (papel de práctica con guías punteadas) conservan su aspecto.
@@ -547,11 +552,24 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 
 /* ---- Mis palabras ---- */
 .btn.center{justify-content:center;text-align:center}
-.w-stats{font-size:16.5px}
-.think-set{margin-top:6px;border-bottom:1px solid var(--line)}
+.page-h .h-row{display:flex;align-items:center;gap:12px}
+.help-btn{position:relative;flex:none;display:grid;place-items:center;width:34px;height:34px;margin-top:-2px;padding:0;border:2px solid var(--edge);border-radius:50%;background:var(--card);box-shadow:0 3px 0 var(--edge);font-weight:700;font-size:18px;line-height:1;color:var(--ink);cursor:pointer}
+.help-btn::after{content:"";position:absolute;inset:-6px}
+.help-btn:active{transform:translateY(3px);box-shadow:none}
+.help-btn[aria-expanded="true"]{background:var(--ai);color:var(--on-ai)}
+.help-txt{margin:4px 0 0;padding:12px 16px;background:var(--ai-soft);border-radius:14px}
+.help-txt p{margin:0;font-size:17px;line-height:1.6}
+.mp-cards{padding-bottom:14px;border-bottom:1.5px solid var(--line)}
+.think-set{margin-top:12px;border-top:0;padding:8px 0}
+.w-stats{font-size:16px;color:var(--ink-2);margin:4px 0 0}
+.sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 0}
+.sec-h h2{margin:0}
+.sec-h .plus{font-size:20px;font-weight:700;line-height:1;margin-right:-2px}
+.nb-hint{margin-top:8px}
+.nb-again{margin:4px 0 0}
 .h-count{font-size:16px;font-weight:500;color:var(--ink-2);margin-left:4px}
 .nb{--side:34px;margin:8px 0 10px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:14px;box-shadow:0 var(--lift) 0 var(--edge);overflow:hidden}
-.nb.own{--side:84px}
+.nb.has-own{--side:62px}
 .nb-head,.nb-row{display:grid;grid-template-columns:minmax(0,1fr) var(--side);border-bottom:1px solid var(--rule)}
 .nb-row:last-child{border-bottom:0}
 .nb-head{border-bottom:1.5px solid var(--rule)}
@@ -564,21 +582,21 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .nb-jp .jp{font-size:21px;line-height:1.45}
 .nb-kj{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:15.5px;color:var(--ink-2)}
 .nb-es{padding:11px 8px 9px 14px;border-left:1.5px solid var(--margin);font-size:16.5px;line-height:1.45}
-.nb-side{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding-right:10px}
-.nb-edit{font-size:15.5px;padding:6px 0}
+.nb-side{display:flex;align-items:center;justify-content:flex-end;gap:6px;padding-right:10px}
+.nb-edit{display:grid;place-items:center;width:32px;height:40px;margin-right:-6px;color:var(--ai)}
+.nb-row.own .nb-jp .jp,.nb-row.own .nb-es,.nb-row.own .nb-kj{color:var(--ai)}
 .st{display:inline-block;flex:none;vertical-align:middle}
 .st-firm{width:15px;height:15px;border:2px solid var(--shu);border-radius:50%}
 .st-learn{width:7px;height:7px;border-radius:50%;background:var(--ink-2);opacity:.6}
 .st-new{width:7px;height:7px}
 .legend-st .st{margin:0 3px 0 6px}
 .legend-st .st:first-child{margin-left:0}
-.nb-tools{margin:20px 0 0;padding:4px 0 14px;display:grid;gap:10px;border-bottom:1px solid var(--line)}
-.tools-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
-.nb-tools .hint{margin:0}
+.nb-tools{margin:14px 0 14px;display:grid;gap:10px}
+.tools-row{display:grid;grid-template-columns:62px auto;justify-content:start;align-items:center;gap:8px}
 .nb-jp,.nb-es{position:relative;overflow:hidden}
 .nb-jp::after,.nb-es::after{content:"";position:absolute;inset:0;background:var(--strip);pointer-events:none;transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.nb-es::after{transform:translateX(102%);box-shadow:-3px 0 6px var(--strip-edge)}
-.nb-jp::after{transform:translateX(-102%);box-shadow:3px 0 6px var(--strip-edge)}
+.nb-es::after{transform:translateX(calc(100% + 12px));box-shadow:-3px 0 6px var(--strip-edge)}
+.nb-jp::after{transform:translateX(calc(-100% - 12px));box-shadow:3px 0 6px var(--strip-edge)}
 .nb.cover-es .nb-row:not(.open) .nb-es::after,.nb.cover-jp .nb-row:not(.open) .nb-jp::after{transform:none}
 .nb.cover-es .nb-main:hover .nb-es::after,.nb.cover-jp .nb-main:hover .nb-jp::after{filter:brightness(.97)}
 .qplay{margin-top:10px}
@@ -2015,13 +2033,15 @@ const ICON_PLAY = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="
 /* ---------- Estado y guardado ---------- */
 const STORE_KEY = 'jp-curso-v1';
 // resetAt: momento del último «Borrar». Lo aprobado antes de esa marca no vuelve al sincronizar, venga de donde venga.
-function freshState(){ return {v:1, lessons:{}, kana:{}, hitos:{}, words:{own:[], stats:{}, log:{}, updated:0}, settings:{romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
+function freshState(){ return {v:1, lessons:{}, kana:{}, hitos:{}, vistos:{}, words:{own:[], stats:{}, log:{}, updated:0}, settings:{romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
 function normalize(){
   if (!S.words || typeof S.words !== 'object') S.words = {};
   S.words.own = Array.isArray(S.words.own) ? S.words.own : [];
   S.words.stats = S.words.stats && typeof S.words.stats === 'object' ? S.words.stats : {};
   S.words.log = S.words.log && typeof S.words.log === 'object' ? S.words.log : {};
   S.words.updated = S.words.updated || 0;
+  // ayudas «?» ya vistas: se abren solas solo la primera vez
+  if (!S.vistos || typeof S.vistos !== 'object') S.vistos = {};
   S.settings = Object.assign({romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, S.settings || {});
   if ('sfx' in S.settings){ if (S.settings.sfx === false) S.settings.sfxVol = 0; delete S.settings.sfx; }
   S.resetAt = S.resetAt || 0;
@@ -2094,6 +2114,7 @@ function mergeRemote(r){
   }
   if (r.settings && (r.updated || 0) > (S.updated || 0)) S.settings = Object.assign({}, S.settings, r.settings);
   if (r.words && (r.words.updated || 0) > (S.words.updated || 0)) S.words = r.words;
+  if (r.vistos && typeof r.vistos === 'object') Object.assign(S.vistos, r.vistos);
   S.updated = Math.max(S.updated || 0, r.updated || 0);
   normalize();
 }
@@ -3487,7 +3508,7 @@ function animateHanamaru(){
 function touchWords(){ S.words.updated = Date.now(); }
 function dayKey(t){ const d = new Date(t || Date.now()); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function wordPool(){
-  const own = S.words.own.map(w => ({key:'u:' + w.id, id:w.id, k:w.k, es:w.es, kj:w.kj, src:'u'}));
+  const own = S.words.own.map(w => ({key:'u:' + w.id, id:w.id, k:w.k, es:w.es, kj:w.kj, at:w.at || 0, src:'u'}));
   const seen = new Set(own.map(w => w.k));
   const course = [];
   // solo entran palabras de lecciones de palabras aprobadas (los ejemplos de las fichas de kana no se suman)
@@ -3511,56 +3532,77 @@ function wordStatsText(){
   return (wk ? 'Acierto en los últimos 7 días: ' + wk.pct + ' % (' + wk.n + ' respuestas). ' : 'Todavía no practicaste esta semana. ') + 'Palabras firmes: ' + firm + ' de ' + pool.length + '.';
 }
 const ST_LABEL = {firm:'Firme', learn:'En práctica', 'new':'Sin practicar'};
-const NB = {cover:'none', open:new Set(), order:null};
+// Cuaderno: qué columna se tapa, qué renglones se destaparon, el orden mezclado (null = original) y si la ayuda «?»
+// está abierta (undefined = visita nueva: se abre sola si nunca se vio)
+const NB = {cover:'none', open:new Set(), order:null, help:undefined};
+const ICON_PENCIL = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4.5 19.5l1-4.2L15.6 5.2a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L8.7 18.5l-4.2 1z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M13.8 7l3.2 3.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
 function nbSort(list){ if (!NB.order) return list; return list.slice().sort((a, b) => (NB.order[a.key] ?? 2) - (NB.order[b.key] ?? 2)); }
-function nbAllOpen(){ return wordPool().every(w => NB.open.has(w.key)); }
+// «Volver a tapar» aparece recién cuando hay algún renglón destapado (va debajo de la lista, así no corre nada al tocar)
+function nbAgainShown(){ return NB.cover !== 'none' && NB.open.size > 0; }
 function nbTools(){
-  const opt = (v, label) => '<button data-act="nbcover" data-v="' + v + '" aria-pressed="' + (NB.cover === v) + '">' + label + '</button>';
-  return '<div class="nb-tools"><div class="tools-row"><b>Tapar</b><span class="seg" role="group" aria-label="Qué columna tapar">' + opt('none', 'Nada') + opt('es', 'Español') + opt('jp', 'Japonés') + '</span></div>' +
-    '<div class="tools-row"><button class="btn small" data-act="nbmix">Mezclar</button>' + (NB.order ? '<button class="btn small" data-act="nborig">Orden original</button>' : '') +
-    (NB.cover !== 'none' ? '<button class="btn small" data-act="nball" id="nbAll">' + (nbAllOpen() ? 'Tapar de nuevo' : 'Destapar todo') + '</button>' : '') + '</div>' +
-    (NB.cover !== 'none' ? '<p class="hint">Tocá un renglón para destaparlo. Es práctica libre: no cuenta en las estadísticas.</p>' : '') + '</div>';
+  const seg = (act, cur, v, label) => '<button data-act="' + act + '" data-v="' + v + '" aria-pressed="' + (cur === v) + '">' + label + '</button>';
+  return '<div class="nb-tools">' +
+    '<div class="tools-row"><b id="nbTapar">Tapar</b><span class="seg" role="group" aria-labelledby="nbTapar">' + seg('nbcover', NB.cover, 'none', 'Nada') + seg('nbcover', NB.cover, 'es', 'Español') + seg('nbcover', NB.cover, 'jp', 'Japonés') + '</span></div>' +
+    '<div class="tools-row"><b id="nbOrden">Orden</b><span class="seg" role="group" aria-labelledby="nbOrden">' + seg('nborder', NB.order ? 'mix' : 'orig', 'orig', 'Original') + seg('nborder', NB.order ? 'mix' : 'orig', 'mix', 'Mezclado') + '</span></div>' +
+  '</div>';
 }
 function rerenderWords(){ const y = window.scrollY; app.innerHTML = renderWords(); window.scrollTo(0, y); }
 function nbRow(w){
-  const st = wordStatus(w.key);
-  return '<div class="nb-row' + (NB.open.has(w.key) ? ' open' : '') + '" data-key="' + esc(w.key) + '"><button class="nb-main" data-act="nbrow" data-key="' + esc(w.key) + '" data-jp="' + esc(w.k) + '" aria-label="' + esc(w.k) + ': ' + esc(w.es) + '. Escuchar"><span class="nb-jp"><span class="jp">' + esc(w.k) + '</span>' + (w.kj ? '<span class="nb-kj">' + esc(w.kj) + '</span>' : '') + '</span><span class="nb-es">' + esc(w.es) + '</span></button>' +
-    '<span class="nb-side"><span class="st st-' + st + '" role="img" aria-label="' + ST_LABEL[st] + '" title="' + ST_LABEL[st] + '"></span>' + (w.src === 'u' ? '<a class="nb-edit" href="#/palabras/e/' + esc(w.id) + '">Editar</a>' : '') + '</span></div>';
+  const st = wordStatus(w.key), own = w.src === 'u';
+  return '<div class="nb-row' + (own ? ' own' : '') + (NB.open.has(w.key) ? ' open' : '') + '" data-key="' + esc(w.key) + '"><button class="nb-main" data-act="nbrow" data-key="' + esc(w.key) + '" data-jp="' + esc(w.k) + '" aria-label="' + esc(w.k) + ': ' + esc(w.es) + (own ? ' (agregada por vos)' : '') + '. Escuchar"><span class="nb-jp"><span class="jp">' + esc(w.k) + '</span>' + (w.kj ? '<span class="nb-kj">' + esc(w.kj) + '</span>' : '') + '</span><span class="nb-es">' + esc(w.es) + '</span></button>' +
+    '<span class="nb-side"><span class="st st-' + st + '" role="img" aria-label="' + ST_LABEL[st] + '" title="' + ST_LABEL[st] + '"></span>' + (own ? '<a class="nb-edit" href="#/palabras/e/' + esc(w.id) + '" aria-label="Editar ' + esc(w.k) + '">' + ICON_PENCIL + '</a>' : '') + '</span></div>';
 }
-function notebook(list, own){
-  return '<div class="nb' + (own ? ' own' : '') + (NB.cover !== 'none' ? ' cover-' + NB.cover : '') + '"><div class="nb-head"><span class="nb-hmain"><span>Japonés</span><span class="h-es">Español</span></span><span></span></div>' + nbSort(list).map(nbRow).join('') + '</div>';
+function notebook(list){
+  const hasOwn = list.some(w => w.src === 'u');
+  return '<div class="nb' + (hasOwn ? ' has-own' : '') + (NB.cover !== 'none' ? ' cover-' + NB.cover : '') + '"><div class="nb-head"><span class="nb-hmain"><span>Japonés</span><span class="h-es">Español</span></span><span></span></div>' + nbSort(list).map(nbRow).join('') + '</div>';
 }
 function renderWords(){
   const pool = wordPool();
-  const own = pool.filter(w => w.src === 'u'), course = pool.filter(w => w.src === 'c');
+  const own = pool.filter(w => w.src === 'u').sort((a, b) => a.at - b.at);
+  // un solo cuaderno: las del curso en el orden de las lecciones y, al final, las propias en el orden en que se agregaron
+  const list = pool.filter(w => w.src === 'c').concat(own);
   const n = Math.min(10, pool.length);
+  if (NB.help === undefined){ NB.help = !S.vistos.palabras; if (NB.help){ S.vistos.palabras = true; save(); } }
   return topNav('#/', 'Inicio') +
-    '<header class="page-h"><h1>Mis palabras</h1><p class="lede">Tu cuaderno de vocabulario: las palabras de las lecciones que aprobaste, las que agregues vos y las frases que vas destrabando. Lo que hagas acá no cambia el progreso del curso.</p></header>' +
-    '<p class="w-stats">' + wordStatsText() + '</p>' +
-    '<div class="actions stack">' +
-      (pool.length >= 4 ? '<a class="btn primary wide center" href="#/p/palabras">Practicar ' + n + ' tarjetas</a>' : '<p class="hint">Para practicar hacen falta al menos 4 palabras.</p>') +
-      '<a class="btn wide center" href="#/palabras/nueva">Agregar palabra</a>' +
-    '</div>' +
-    '<label class="set think-set"><span class="set-t"><b>Pensalo primero</b><small>Cada tarjeta muestra solo la palabra hasta que tocás «Ver opciones». Así primero intentás recordarla.</small></span><input type="checkbox" class="switch" data-set="think"' + (S.settings.think ? ' checked' : '') + '></label>' +
-    (pool.length ? nbTools() : '') +
-    '<h2>Agregadas por vos <span class="h-count">' + own.length + '</span></h2>' +
-    (own.length ? notebook(own, true) : '<p class="hint">Todavía no agregaste palabras. Podés sumar las que aprendas en Duolingo, en una serie o en cualquier lado.</p>') +
-    '<h2>Del curso <span class="h-count">' + course.length + '</span></h2>' +
-    (course.length ? notebook(course, false) : '<p class="hint">Se suman solas cuando aprobás lecciones de palabras.</p>') +
-    '<p class="hint legend-st"><span class="st st-firm"></span> Firme: tres aciertos seguidos. <span class="st st-learn"></span> En práctica. Sin marca: todavía no apareció en las tarjetas. Tocá cualquier renglón para escuchar la palabra.</p>' +
+    '<header class="page-h"><div class="h-row"><h1>Mis palabras</h1><button class="help-btn" data-act="ayuda" aria-expanded="' + NB.help + '" aria-controls="mpAyuda" aria-label="Cómo se usa">?</button></div>' +
+      '<div class="help-txt" id="mpAyuda"' + (NB.help ? '' : ' hidden') + '><p>A medida que apruebes lecciones, las palabras que aprendas se van a sumar solas. Además, ¡podés agregar las que quieras! Practicalas con tandas de tarjetas o, más abajo, directamente en el cuaderno.</p></div></header>' +
+    // tarjetas: el botón, lo que lo modifica y cómo viene la práctica
+    '<section class="mp-cards">' +
+      (pool.length >= 4
+        ? '<a class="btn primary wide center" href="#/p/palabras">Practicar ' + n + ' tarjetas</a>' +
+          '<label class="set think-set"><span class="set-t"><b>Pensalo primero</b><small>Cada tarjeta muestra solo la palabra hasta que tocás «Ver opciones». Así primero intentás recordarla.</small></span><input type="checkbox" class="switch" data-set="think"' + (S.settings.think ? ' checked' : '') + '></label>' +
+          '<p class="w-stats">' + wordStatsText() + '</p>'
+        : '<p class="hint">Las tarjetas se habilitan cuando tengas al menos 4 palabras.</p>') +
+    '</section>' +
+    // cuaderno: la lista entera, para repasar tapando una columna
+    '<section class="mp-nb"><div class="sec-h"><h2>Cuaderno' + (list.length ? ' <span class="h-count">' + list.length + '</span>' : '') + '</h2><a class="btn small" href="#/palabras/nueva"><span class="plus" aria-hidden="true">+</span>Agregar</a></div>' +
+      (list.length
+        ? '<p class="hint nb-hint">Repasá las palabras, después tapá una columna y tratá de recordarlas destapando de a una. Tocá un renglón para escucharlo.</p>' +
+          nbTools() + notebook(list) +
+          '<p class="nb-again" id="nbAgain"' + (nbAgainShown() ? '' : ' hidden') + '><button class="btn small" data-act="nbagain">Volver a tapar</button></p>' +
+          '<p class="hint legend-st"><span class="st st-firm"></span> Firme: tres aciertos seguidos. <span class="st st-learn"></span> En práctica. Sin marca: todavía no apareció en las tarjetas.' + (own.length ? ' Las que agregaste vos van en azul; el lápiz las edita.' : '') + '</p>'
+        : '<p class="hint nb-hint">Tu cuaderno está vacío. Las palabras se suman solas al aprobar las lecciones, y podés agregar las tuyas cuando quieras.</p>') +
+    '</section>' +
     phrasesSection();
 }
-// Frases: las diez en orden de hito; las destrabadas con audio, las pendientes como casilleros cerrados
-// con la lección que las destraba, sin mostrar la frase
+// Frases: las diez en orden de hito. Las destrabadas, una por renglón con su audio; las pendientes, agrupadas por la
+// lección que las destraba, como casilleros cerrados y sin mostrar la frase
 function phrasesSection(){
   const un = PHRASES.filter(p => isDone(p.h)).length;
+  const rows = [];
+  PHRASES.forEach(p => {
+    if (isDone(p.h)){ rows.push({p}); return; }
+    const last = rows[rows.length - 1];
+    if (last && last.lock === p.h) last.n++; else rows.push({lock:p.h, n:1});
+  });
   return '<h2>Frases <span class="h-count">' + un + ' de ' + PHRASES.length + '</span></h2>' +
     '<p class="hint fr-hint">Cada frase aparece cuando ya podés leerla.</p>' +
-    '<ul class="words phrases fr-nb">' + PHRASES.map(p => {
-      if (!isDone(p.h)){
-        const L = LESSON[p.h];
-        return '<li class="fr-lock"><span class="fr-lock-i" aria-hidden="true">' + ICON_LOCK + '</span><span>Se destraba al aprobar «' + jpify(esc(L.title)) + '» · unidad ' + L.unit + '</span></li>';
+    '<ul class="words phrases fr-nb">' + rows.map(r => {
+      if (r.lock){
+        const L = LESSON[r.lock];
+        return '<li class="fr-lock"><span class="fr-lock-i" aria-hidden="true">' + ICON_LOCK + '</span><span>' + r.n + (r.n === 1 ? ' frase se destraba' : ' frases se destraban') + ' al aprobar «' + jpify(esc(L.title)) + '» · unidad ' + L.unit + '</span></li>';
       }
+      const p = r.p;
       return '<li><button class="word" data-act="say" data-jp="' + esc(p.k) + '"><span class="ex-play" aria-hidden="true">' + ICON_PLAY + '</span><span class="w-main"><span class="jp w-k">' + esc(p.k) + '</span></span><span class="w-es">' + jpify(esc(p.es)) + '</span></button></li>';
     }).join('') + '</ul>';
 }
@@ -3790,7 +3832,7 @@ function dibujarRuta(antes){
   else if (parts[0] === 'ajustes') { Q = null; html = renderSettings(); }
   else if (parts[0] === 'l') { Q = null; html = renderLesson(parts[1]); }
   else if (parts[0] === 'tabla') { Q = null; html = renderTable(); }
-  else if (parts[0] === 'palabras') { Q = null; html = parts[1] === 'nueva' ? renderWordForm(null) : parts[1] === 'e' ? renderWordForm(parts[2]) : renderWords(); }
+  else if (parts[0] === 'palabras') { Q = null; html = parts[1] === 'nueva' ? renderWordForm(null) : parts[1] === 'e' ? renderWordForm(parts[2]) : (NB.help = undefined, renderWords()); }
   else if (parts[0] === 'p') {
     if (LESSON[parts[1]] && !isUnlocked(parts[1])){ Q = null; html = renderLesson(parts[1]); }
     else if (startQuiz(parts[1])){ html = renderQuizScreen(); quizStarted = true; }
@@ -3867,21 +3909,29 @@ document.addEventListener('click', e => {
     case 'showopts': { Q.shown = true; const a = document.getElementById('optsArea'); a.innerHTML = optsHTML(Q.items[Q.i]); const b = a.querySelector('.opt'); if (b) b.focus({preventScroll:true}); break; }
     case 'wprev': { const k = document.getElementById('f-kana').textContent; if (k) speak(k); break; }
     case 'wsave': saveWord(); break;
+    case 'ayuda': {
+      NB.help = !NB.help;
+      t.setAttribute('aria-expanded', String(NB.help));
+      const box = document.getElementById('mpAyuda'); if (box) box.hidden = !NB.help;
+      break; }
     case 'nbrow': {
       const key = t.dataset.key, row = t.closest('.nb-row');
       if (NB.cover !== 'none' && !NB.open.has(key)){
         NB.open.add(key); if (row) row.classList.add('open');
         if (NB.cover === 'jp') speak(t.dataset.jp);
-        const b = document.getElementById('nbAll'); if (b) b.textContent = nbAllOpen() ? 'Tapar de nuevo' : 'Destapar todo';
+        const ag = document.getElementById('nbAgain'); if (ag) ag.hidden = !nbAgainShown();
       } else speak(t.dataset.jp);
       break; }
     case 'nbcover': NB.cover = t.dataset.v; NB.open.clear(); rerenderWords(); break;
-    case 'nbmix': NB.order = {}; wordPool().forEach(w => { NB.order[w.key] = Math.random(); }); NB.open.clear(); rerenderWords(); break;
-    case 'nborig': NB.order = null; NB.open.clear(); rerenderWords(); break;
-    case 'nball': {
-      if (nbAllOpen()) NB.open.clear(); else wordPool().forEach(w => NB.open.add(w.key));
-      document.querySelectorAll('.nb-row').forEach(r => r.classList.toggle('open', NB.open.has(r.dataset.key)));
-      t.textContent = nbAllOpen() ? 'Tapar de nuevo' : 'Destapar todo';
+    // «Mezclado» otra vez vuelve a mezclar
+    case 'nborder':
+      if (t.dataset.v === 'mix'){ NB.order = {}; wordPool().forEach(w => { NB.order[w.key] = Math.random(); }); }
+      else NB.order = null;
+      NB.open.clear(); rerenderWords(); break;
+    case 'nbagain': {
+      NB.open.clear();
+      document.querySelectorAll('.nb-row.open').forEach(r => r.classList.remove('open'));
+      const ag = document.getElementById('nbAgain'); if (ag) ag.hidden = true;
       break; }
     case 'wdel':
       if (t.dataset.armed === '1'){ deleteWord(document.querySelector('.form').dataset.id); }
