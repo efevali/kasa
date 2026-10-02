@@ -9,7 +9,7 @@ Kasa usa versionado semántico, MAYOR.MENOR.PARCHE:
                           sube solo cuando algo rompe lo anterior (por ejemplo, el progreso guardado).
 
 Se corre antes de cada publicación. El título del commit empieza con el número («0.2.1: …») y se
-suma una fila a la tabla de versiones del README.
+suma la versión a CHANGELOG.md.
 Cambiar sw.js es lo que le avisa al teléfono que hay una versión nueva (aparece «Hay una versión
 nueva» en Ajustes y el punto verde en el engranaje). El teléfono no compara números: toma lo último
 que se publica. Volver atrás es publicar el contenido viejo con un número nuevo.
