@@ -24,7 +24,7 @@ La única dirección escrita en los archivos es la del manifiesto (`related_appl
 | `fuentes/` | Klee One, Shippori Mincho y Zen Kaku Gothic New, recortadas a lo que usa el curso, con sus licencias (SIL OFL 1.1). |
 | `iconos/` | El ícono (el wagasa del logo, solo, sobre crudo) en los tamaños que pide Android. |
 | `herramientas/` | Ayudantes para el armado: `version.py`, `fuentes.py`, `iconos.py`, `vista_previa.py` y `boceto.py` (ver abajo). |
-| `docs/bocetos/` | Los bocetos aprobados, con su índice. |
+| `docs/` | El manifiesto del curso, el registro de decisiones, los bocetos aprobados y el muestrario de sonidos (ver su [índice](docs/README.md)). |
 | `CONTRIBUTING.md` | El método de trabajo: issues, etiquetas, bocetos, ramas y commits. |
 | `CHANGELOG.md` | El registro de las versiones publicadas. |
 | `.github/` | Las plantillas de issue y de pull request. |
