@@ -22,7 +22,7 @@ Las fechas son de 2026.
 
 ## Ruta y contenido
 
-- **Primero kana, después palabras** (24/9). Surgió al revisar la lección Saludos: こんにちは usaba un kana que el curso todavía no había enseñado. Una auditoría encontró catorce lugares con el mismo problema (lecciones, preguntas, ejemplos, fichas de kana, datos y notas), y se arreglaron todos. La regla cubre también lo que se escucha: «no le veo lo positivo al audio sin sustento».
+- **Primero kana, después palabras** (24/9). Surgió al revisar la lección Saludos: こんにちは usaba un kana que el curso todavía no había enseñado. Una auditoría encontró catorce lugares con el mismo problema (lecciones, preguntas, ejemplos, fichas de kana, datos y notas), y se arreglaron todos. La regla cubre también lo que se escucha: «no le veo lo positivo al audio sin sustento». La implementación (25/9) se verificó con una auditoría automática de 115.250 preguntas generadas y de todas las páginas, sin progreso y con todo aprobado, más un recorrido real desde cero hasta el primer hito.
 - **Frases como hitos** (24/9, opción A). Las diez frases de todos los días se destraban al aprobar la lección de kana que las completa y se consolidan en «Frases de todos los días», después de Palabras 12. *Descartado:* las lecciones Saludos y Cortesía, y cualquier franja de frases «de oído».
 - **ん se adelanta a la lección de な** (24/9). Destraba mucho: con ella, さん y なん se pueden usar desde «X は Y です». El resto del orden de filas no cambia.
 - **«Cómo funciona el japonés» se parte en dos lecciones de mapa** (24/9): I, cómo se ve y cómo suena; II, cómo se arma una oración. Presentar la lógica general al inicio da curiosidad. Son la única excepción a la regla: romaji en todo, también en preguntas y respuestas, y ninguna pregunta de lectura de kana. Llevan marcas «→» que dicen cuándo se retoma cada idea, en unidades o en lo que la persona va a hacer, nunca con títulos de lecciones.
@@ -76,6 +76,7 @@ Diseño aprobado el 24/9; la misma lógica en las tres unidades.
 
 - **Solo entran las palabras de lecciones de palabras aprobadas**, más las propias (24/9). Los ejemplos de las fichas de kana (え, きく, せかい…) no se suman: «es la más honesta», sin complejizar las reglas.
 - **Las palabras propias conservan su kanji**; en las listas del curso el kanji de referencia está oculto.
+- **Pantalla ordenada** (2/10, boceto B-02; #20 a #24). Hay dos usos de las palabras y cada uno lleva sus controles: arriba las tarjetas (el botón, «Pensalo primero», que las modifica, y las estadísticas) y abajo un solo cuaderno, con las palabras propias en azul al final y los controles agrupados en Tapar y Orden. La explicación pasa a una ayuda «?» que se abre sola la primera vez, porque «pierde sentido que esté ahí luego de la primera lectura» (regla en la guía de estilo). Las frases pendientes se agrupan por lección. *Descartado:* el «?» a la izquierda del título, un globo flotante, las palabras propias arriba o intercaladas por fecha (la app no guarda cuándo se aprobó cada lección) y nombrar a Duolingo en la app.
 
 ## Dibujos y preguntas con dibujo
 
