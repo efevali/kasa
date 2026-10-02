@@ -219,6 +219,7 @@ body.is-home #app{min-height:100%;display:flex;flex-direction:column;padding-bot
 .u-kana{white-space:nowrap}
 .ucard .dots{align-items:center;gap:7px;margin-top:10px}
 .ucard .dots i{width:11px;height:11px;border-width:1.8px}
+.u-ro{font-size:.8em;font-weight:400;color:var(--ink-2)}
 .uc-n{font-size:15px;color:var(--ink-2);margin-left:6px}
 .uc-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;padding-top:10px;border-top:1.5px solid var(--line);font-size:15.5px}
 .uc-foot .g{color:var(--ink-2)}
@@ -1094,7 +1095,7 @@ function W(list, ...ks){ return ks.map(k => { const w = list.find(x => x.k === k
 // Todo el japonés lleva romaji, siempre visible aunque esté apagado en Ajustes (map:true).
 // Texto: **negrita**, *itálica*. Bloques: p, note, html, ex (ejemplos con audio) y mk (marca «dónde se retoma»).
 const UNITS = [
- {id:1, title:'Primeros pasos', kana:'あ〜そ',
+ {id:1, title:'Primeros pasos', kana:'あ〜そ', ro:'a–so',
   desc:'Cómo funciona el japonés, las vocales, las filas か y さ con sus variantes y las primeras 24 palabras.',
   lessons:[
    {id:'1-1', type:'concept', map:true, short:'Cómo funciona el japonés I', title:'Cómo funciona el japonés I: cómo se ve y cómo suena', min:10,
@@ -2511,7 +2512,7 @@ function renderHome(){
   const dots = u.lessons.map(l => '<i class="' + (isDone(l.id) ? 'on' : '') + '"></i>').join('');
   const soon = UNITS.find(x => x.soon);
   const go = next
-    ? '<a class="btn primary wide has-kicker home-go" href="#/l/' + next.id + '"><span class="btn-kicker">' + (done ? 'Continuar' : 'Empezar') + '</span>' + '<span>' + jpify(esc(next.title)) + '</span>' + '</a>'
+    ? '<a class="btn primary wide has-kicker home-go" href="#/l/' + next.id + '"><span class="btn-kicker">' + ((S.lessons[next.id] && !S.lessons[next.id].done) ? 'Repetir lección' : (done ? 'Siguiente lección' : 'Empezar lección')) + '</span>' + '<span>' + jpify(esc(next.title)) + '</span>' + '</a>'
     : '<div class="btn primary wide has-kicker home-go is-off" aria-disabled="true"><span class="btn-kicker">Completaste lo disponible. En preparación:</span>' + (soon ? 'Unidad ' + soon.id + ': ' + esc(soon.title) : 'Nuevas unidades') + '</div>';
   const nw = wordPool().length;
   return '<div class="home">' +
@@ -2521,17 +2522,17 @@ function renderHome(){
       '<a class="ucard" href="#/temario">' +
         '<span class="uc-top"><span class="u-num">' + u.id + '</span><span>' +
           '<span class="uc-lab" style="display:block">Unidad actual</span>' +
-          '<span class="uc-title" style="display:block">' + esc(u.title) + '<span class="u-kana">' + esc(u.kana) + '</span></span>' +
-          '<span class="dots" aria-label="' + nd + ' de ' + u.lessons.length + ' lecciones aprobadas">' + dots + '<span class="uc-n">' + nd + ' de ' + u.lessons.length + '</span></span>' +
+          '<span class="uc-title" style="display:block">' + esc(u.title) + '<span class="u-kana">' + esc(u.kana) + (u.ro ? '<span class="u-ro"> (' + u.ro + ')</span>' : '') + '</span></span>' +
+          '<span class="dots" aria-label="' + nd + ' de ' + u.lessons.length + ' lecciones aprobadas">' + dots + '</span>' +
         '</span></span>' +
-        '<span class="uc-foot"><span class="g">Curso: ' + done + ' de ' + total + ' lecciones</span><span class="t">Temario</span></span>' +
+        '<span class="uc-foot"><span class="g">' + nd + ' de ' + u.lessons.length + ' lecciones</span><span class="t">Temario</span></span>' +
       '</a>' +
       go +
       (DEV ? '<p class="dev-note">Modo prueba: todo destrabado.</p>' : '') +
     '</section>' +
     '<nav class="toolbox" aria-label="Herramientas">' +
-      '<a class="tool" href="#/palabras">' + ICON_NOTEBOOK + 'Mis palabras<span class="tool-n" aria-label="' + nw + (nw === 1 ? ' palabra' : ' palabras') + '">' + nw + '</span></a>' +
-      '<a class="tool" href="#/tabla">' + ICON_TABLE + 'Tabla de hiragana</a>' +
+      '<a class="tool" href="#/palabras">' + ICON_NOTEBOOK + 'Mis palabras' + (nw ? '<span class="tool-n" aria-label="' + nw + (nw === 1 ? ' palabra' : ' palabras') + '">' + nw + '</span>' : '') + '</a>' +
+      '<a class="tool" href="#/tabla">' + ICON_TABLE + 'Tabla de kana</a>' +
       '<a class="tool" href="#/p/repaso">' + ICON_REVIEW + 'Repaso de kana</a>' +
     '</nav>' +
   '</div>';
