@@ -14,9 +14,21 @@ Este archivo explica el método. Qué es la app, qué hay en cada archivo y cóm
 | El código de la versión en preparación | El [pull request](https://github.com/efevali/kasa/pulls) en borrador de su rama |
 | Bocetos aprobados | [`docs/bocetos/`](docs/bocetos/) |
 | Qué salió en cada versión | [`CHANGELOG.md`](CHANGELOG.md) |
+| Qué es Kasa, sus principios y la ruta del curso | [`docs/manifiesto.md`](docs/manifiesto.md) |
+| Por qué se decidió cada cosa y qué se descartó | [`docs/decisiones.md`](docs/decisiones.md) |
 | Reglas de interfaz, dibujos, sonidos y transiciones | La **guía de estilo**, al principio del CSS de `index.html` |
 
-Pendiente: el manifiesto del curso (principios, ruta de lecciones) y el registro de decisiones van a sumarse en `docs/`.
+## Roles
+
+- **Producto** (la cuenta efevali): decide qué se cambia, revisa la app en el teléfono, en modo claro, y aprueba los bocetos y la vista previa. Revisa sobre la app, no sobre el código. Los textos también se revisan en la app, no en un documento aparte.
+- **Desarrollo**: propone, revisa cada pantalla por su cuenta además de las observaciones que recibe, prepara los bocetos e implementa. Las inconsistencias de código que encuentra las corrige directamente, sin informe previo; consulta solo si implican un cambio grande en la estructura funcional de la app. Ante cualquier duda de producto, pregunta.
+
+Criterios que valen siempre:
+
+- **Primero se conversa y se acuerda, después se implementa.** Nada se cambia en el código en el momento de la revisión.
+- **Lo visual se aprueba viéndolo**: bocetos en PNG de tamaño real, para comparar en la galería del teléfono. Los dibujos, además, grandes y a 140 px.
+- **Implementación integral**: no se publica nada aislado ni se dejan cabos sueltos.
+- **Sin duplicados**: lo que está en la app o en este repositorio no se guarda aparte.
 
 ## El ciclo
 
