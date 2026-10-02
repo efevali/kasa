@@ -562,14 +562,11 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .mp-cards{padding-bottom:14px;border-bottom:1.5px solid var(--line)}
 .think-set{margin-top:12px;border-top:0;padding:8px 0}
 .w-stats{font-size:16px;color:var(--ink-2);margin:4px 0 0}
-.sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 0}
-.sec-h h2{margin:0}
-.sec-h .plus{font-size:20px;font-weight:700;line-height:1;margin-right:-2px}
+.mp-nb>h2{margin:26px 0 0}
 .nb-hint{margin-top:8px}
 .nb-again{margin:4px 0 0}
 .h-count{font-size:16px;font-weight:500;color:var(--ink-2);margin-left:4px}
 .nb{--side:34px;margin:8px 0 10px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:14px;box-shadow:0 var(--lift) 0 var(--edge);overflow:hidden}
-.nb.has-own{--side:62px}
 .nb-head,.nb-row{display:grid;grid-template-columns:minmax(0,1fr) var(--side);border-bottom:1px solid var(--rule)}
 .nb-row:last-child{border-bottom:0}
 .nb-head{border-bottom:1.5px solid var(--rule)}
@@ -583,8 +580,6 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .nb-kj{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;font-size:15.5px;color:var(--ink-2)}
 .nb-es{padding:11px 8px 9px 14px;border-left:1.5px solid var(--margin);font-size:16.5px;line-height:1.45}
 .nb-side{display:flex;align-items:center;justify-content:flex-end;gap:6px;padding-right:10px}
-.nb-edit{display:grid;place-items:center;width:32px;height:40px;margin-right:-6px;color:var(--ai)}
-.nb-row.own .nb-jp .jp,.nb-row.own .nb-es,.nb-row.own .nb-kj{color:var(--ai)}
 .st{display:inline-block;flex:none;vertical-align:middle}
 .st-firm{width:15px;height:15px;border:2px solid var(--shu);border-radius:50%}
 .st-learn{width:7px;height:7px;border-radius:50%;background:var(--ink-2);opacity:.6}
@@ -603,15 +598,6 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .think{margin-top:22px;text-align:center}
 .think .hint{margin:0 auto 10px}
 .results-extra{text-align:center;font-size:16px;color:var(--ink-2);margin:6px auto 0}
-.field{display:grid;gap:6px;margin:16px 0}
-.field>span{font-weight:700;font-size:16px}
-.field input{font:inherit;font-size:18px;min-height:50px;padding:10px 14px;border:var(--bw) solid var(--edge);border-radius:12px;background:var(--card);color:var(--ink)}
-.field input:focus{border-color:var(--ai);outline:none;box-shadow:0 0 0 3px var(--ai-soft)}
-.preview{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:74px;padding:10px 14px;background:var(--card);border:2px dashed var(--guide);border-radius:12px}
-#f-kana{font-size:32px;line-height:1.3;word-break:break-all}
-#f-kana:empty::before{content:"かな";opacity:.2}
-.field-err{color:var(--shu);font-size:15.5px;margin:8px 0 0}
-.form .set{border-bottom:1px solid var(--line);margin-top:10px}
 
 
 /* ---- Emparejar pares ---- */
@@ -1935,55 +1921,6 @@ function kanaReview(learned, stats, n){
 
 /* ===================== MIS PALABRAS ===================== */
 
-// Conversión de romaji a kana (Hepburn, con variantes comunes)
-const ROMA = (function(){
-  const m = {a:'あ',i:'い',u:'う',e:'え',o:'お'};
-  const rows = {k:'かきくけこ',g:'がぎぐげご',s:'さしすせそ',z:'ざじずぜぞ',t:'たちつてと',d:'だぢづでど',n:'なにぬねの',h:'はひふへほ',b:'ばびぶべぼ',p:'ぱぴぷぺぽ',m:'まみむめも',r:'らりるれろ',l:'らりるれろ'};
-  for (const c in rows) 'aiueo'.split('').forEach((v, i) => { m[c + v] = rows[c][i]; });
-  Object.assign(m, {ya:'や',yu:'ゆ',yo:'よ',wa:'わ',wo:'を',shi:'し',chi:'ち',tsu:'つ',fu:'ふ',ji:'じ',dzu:'づ',
-    sha:'しゃ',shu:'しゅ',sho:'しょ',she:'しぇ',cha:'ちゃ',chu:'ちゅ',cho:'ちょ',che:'ちぇ',ja:'じゃ',ju:'じゅ',jo:'じょ',je:'じぇ',
-    fa:'ふぁ',fi:'ふぃ',fe:'ふぇ',fo:'ふぉ',va:'ゔぁ',vi:'ゔぃ',vu:'ゔ',ve:'ゔぇ',vo:'ゔぉ',wi:'うぃ',we:'うぇ',thi:'てぃ',dhi:'でぃ',
-    xa:'ぁ',xi:'ぃ',xu:'ぅ',xe:'ぇ',xo:'ぉ',xya:'ゃ',xyu:'ゅ',xyo:'ょ',xtsu:'っ',xtu:'っ',ltsu:'っ',ltu:'っ'});
-  const yo = {k:'き',g:'ぎ',n:'に',h:'ひ',b:'び',p:'ぴ',m:'み',r:'り',s:'し',z:'じ',j:'じ',t:'ち',c:'ち'};
-  for (const c in yo){ m[c + 'ya'] = yo[c] + 'ゃ'; m[c + 'yu'] = yo[c] + 'ゅ'; m[c + 'yo'] = yo[c] + 'ょ'; }
-  return m;
-})();
-const KATA_OVR = {ti:'てぃ',di:'でぃ',tu:'とぅ',du:'どぅ'};
-const MAC_H = {'ā':'aa','ī':'ii','ū':'uu','ē':'ei','ō':'ou','â':'aa','î':'ii','û':'uu','ê':'ei','ô':'ou'};
-const MAC_K = {'ā':'a-','ī':'i-','ū':'u-','ē':'e-','ō':'o-','â':'a-','î':'i-','û':'u-','ê':'e-','ô':'o-'};
-
-function romajiToKana(input, kata){
-  let s = String(input || '').normalize('NFC').toLowerCase().replace(/[āīūēōâîûêô]/g, c => (kata ? MAC_K : MAC_H)[c]);
-  const V = 'aiueo';
-  let out = '', i = 0;
-  while (i < s.length){
-    const c = s[i], n1 = s[i + 1];
-    if (c === '-' || c === 'ー'){ out += 'ー'; i++; continue; }
-    if (c === "'" || c === '’'){ i++; continue; }
-    if (c === 'n'){
-      if (n1 === undefined){ out += 'ん'; i++; continue; }
-      if (n1 === "'" || n1 === '’'){ out += 'ん'; i += 2; continue; }
-      if (n1 === 'n'){
-        const n2 = s[i + 2];
-        if (n2 === undefined || !(V.includes(n2) || n2 === 'y')){ out += 'ん'; i += 2; continue; }
-        out += 'ん'; i++; continue;
-      }
-      if (!(V.includes(n1) || n1 === 'y')){ out += 'ん'; i++; continue; }
-    }
-    if (c === n1 && /[bcdfghjkmpqrstvwxyz]/.test(c)){ out += 'っ'; i++; continue; }
-    if (c === 't' && n1 === 'c' && s[i + 2] === 'h'){ out += 'っ'; i++; continue; }
-    let hit = false;
-    for (let L = 4; L >= 1; L--){
-      const sub = s.substr(i, L);
-      const v = (kata && KATA_OVR[sub]) || ROMA[sub];
-      if (v){ out += v; i += L; hit = true; break; }
-    }
-    if (!hit){ out += c; i++; }
-  }
-  if (kata) out = out.replace(/[\u3041-\u3096]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60));
-  return out;
-}
-
 // Rondas de tarjetas: las palabras que más fallás salen más seguido
 function wordWeight(st){
   if (!st) return 3;
@@ -2026,6 +1963,8 @@ function wordRound(pool, stats, n){
 const app = document.getElementById('app');
 const TEXTO_DEL_CURSO = (document.currentScript && document.currentScript.textContent) || '';
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// un título corto citado en un texto no se parte en dos renglones («Palabras 1»)
+const nbsp = s => String(s).replace(/ /g, '\u00a0');
 const jpify = s => String(s).replace(/([\u3000-\u303f\u3040-\u30ff\u3400-\u9fff\uff01-\uff5e〜]+)/g, '<span class="jpi">$1</span>');
 
 const ICON_PLAY = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
@@ -2033,11 +1972,12 @@ const ICON_PLAY = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="
 /* ---------- Estado y guardado ---------- */
 const STORE_KEY = 'jp-curso-v1';
 // resetAt: momento del último «Borrar». Lo aprobado antes de esa marca no vuelve al sincronizar, venga de donde venga.
-function freshState(){ return {v:1, lessons:{}, kana:{}, hitos:{}, vistos:{}, words:{own:[], stats:{}, log:{}, updated:0}, settings:{romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
+function freshState(){ return {v:1, lessons:{}, kana:{}, hitos:{}, vistos:{}, words:{stats:{}, log:{}, updated:0}, settings:{romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
 function normalize(){
   if (!S.words || typeof S.words !== 'object') S.words = {};
-  S.words.own = Array.isArray(S.words.own) ? S.words.own : [];
   S.words.stats = S.words.stats && typeof S.words.stats === 'object' ? S.words.stats : {};
+  // las palabras propias se quitaron en la 0.4.0: lo que quede de ellas (la lista y sus estadísticas) se borra
+  if ('own' in S.words){ delete S.words.own; Object.keys(S.words.stats).forEach(k => { if (k.indexOf('u:') === 0) delete S.words.stats[k]; }); }
   S.words.log = S.words.log && typeof S.words.log === 'object' ? S.words.log : {};
   S.words.updated = S.words.updated || 0;
   // ayudas «?» ya vistas: se abren solas solo la primera vez
@@ -2611,7 +2551,7 @@ function renderSettings(){
     '<div class="set"><span class="set-t"><b>Velocidad del audio</b></span><span class="seg" role="group" aria-label="Velocidad del audio"><button data-act="rate" data-v="0" aria-pressed="' + (!S.settings.slow) + '">Normal</button><button data-act="rate" data-v="1" aria-pressed="' + (!!S.settings.slow) + '">Lenta</button></span></div>' +
     '<div class="set"><span class="set-t"><b>Audio</b><small id="voiceLabel">' + voiceText() + '</small></span><button class="btn small" data-act="say" data-jp="かさ">Probar</button></div>' +
     volRowHTML() +
-    '<div class="set"><span class="set-t"><b>Progreso</b><small id="syncLabel">' + syncText() + '</small><small>«Borrar» reinicia el curso; tus palabras quedan.</small></span><button class="btn small" data-act="reset">Borrar</button></div>' +
+    '<div class="set"><span class="set-t"><b>Progreso</b><small id="syncLabel">' + syncText() + '</small><small>«Borrar» reinicia el curso.</small></span><button class="btn small" data-act="reset">Borrar</button></div>' +
     (DEV ? '<div class="set dev-set"><span class="set-t"><b>Modo prueba</b><small>Todas las lecciones están destrabadas, solo en este dispositivo. También se activa y desactiva con cinco toques al paraguas del inicio.</small></span><button class="btn small" data-act="devoff">Desactivar</button></div>' : '') +
     versionRowHTML() +
   '</section>';
@@ -3084,7 +3024,7 @@ function startQuiz(id){
 }
 function renderQuizScreen(){
   if (!Q.items.length && Q.id === 'palabras'){
-    return topNav('#/palabras', 'Mis palabras') + '<header class="page-h"><h1>Todavía faltan palabras</h1><p class="lede">Para practicar con tarjetas hacen falta al menos 4 palabras. Aprobá alguna lección de palabras o agregá las tuyas.</p></header><div class="actions stack"><a class="btn primary wide center" href="#/palabras/nueva">Agregar palabra</a><a class="btn wide center" href="#/l/1-v1">Ir a «Palabras 1»</a></div>';
+    return topNav('#/palabras', 'Mis palabras') + '<header class="page-h"><h1>Todavía faltan palabras</h1><p class="lede">Las tarjetas se habilitan al aprobar «' + nbsp(LESSON['1-v1'].title) + '».</p></header><div class="actions"><a class="btn primary wide center" href="#/l/1-v1">Ir a «' + nbsp(LESSON['1-v1'].title) + '»</a></div>';
   }
   if (!Q.items.length){
     return topNav('#/', 'Inicio') + '<header class="page-h"><h1>Repaso de kana</h1><p class="lede">Todavía no hay kana para repasar. Aprobá al menos una lección de escritura y este repaso se arma solo, priorizando los kana en los que más fallás.</p></header><div class="actions"><a class="btn primary wide" href="#/l/1-2">Ir a «Las cinco vocales»</a></div>';
@@ -3508,16 +3448,13 @@ function animateHanamaru(){
 function touchWords(){ S.words.updated = Date.now(); }
 function dayKey(t){ const d = new Date(t || Date.now()); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function wordPool(){
-  const own = S.words.own.map(w => ({key:'u:' + w.id, id:w.id, k:w.k, es:w.es, kj:w.kj, at:w.at || 0, src:'u'}));
-  const seen = new Set(own.map(w => w.k));
-  const course = [];
-  // solo entran palabras de lecciones de palabras aprobadas (los ejemplos de las fichas de kana no se suman)
-  const addC = (k, es, kj) => { if (!seen.has(k)){ seen.add(k); course.push({key:'c:' + k, k, es, kj, src:'c'}); } };
+  // solo entran las palabras de las lecciones aprobadas, en el orden del curso (los ejemplos de las fichas de kana no se suman)
+  const seen = new Set(), pool = [];
   ALL_LESSONS.forEach(l => {
-    if (!isDone(l.id)) return;
-    if (l.words) l.words.forEach(w => addC(w.k, w.es, KANJI_EN_LISTAS ? w.kj : undefined));
+    if (!isDone(l.id) || !l.words) return;
+    l.words.forEach(w => { if (!seen.has(w.k)){ seen.add(w.k); pool.push({key:'c:' + w.k, k:w.k, es:w.es, kj:KANJI_EN_LISTAS ? w.kj : undefined}); } });
   });
-  return own.concat(course);
+  return pool;
 }
 function wordStatus(key){ const st = S.words.stats[key]; if (!st) return 'new'; return st.st >= 3 ? 'firm' : 'learn'; }
 function weekPct(){
@@ -3535,7 +3472,6 @@ const ST_LABEL = {firm:'Firme', learn:'En práctica', 'new':'Sin practicar'};
 // Cuaderno: qué columna se tapa, qué renglones se destaparon, el orden mezclado (null = original) y si la ayuda «?»
 // está abierta (undefined = visita nueva: se abre sola si nunca se vio)
 const NB = {cover:'none', open:new Set(), order:null, help:undefined};
-const ICON_PENCIL = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4.5 19.5l1-4.2L15.6 5.2a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L8.7 18.5l-4.2 1z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M13.8 7l3.2 3.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
 function nbSort(list){ if (!NB.order) return list; return list.slice().sort((a, b) => (NB.order[a.key] ?? 2) - (NB.order[b.key] ?? 2)); }
 // «Volver a tapar» aparece recién cuando hay algún renglón destapado (va debajo de la lista, así no corre nada al tocar)
 function nbAgainShown(){ return NB.cover !== 'none' && NB.open.size > 0; }
@@ -3548,40 +3484,36 @@ function nbTools(){
 }
 function rerenderWords(){ const y = window.scrollY; app.innerHTML = renderWords(); window.scrollTo(0, y); }
 function nbRow(w){
-  const st = wordStatus(w.key), own = w.src === 'u';
-  return '<div class="nb-row' + (own ? ' own' : '') + (NB.open.has(w.key) ? ' open' : '') + '" data-key="' + esc(w.key) + '"><button class="nb-main" data-act="nbrow" data-key="' + esc(w.key) + '" data-jp="' + esc(w.k) + '" aria-label="' + esc(w.k) + ': ' + esc(w.es) + (own ? ' (agregada por vos)' : '') + '. Escuchar"><span class="nb-jp"><span class="jp">' + esc(w.k) + '</span>' + (w.kj ? '<span class="nb-kj">' + esc(w.kj) + '</span>' : '') + '</span><span class="nb-es">' + esc(w.es) + '</span></button>' +
-    '<span class="nb-side"><span class="st st-' + st + '" role="img" aria-label="' + ST_LABEL[st] + '" title="' + ST_LABEL[st] + '"></span>' + (own ? '<a class="nb-edit" href="#/palabras/e/' + esc(w.id) + '" aria-label="Editar ' + esc(w.k) + '">' + ICON_PENCIL + '</a>' : '') + '</span></div>';
+  const st = wordStatus(w.key);
+  return '<div class="nb-row' + (NB.open.has(w.key) ? ' open' : '') + '" data-key="' + esc(w.key) + '"><button class="nb-main" data-act="nbrow" data-key="' + esc(w.key) + '" data-jp="' + esc(w.k) + '" aria-label="' + esc(w.k) + ': ' + esc(w.es) + '. Escuchar"><span class="nb-jp"><span class="jp">' + esc(w.k) + '</span>' + (w.kj ? '<span class="nb-kj">' + esc(w.kj) + '</span>' : '') + '</span><span class="nb-es">' + esc(w.es) + '</span></button>' +
+    '<span class="nb-side"><span class="st st-' + st + '" role="img" aria-label="' + ST_LABEL[st] + '" title="' + ST_LABEL[st] + '"></span></span></div>';
 }
 function notebook(list){
-  const hasOwn = list.some(w => w.src === 'u');
-  return '<div class="nb' + (hasOwn ? ' has-own' : '') + (NB.cover !== 'none' ? ' cover-' + NB.cover : '') + '"><div class="nb-head"><span class="nb-hmain"><span>Japonés</span><span class="h-es">Español</span></span><span></span></div>' + nbSort(list).map(nbRow).join('') + '</div>';
+  return '<div class="nb' + (NB.cover !== 'none' ? ' cover-' + NB.cover : '') + '"><div class="nb-head"><span class="nb-hmain"><span>Japonés</span><span class="h-es">Español</span></span><span></span></div>' + nbSort(list).map(nbRow).join('') + '</div>';
 }
 function renderWords(){
-  const pool = wordPool();
-  const own = pool.filter(w => w.src === 'u').sort((a, b) => a.at - b.at);
-  // un solo cuaderno: las del curso en el orden de las lecciones y, al final, las propias en el orden en que se agregaron
-  const list = pool.filter(w => w.src === 'c').concat(own);
+  const pool = wordPool(), list = pool;
   const n = Math.min(10, pool.length);
   if (NB.help === undefined){ NB.help = !S.vistos.palabras; if (NB.help){ S.vistos.palabras = true; save(); } }
   return topNav('#/', 'Inicio') +
     '<header class="page-h"><div class="h-row"><h1>Mis palabras</h1><button class="help-btn" data-act="ayuda" aria-expanded="' + NB.help + '" aria-controls="mpAyuda" aria-label="Cómo se usa">?</button></div>' +
-      '<div class="help-txt" id="mpAyuda"' + (NB.help ? '' : ' hidden') + '><p>A medida que apruebes lecciones, las palabras que aprendas se van a sumar solas. Además, ¡podés agregar las que quieras! Practicalas con tandas de tarjetas o, más abajo, directamente en el cuaderno.</p></div></header>' +
+      '<div class="help-txt" id="mpAyuda"' + (NB.help ? '' : ' hidden') + '><p>A medida que apruebes lecciones, las palabras que aprendas se suman solas. Practicalas con tandas de tarjetas o, más abajo, directamente en el cuaderno.</p></div></header>' +
     // tarjetas: el botón, lo que lo modifica y cómo viene la práctica
     '<section class="mp-cards">' +
       (pool.length >= 4
         ? '<a class="btn primary wide center" href="#/p/palabras">Practicar ' + n + ' tarjetas</a>' +
           '<label class="set think-set"><span class="set-t"><b>Pensalo primero</b><small>Cada tarjeta muestra solo la palabra hasta que tocás «Ver opciones». Así primero intentás recordarla.</small></span><input type="checkbox" class="switch" data-set="think"' + (S.settings.think ? ' checked' : '') + '></label>' +
           '<p class="w-stats">' + wordStatsText() + '</p>'
-        : '<p class="hint">Las tarjetas se habilitan cuando tengas al menos 4 palabras.</p>') +
+        : '<p class="hint">Las tarjetas se habilitan al aprobar «' + nbsp(LESSON['1-v1'].title) + '».</p>') +
     '</section>' +
     // cuaderno: la lista entera, para repasar tapando una columna
-    '<section class="mp-nb"><div class="sec-h"><h2>Cuaderno' + (list.length ? ' <span class="h-count">' + list.length + '</span>' : '') + '</h2><a class="btn small" href="#/palabras/nueva"><span class="plus" aria-hidden="true">+</span>Agregar</a></div>' +
+    '<section class="mp-nb"><h2>Cuaderno' + (list.length ? ' <span class="h-count">' + list.length + '</span>' : '') + '</h2>' +
       (list.length
         ? '<p class="hint nb-hint">Repasá las palabras, después tapá una columna y tratá de recordarlas destapando de a una. Tocá un renglón para escucharlo.</p>' +
           nbTools() + notebook(list) +
           '<p class="nb-again" id="nbAgain"' + (nbAgainShown() ? '' : ' hidden') + '><button class="btn small" data-act="nbagain">Volver a tapar</button></p>' +
-          '<p class="hint legend-st"><span class="st st-firm"></span> Firme: tres aciertos seguidos. <span class="st st-learn"></span> En práctica. Sin marca: todavía no apareció en las tarjetas.' + (own.length ? ' Las que agregaste vos van en azul; el lápiz las edita.' : '') + '</p>'
-        : '<p class="hint nb-hint">Tu cuaderno está vacío. Las palabras se suman solas al aprobar las lecciones, y podés agregar las tuyas cuando quieras.</p>') +
+          '<p class="hint legend-st"><span class="st st-firm"></span> Firme: tres aciertos seguidos. <span class="st st-learn"></span> En práctica. Sin marca: todavía no apareció en las tarjetas.</p>'
+        : '<p class="hint nb-hint">Tu cuaderno está vacío. Las palabras se suman solas a medida que apruebes lecciones.</p>') +
     '</section>' +
     phrasesSection();
 }
@@ -3606,61 +3538,6 @@ function phrasesSection(){
       return '<li><button class="word" data-act="say" data-jp="' + esc(p.k) + '"><span class="ex-play" aria-hidden="true">' + ICON_PLAY + '</span><span class="w-main"><span class="jp w-k">' + esc(p.k) + '</span></span><span class="w-es">' + jpify(esc(p.es)) + '</span></button></li>';
     }).join('') + '</ul>';
 }
-function renderWordForm(id){
-  const w = id ? S.words.own.find(x => x.id === id) : null;
-  if (id && !w) return renderWords();
-  return topNav('#/palabras', 'Mis palabras') +
-    '<header class="page-h"><h1>' + (w ? 'Editar palabra' : 'Agregar palabra') + '</h1><p class="lede">Escribí la palabra en romaji y se convierte sola a kana. En la práctica nunca vas a ver el romaji.</p></header>' +
-    '<div class="form" data-id="' + (w ? esc(w.id) : '') + '">' +
-      '<label class="field"><span>Significado en español</span><input id="f-es" type="text" autocomplete="off" enterkeyhint="next" value="' + esc(w ? w.es : '') + '" placeholder="por ejemplo: gato"></label>' +
-      '<label class="field"><span>En japonés, escrito en romaji</span><input id="f-ro" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="done" value="' + esc(w ? (w.ro || w.k) : '') + '" placeholder="por ejemplo: neko"></label>' +
-      '<div class="preview"><span class="jp" id="f-kana" aria-live="polite">' + (w ? esc(w.k) : '') + '</span><button class="btn small" data-act="wprev">' + ICON_PLAY + ' Escuchar</button></div>' +
-      '<p class="field-err" id="f-err" hidden></p>' +
-      '<label class="set"><span class="set-t"><b>Escribir en katakana</b><small>Para palabras extranjeras, como コーヒー (ko-hi-).</small></span><input type="checkbox" class="switch" id="f-kata"' + (w && w.kata ? ' checked' : '') + '></label>' +
-      '<label class="field"><span>Kanji (opcional)</span><input id="f-kj" type="text" autocomplete="off" value="' + esc(w && w.kj ? w.kj : '') + '" placeholder="por ejemplo: 猫"></label>' +
-      '<p class="hint">Vocales largas: escribí las dos letras (ookii, toukyou); en katakana, usá un guion (ko-hi-). Para ん antes de vocal o de y: n\' (kon\'ya). La partícula «wa» se escribe は: tipeá «ha» (konnichiha).</p>' +
-      '<div class="actions stack"><button class="btn primary wide center" data-act="wsave">' + (w ? 'Guardar cambios' : 'Guardar palabra') + '</button>' +
-        (w ? '<button class="btn wide center" data-act="wdel">Borrar palabra</button>' : '') +
-        '<a class="btn wide center" href="#/palabras">' + (w ? 'Cancelar' : 'Listo, volver a la lista') + '</a></div>' +
-    '</div>';
-}
-function updatePreview(){
-  const ro = document.getElementById('f-ro'); if (!ro) return;
-  const k = romajiToKana(ro.value.trim(), document.getElementById('f-kata').checked);
-  document.getElementById('f-kana').textContent = k;
-  const err = document.getElementById('f-err');
-  const bad = /[a-z]/i.test(k);
-  err.hidden = !bad;
-  if (bad) err.textContent = 'Hay letras que no se pudieron convertir a kana. Revisá la escritura.';
-}
-function saveWord(){
-  const form = document.querySelector('.form'); if (!form) return;
-  const id = form.dataset.id;
-  const esIn = document.getElementById('f-es'), roIn = document.getElementById('f-ro'), kjIn = document.getElementById('f-kj');
-  const es = esIn.value.trim(), ro = roIn.value.trim(), kj = kjIn.value.trim(), kata = document.getElementById('f-kata').checked;
-  const k = romajiToKana(ro, kata).replace(/\s+/g, ' ').trim();
-  if (!es){ toast('Falta el significado en español.'); esIn.focus(); return; }
-  if (!k || !/[\u3040-\u30ff]/.test(k)){ toast('Falta la palabra en japonés.'); roIn.focus(); return; }
-  if (/[a-z]/i.test(k)){ toast('Hay letras que no se pudieron convertir a kana.'); roIn.focus(); return; }
-  const dup = wordPool().find(x => x.k === k && !(x.src === 'u' && x.id === id));
-  if (dup){ toast('Esa palabra ya está en tu lista: ' + dup.k + ' (' + dup.es + ').'); return; }
-  if (id){
-    const w = S.words.own.find(x => x.id === id);
-    if (w) Object.assign(w, {k, es, ro, kata, kj});
-    touchWords(); save(); toast('Cambios guardados.'); ir('#/palabras', true);
-  } else {
-    S.words.own.unshift({id: 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), k, es, ro, kata, kj, at: Date.now()});
-    touchWords(); save();
-    toast('Guardada: ' + k + ' (' + es + '). Podés seguir agregando.');
-    esIn.value = ''; roIn.value = ''; kjIn.value = ''; updatePreview(); esIn.focus();
-  }
-}
-function deleteWord(id){
-  S.words.own = S.words.own.filter(x => x.id !== id);
-  delete S.words.stats['u:' + id];
-  touchWords(); save(); toast('Palabra borrada.'); ir('#/palabras', true);
-}
-
 /* ---------- Salir de una práctica: confirmación ---------- */
 // Se pregunta solo si hay algo que perder: una práctica en curso, pasada la primera pantalla (o con la primera
 // ya respondida). Vale para «Salir», la casita y el gesto de volver del teléfono. En el resultado ya no.
@@ -3710,7 +3587,7 @@ function pantallaDe(h){
     case 'u': return {key:'u/' + parts[1], camino:2};
     case 'l': return {key:'l/' + parts[1], capa:1, lec:lessonIndex(parts[1])};
     case 'tabla': case 'ajustes': return {key:parts[0], capa:1};
-    case 'palabras': return parts[1] ? {key:parts.slice(0, 3).join('/'), capa:2} : {key:'palabras', capa:1};
+    case 'palabras': return {key:'palabras', capa:1};
     default: return {key:'', camino:0};
   }
 }
@@ -3832,7 +3709,7 @@ function dibujarRuta(antes){
   else if (parts[0] === 'ajustes') { Q = null; html = renderSettings(); }
   else if (parts[0] === 'l') { Q = null; html = renderLesson(parts[1]); }
   else if (parts[0] === 'tabla') { Q = null; html = renderTable(); }
-  else if (parts[0] === 'palabras') { Q = null; html = parts[1] === 'nueva' ? renderWordForm(null) : parts[1] === 'e' ? renderWordForm(parts[2]) : (NB.help = undefined, renderWords()); }
+  else if (parts[0] === 'palabras') { Q = null; NB.help = undefined; html = renderWords(); }
   else if (parts[0] === 'p') {
     if (LESSON[parts[1]] && !isUnlocked(parts[1])){ Q = null; html = renderLesson(parts[1]); }
     else if (startQuiz(parts[1])){ html = renderQuizScreen(); quizStarted = true; }
@@ -3851,7 +3728,6 @@ function dibujarRuta(antes){
   }
   const h1 = app.querySelector('h1');
   if (h1){ h1.setAttribute('tabindex', '-1'); }
-  if (parts[0] === 'palabras' && parts[1] === 'nueva'){ const f = document.getElementById('f-es'); if (f) f.focus(); }
   if (quizStarted && Q.items.length) onShow(Q.items[0]);
   if (quizStarted) armGuard();
   VT.cur = pantallaActual(parts);
@@ -3907,8 +3783,6 @@ document.addEventListener('click', e => {
     case 'unplace': if (!Q.answered){ const i = Number(t.dataset.i); Q.placed = Q.placed.filter(x => x !== i); SFX.ficha(true); document.getElementById('orderArea').innerHTML = orderHTML(Q.items[Q.i]); } break;
     case 'check': checkOrder(); break;
     case 'showopts': { Q.shown = true; const a = document.getElementById('optsArea'); a.innerHTML = optsHTML(Q.items[Q.i]); const b = a.querySelector('.opt'); if (b) b.focus({preventScroll:true}); break; }
-    case 'wprev': { const k = document.getElementById('f-kana').textContent; if (k) speak(k); break; }
-    case 'wsave': saveWord(); break;
     case 'ayuda': {
       NB.help = !NB.help;
       t.setAttribute('aria-expanded', String(NB.help));
@@ -3933,17 +3807,13 @@ document.addEventListener('click', e => {
       document.querySelectorAll('.nb-row.open').forEach(r => r.classList.remove('open'));
       const ag = document.getElementById('nbAgain'); if (ag) ag.hidden = true;
       break; }
-    case 'wdel':
-      if (t.dataset.armed === '1'){ deleteWord(document.querySelector('.form').dataset.id); }
-      else { t.dataset.armed = '1'; t.textContent = '¿Seguro? Tocá de nuevo'; setTimeout(() => { if (t.isConnected){ t.dataset.armed = ''; t.textContent = 'Borrar palabra'; } }, 4000); }
-      break;
     case 'next': nextQuestion(); break;
     case 'restart': { if (VT.pend) break; const id = Q ? Q.id : 'repaso'; vtCambio(() => { startQuiz(id); app.innerHTML = renderQuizScreen(); window.scrollTo(0, 0); onShow(Q.items[0]); return 'fwd'; }, true); break; }
     case 'rate': S.settings.slow = t.dataset.v === '1'; save(); t.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === t))); speak('かさ'); break;
     case 'volmute': volSet(S.settings.sfxVol ? 0 : (S.settings.sfxPrev || 80), true); break;
     case 'devoff': DEV = false; try { localStorage.removeItem('jp-curso-dev'); } catch(e){} toast('Modo prueba desactivado.'); route(); break;
     case 'reset':
-      if (t.dataset.armed === '1'){ const keep = {words:S.words, settings:S.settings}; S = Object.assign(freshState(), keep, {resetAt: Date.now()}); normalize(); save(); clearTimeout(remoteTimer); flushRemote(); applySettings(); toast('Progreso borrado.'); route(); }
+      if (t.dataset.armed === '1'){ const keep = {settings:S.settings}; S = Object.assign(freshState(), keep, {resetAt: Date.now()}); normalize(); save(); clearTimeout(remoteTimer); flushRemote(); applySettings(); toast('Progreso borrado.'); route(); }
       else { t.dataset.armed = '1'; t.textContent = '¿Seguro? Tocá de nuevo'; setTimeout(() => { if (t.isConnected){ t.dataset.armed = ''; t.textContent = 'Borrar'; } }, 4000); }
       break;
     case 'verbuscar': buscarVersion(); break;
@@ -3961,17 +3831,13 @@ document.addEventListener('change', e => {
   if (t.id === 'volRng'){ volSet(Number(t.value), true); return; }
   if (t.dataset && t.dataset.set === 'romaji'){ S.settings.romaji = t.checked; save(); applySettings(); }
   if (t.dataset && t.dataset.set === 'think'){ S.settings.think = t.checked; save(); }
-  if (t.id === 'f-kata') updatePreview();
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeSheet(true);
-  if (e.key === 'Enter' && e.target && e.target.id === 'f-es'){ e.preventDefault(); const r = document.getElementById('f-ro'); if (r) r.focus(); return; }
-  if (e.key === 'Enter' && e.target && (e.target.id === 'f-ro' || e.target.id === 'f-kj')){ e.preventDefault(); saveWord(); return; }
   if (Q && !Q.answered && document.querySelector('.qopts') && /^[1-4]$/.test(e.key) && !document.querySelector('.sheet-back:not(.closing)')){
     const i = Number(e.key) - 1; if (Q.items[Q.i].opts && i < Q.items[Q.i].opts.length) answer(i);
   }
 });
-document.addEventListener('input', e => { if (e.target && e.target.id === 'f-ro') updatePreview(); });
 window.addEventListener('hashchange', route);
 document.addEventListener('click', histClic);   // después del manejador general de toques (ver histClic)
 // Indicador de «hay más abajo»: degradé + flecha que salta tres veces al aparecer; se va al llegar al final
