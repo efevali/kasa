@@ -10,12 +10,22 @@ progreso que se le pase, la pantalla muestra el estado que se quiere aprobar.
   - Bloquea el service worker, para que siempre se vea el index.html de la carpeta.
   - Espera a que pase la apertura (dos segundos) antes de capturar.
 
-Uso:  python3 herramientas/boceto.py salida.png [ruta] [progreso]
+Uso:  python3 herramientas/boceto.py salida.png [ruta] [progreso] [opciones]
         ruta      la pantalla, como en la dirección de la app (por defecto «#/», la principal)
         progreso  aprobadas y no aprobadas, separadas por comas: «1-1,1-2,1-v1» aprueba esas
                   lecciones; «!1-v2:65» la marca hecha sin aprobar, con su mejor resultado.
                   Sin progreso, la app arranca de cero.
-Ejemplo: python3 herramientas/boceto.py docs/bocetos/B-01c-principal-repetir.png "#/" "1-1,1-2,1-3,1-ka,1-v1,!1-v2:65"
+      Opciones:
+        --entera          la pantalla entera, de arriba abajo, en una sola imagen (como la captura
+                          desplazada del teléfono); la barra de «Volver» queda al pie
+        --estado X.json   partes del progreso guardado que reemplazan a las de arriba (por ejemplo
+                          «words» con palabras propias y estadísticas, o «vistos»)
+        --accion "js"     JavaScript que se ejecuta en la pantalla antes de capturar (tocar un botón,
+                          desplazar); se puede repetir y van en orden
+Ejemplos:
+  python3 herramientas/boceto.py docs/bocetos/B-01c-principal-repetir.png "#/" "1-1,1-2,1-3,1-ka,1-v1,!1-v2:65"
+  python3 herramientas/boceto.py docs/bocetos/B-02c-mis-palabras-tapado.png "#/palabras" "1-1,1-2,1-v1" \
+      --entera --estado docs/bocetos/B-02.json --accion "document.querySelector('[data-v=es]').click()"
 
 Requiere Python 3 con `pip install playwright` y `python3 -m playwright install chromium`.
 """
@@ -51,7 +61,7 @@ def progreso(texto):
             'updated': 0, 'resetAt': 0}
 
 
-async def capturar(puerto, salida, ruta, estado):
+async def capturar(puerto, salida, ruta, estado, entera=False, acciones=()):
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
         nav = await p.chromium.launch()
@@ -64,20 +74,43 @@ async def capturar(puerto, salida, ruta, estado):
         pag = await ctx.new_page()
         await pag.goto(f'http://localhost:{puerto}/index.html{ruta}')
         await pag.wait_for_timeout(3500)
+        for js in acciones:
+            await pag.evaluate(js)
+            await pag.wait_for_timeout(500)
+        if entera:
+            # se agranda la ventana al alto de la pantalla, así lo fijo (la barra de «Volver») queda al pie
+            alto = await pag.evaluate('document.documentElement.scrollHeight')
+            await pag.set_viewport_size({'width': 360, 'height': alto})
+            await pag.wait_for_timeout(500)
         await pag.screenshot(path=salida)
         await nav.close()
 
 
 def main():
-    if len(sys.argv) < 2:
+    args, entera, extra, acciones = [], False, None, []
+    resto = sys.argv[1:]
+    while resto:
+        a = resto.pop(0)
+        if a == '--entera':
+            entera = True
+        elif a == '--estado':
+            extra = resto.pop(0)
+        elif a == '--accion':
+            acciones.append(resto.pop(0))
+        else:
+            args.append(a)
+    if not args:
         raise SystemExit(__doc__)
-    salida = os.path.abspath(sys.argv[1])
-    ruta = sys.argv[2] if len(sys.argv) > 2 else '#/'
-    estado = progreso(sys.argv[3] if len(sys.argv) > 3 else '')
+    salida = os.path.abspath(args[0])
+    ruta = args[1] if len(args) > 1 else '#/'
+    estado = progreso(args[2] if len(args) > 2 else '')
+    if extra:
+        with open(extra, encoding='utf-8') as f:
+            estado.update(json.load(f))
     manejador = functools.partial(Silencioso, directory=RAIZ)
     with socketserver.TCPServer(('localhost', 0), manejador) as srv:
         threading.Thread(target=srv.serve_forever, daemon=True).start()
-        asyncio.run(capturar(srv.server_address[1], salida, ruta, estado))
+        asyncio.run(capturar(srv.server_address[1], salida, ruta, estado, entera, acciones))
         srv.shutdown()
     print(salida)
 

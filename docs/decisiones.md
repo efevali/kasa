@@ -76,6 +76,7 @@ Diseño aprobado el 24/9; la misma lógica en las tres unidades.
 
 - **Solo entran las palabras de lecciones de palabras aprobadas**, más las propias (24/9). Los ejemplos de las fichas de kana (え, きく, せかい…) no se suman: «es la más honesta», sin complejizar las reglas.
 - **Las palabras propias conservan su kanji**; en las listas del curso el kanji de referencia está oculto.
+- **Pantalla ordenada** (2/10, boceto B-02; #20 a #24). Hay dos usos de las palabras y cada uno lleva sus controles: arriba las tarjetas (el botón, «Pensalo primero», que las modifica, y las estadísticas) y abajo un solo cuaderno, con las palabras propias en azul al final y los controles agrupados en Tapar y Orden. La explicación pasa a una ayuda «?» que se abre sola la primera vez, porque «pierde sentido que esté ahí luego de la primera lectura» (regla en la guía de estilo). Las frases pendientes se agrupan por lección. *Descartado:* el «?» a la izquierda del título, un globo flotante, las palabras propias arriba o intercaladas por fecha (la app no guarda cuándo se aprobó cada lección) y nombrar a Duolingo en la app.
 
 ## Dibujos y preguntas con dibujo
 
