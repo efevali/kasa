@@ -491,9 +491,10 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .sheet-back{position:fixed;inset:0;z-index:40;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}
 .sheet{width:100%;max-width:600px;max-height:92%;overflow:auto;background:var(--paper);border:var(--bw) solid var(--edge);border-bottom:0;border-radius:24px 24px 0 0;padding:14px 20px calc(28px + env(safe-area-inset-bottom,0px))}
 @media (min-width:700px){.sheet-back{align-items:center}.sheet{border-radius:20px;border-bottom:var(--bw) solid var(--edge)}}
-.sheet-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.sheet-r{font-family:var(--f-jp);font-weight:600;font-size:22px}
-.sheet-r b{font-family:var(--f-ui);font-size:18px;color:var(--ink-2);margin-left:6px}
+.sheet-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}   /* 16 − 3 de sombra de «Cerrar» = 13, el mismo aire que hay bajo el cuadro de trazo */
+.sheet-r{display:flex;align-items:baseline;font-family:var(--f-jp);font-weight:600;font-size:36px;line-height:1;color:var(--ink)}
+.sheet-r b{font-family:var(--f-ui);font-weight:600;font-size:24px;color:var(--ink);margin-left:10px}
+.sheet-base{margin:14px 0 0}
 .trace-area{display:grid;justify-items:center}
 .trace-wrap{position:relative;width:min(72vw,280px);aspect-ratio:1/1;container-type:inline-size;background:var(--card);border:var(--bw) solid var(--edge);border-radius:16px;box-shadow:0 5px 0 var(--edge);overflow:hidden}
 .trace-wrap .trace-sq{border:0}
@@ -501,7 +502,8 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .trace-sq>span{opacity:.24}
 .trace-sq.hide-model>span{visibility:hidden}
 .trace-wrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
-.trace-ctl{display:flex;flex-wrap:wrap;gap:12px 8px;justify-content:center;margin-top:18px}
+.trace-ctl{display:flex;flex-wrap:wrap;gap:12px 10px;justify-content:center;margin-top:18px}
+.trace-model{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;font-size:16px;cursor:pointer}
 .trace-area .hint{text-align:center;max-width:44ch}
 
 /* ---- Ajustes ---- */
@@ -826,61 +828,61 @@ body.no-romaji .keep-rom .rom{display:block}
 
 const KANA = {
   // Vocales
-  'あ':{r:'a',p:'Como la «a» del español.',m:'Una cruz con una «a» manuscrita enroscada abajo.',ex:['あい','ai','amor']},
-  'い':{r:'i',p:'Como la «i» del español.',m:'Dos palitos, como dos «i» sin punto, una al lado de la otra.',ex:['いえ','ie','casa']},
-  'う':{r:'u',p:'Una «u» con los labios relajados, casi sin redondear. A veces casi desaparece: lo viste en «Cómo funciona el japonés I».',m:'Una rayita arriba y una curva: una oreja atenta que escucha «uuu».',ex:['うえ','ue','arriba']},
-  'え':{r:'e',p:'Como la «e» del español.',m:'Una rayita arriba y un zigzag con cola: alguien haciendo equilibrio.',ex:['え','e','dibujo, cuadro']},
-  'お':{r:'o',p:'Como la «o» del español.',m:'Parecida a あ, pero con un rulito suelto arriba a la derecha: una «o» que se escapa.',ex:['あお','ao','azul']},
+  'あ':{r:'a',p:'Como la «a» del español.',ex:['あい','ai','amor']},
+  'い':{r:'i',p:'Como la «i» del español.',ex:['いえ','ie','casa']},
+  'う':{r:'u',p:'Una «u» con los labios relajados, casi sin redondear. A veces casi desaparece: lo viste en «Cómo funciona el japonés I».',ex:['うえ','ue','arriba']},
+  'え':{r:'e',p:'Como la «e» del español.',ex:['え','e','dibujo, cuadro']},
+  'お':{r:'o',p:'Como la «o» del español.',ex:['あお','ao','azul']},
   // Fila か
-  'か':{r:'ka',p:'«ka», como en «casa».',m:'Un karateca: el cuerpo curvo y, al costado, la rayita del golpe.',ex:['かお','kao','cara']},
-  'き':{r:'ki',p:'«ki», como en «kilo».',m:'Una llave antigua con dos dientes. En muchas tipografías la curva de abajo aparece separada.',ex:['あき','aki','otoño']},
-  'く':{r:'ku',p:'«ku», con la u relajada.',m:'Un pico de pájaro abierto: «cu-cú».',ex:['きく','kiku','escuchar']},
-  'け':{r:'ke',p:'«ke», como en «queso».',m:'Una «k» partida al medio, con un palito de más.',ex:['いけ','ike','estanque']},
-  'こ':{r:'ko',p:'«ko», como en «cosa».',m:'Dos rayas paralelas, como dos colchones apilados.',ex:['ここ','koko','aquí']},
+  'か':{r:'ka',p:'«ka», como en «casa».',ex:['かお','kao','cara']},
+  'き':{r:'ki',p:'«ki», como en «kilo».',ex:['あき','aki','otoño']},
+  'く':{r:'ku',p:'«ku», con la u relajada.',ex:['きく','kiku','escuchar']},
+  'け':{r:'ke',p:'«ke», como en «queso».',ex:['いけ','ike','estanque']},
+  'こ':{r:'ko',p:'«ko», como en «cosa».',ex:['ここ','koko','aquí']},
   // Fila さ
-  'さ':{r:'sa',p:'«sa», como en «sapo».',m:'Como き, pero con una sola raya horizontal.',ex:['あさ','asa','mañana']},
-  'し':{r:'shi',p:'«shi», como la «sh» de «show» o la «y» porteña de «ya». No es «si».',m:'Un anzuelo: el pescador hace «shh» para no espantar a los peces.',ex:['しお','shio','sal']},
-  'す':{r:'su',p:'«su», con la u relajada; al final de palabra suele sonar solo «s».',m:'Un hilo que se anuda en el medio y cae.',ex:['いす','isu','silla']},
-  'せ':{r:'se',p:'«se», como en «seco».',m:'Una boca abierta con un diente que asoma arriba.',ex:['せかい','sekai','mundo']},
-  'そ':{r:'so',p:'«so», como en «sopa».',m:'Un zigzag, como un soplido de viento que baja.',ex:['そこ','soko','ahí']},
+  'さ':{r:'sa',p:'«sa», como en «sapo».',ex:['あさ','asa','mañana']},
+  'し':{r:'shi',p:'«shi», como la «sh» de «show» o la «y» porteña de «ya». No es «si».',ex:['しお','shio','sal']},
+  'す':{r:'su',p:'«su», con la u relajada; al final de palabra suele sonar solo «s».',ex:['いす','isu','silla']},
+  'せ':{r:'se',p:'«se», como en «seco».',ex:['せかい','sekai','mundo']},
+  'そ':{r:'so',p:'«so», como en «sopa».',ex:['そこ','soko','ahí']},
   // Fila た
-  'た':{r:'ta',p:'«ta».',m:'Parecen las letras «t» y «a» pegadas.',ex:['たこ','tako','pulpo']},
-  'ち':{r:'chi',p:'«chi», como en «chico».',m:'Un 5 dado vuelta. Es el espejo de さ: fijate hacia dónde abre la curva.',ex:['くち','kuchi','boca']},
-  'つ':{r:'tsu',p:'«tsu»: una t y una s pegadas, como en «tsunami». No existe en español, así que vale la pena practicarlo en voz alta.',m:'Una ola que rompe: tsu, de tsunami.',ex:['くつ','kutsu','zapatos']},
-  'て':{r:'te',p:'«te».',m:'Un brazo extendido; justamente て significa «mano».',ex:['て','te','mano']},
-  'と':{r:'to',p:'«to».',m:'Un clavo inclinado entrando en una tabla: ¡toc!',ex:['とけい','tokei','reloj']},
+  'た':{r:'ta',p:'«ta».',ex:['たこ','tako','pulpo']},
+  'ち':{r:'chi',p:'«chi», como en «chico».',ex:['くち','kuchi','boca']},
+  'つ':{r:'tsu',p:'«tsu»: una t y una s pegadas, como en «tsunami». No existe en español, así que vale la pena practicarlo en voz alta.',ex:['くつ','kutsu','zapatos']},
+  'て':{r:'te',p:'«te».',ex:['て','te','mano']},
+  'と':{r:'to',p:'«to».',ex:['とけい','tokei','reloj']},
   // Fila な
-  'な':{r:'na',p:'«na».',m:'Una cruz y, al lado, un palito que termina en un nudo.',ex:['さかな','sakana','pescado']},
-  'に':{r:'ni',p:'«ni».',m:'Un poste a la izquierda y dos rayas: こ con un palo al lado.',ex:['にく','niku','carne']},
-  'ぬ':{r:'nu',p:'«nu».',m:'Fideos enredados que terminan en un rulo.',ex:['いぬ','inu','perro']},
-  'ね':{r:'ne',p:'«ne».',m:'Un gato (ねこ) sentado, con la cola enroscada al final.',ex:['ねこ','neko','gato']},
-  'の':{r:'no',p:'«no».',m:'Un cartel de prohibido trazado de una sola vez: ¡no!',ex:['きのこ','kinoko','hongo']},
+  'な':{r:'na',p:'«na».',ex:['さかな','sakana','pescado']},
+  'に':{r:'ni',p:'«ni».',ex:['にく','niku','carne']},
+  'ぬ':{r:'nu',p:'«nu».',ex:['いぬ','inu','perro']},
+  'ね':{r:'ne',p:'«ne».',ex:['ねこ','neko','gato']},
+  'の':{r:'no',p:'«no».',ex:['きのこ','kinoko','hongo']},
   // Fila は
-  'は':{r:'ha',p:'«ha», con una h aspirada, más suave que la «j» española. Como partícula se lee «wa».',m:'Un palito y, a la derecha, una cruz con un rulo: alguien que se ríe, «ja».',ex:['はな','hana','flor']},
-  'ひ':{r:'hi',p:'«hi», una aspiración suave con la lengua cerca del paladar.',m:'Una sonrisa amplia: «ji-ji».',ex:['ひと','hito','persona']},
-  'ふ':{r:'fu',p:'«fu»: entre una f y una j suave. Soplá con los labios apenas abiertos, sin apoyar los dientes.',m:'Alguien que sopla fuerte, con el aire saliendo en trazos sueltos.',ex:['ふね','fune','barco']},
-  'へ':{r:'he',p:'«he». Como partícula de dirección se lee «e».',m:'La ladera de una montaña: ¡he, qué subida!',ex:['へそ','heso','ombligo']},
-  'ほ':{r:'ho',p:'«ho».',m:'Como は, pero con una raya extra arriba.',ex:['ほし','hoshi','estrella']},
+  'は':{r:'ha',p:'«ha», con una h aspirada, más suave que la «j» española. Como partícula se lee «wa».',ex:['はな','hana','flor']},
+  'ひ':{r:'hi',p:'«hi», una aspiración suave con la lengua cerca del paladar.',ex:['ひと','hito','persona']},
+  'ふ':{r:'fu',p:'«fu»: entre una f y una j suave. Soplá con los labios apenas abiertos, sin apoyar los dientes.',ex:['ふね','fune','barco']},
+  'へ':{r:'he',p:'«he». Como partícula de dirección se lee «e».',ex:['へそ','heso','ombligo']},
+  'ほ':{r:'ho',p:'«ho».',ex:['ほし','hoshi','estrella']},
   // Fila ま
-  'ま':{r:'ma',p:'«ma».',m:'Una cruz con dos rayas y un rulo abajo. Es la mitad derecha de ほ.',ex:['まど','mado','ventana']},
-  'み':{r:'mi',p:'«mi».',m:'Parece un 21 escrito de corrido.',ex:['みみ','mimi','oreja']},
-  'む':{r:'mu',p:'«mu», con la u relajada.',m:'Una vaca de perfil con un cuernito: «muu».',ex:['むし','mushi','insecto']},
-  'め':{r:'me',p:'«me».',m:'Un ojo; justamente め significa «ojo». Es como ぬ, pero sin el rulo final.',ex:['め','me','ojo']},
-  'も':{r:'mo',p:'«mo».',m:'し con dos rayas atravesadas: un anzuelo con mordidas.',ex:['もも','momo','durazno']},
+  'ま':{r:'ma',p:'«ma».',ex:['まど','mado','ventana']},
+  'み':{r:'mi',p:'«mi».',ex:['みみ','mimi','oreja']},
+  'む':{r:'mu',p:'«mu», con la u relajada.',ex:['むし','mushi','insecto']},
+  'め':{r:'me',p:'«me».',ex:['め','me','ojo']},
+  'も':{r:'mo',p:'«mo».',ex:['もも','momo','durazno']},
   // Fila や
-  'や':{r:'ya',p:'«ya» como «ia». Ojo porteño: no se pronuncia «sha».',m:'Una honda estirada justo antes de tirar: ¡ya!',ex:['やま','yama','montaña']},
-  'ゆ':{r:'yu',p:'«yu» como «iu». No «shu».',m:'Un pez que da la vuelta dentro de una «u».',ex:['ゆき','yuki','nieve']},
-  'よ':{r:'yo',p:'«yo» como «io». No «sho».',m:'Un yo-yo colgando de su hilo.',ex:['よむ','yomu','leer']},
+  'や':{r:'ya',p:'«ya» como «ia». Ojo porteño: no se pronuncia «sha».',ex:['やま','yama','montaña']},
+  'ゆ':{r:'yu',p:'«yu» como «iu». No «shu».',ex:['ゆき','yuki','nieve']},
+  'よ':{r:'yo',p:'«yo» como «io». No «sho».',ex:['よむ','yomu','leer']},
   // Fila ら
-  'ら':{r:'ra',p:'La «r» suave del español, la de «cara», nunca la «rr». A veces suena casi entre r y l.',m:'Como ち, pero con la rayita de arriba corta y separada.',ex:['そら','sora','cielo']},
-  'り':{r:'ri',p:'«ri», con r suave.',m:'Dos cintas colgando; se parece a い, pero el trazo derecho es más largo.',ex:['りす','risu','ardilla']},
-  'る':{r:'ru',p:'«ru», con r suave.',m:'ろ con un rulo al final: ru, de rulo.',ex:['よる','yoru','noche']},
-  'れ':{r:'re',p:'«re», con r suave.',m:'Como ね, pero sin rulo: la cola del gato quedó recta. わ es parecida, pero cierra la curva hacia adentro.',ex:['これ','kore','esto']},
-  'ろ':{r:'ro',p:'«ro», con r suave.',m:'Como る, pero sin el rulo final.',ex:['いろ','iro','color']},
+  'ら':{r:'ra',p:'La «r» suave del español, la de «cara», nunca la «rr». A veces suena casi entre r y l.',ex:['そら','sora','cielo']},
+  'り':{r:'ri',p:'«ri», con r suave.',ex:['りす','risu','ardilla']},
+  'る':{r:'ru',p:'«ru», con r suave.',ex:['よる','yoru','noche']},
+  'れ':{r:'re',p:'«re», con r suave.',ex:['これ','kore','esto']},
+  'ろ':{r:'ro',p:'«ro», con r suave.',ex:['いろ','iro','color']},
   // Fila わ y ん
-  'わ':{r:'wa',p:'«wa», como «uá».',m:'Como ね, pero sin el rulo: la curva baja y se cierra hacia adentro.',ex:['わたし','watashi','yo']},
-  'を':{r:'o',p:'Se pronuncia «o» (a veces se transcribe «wo»). Solo se usa como partícula: marca el objeto directo.',m:'Si ves を, estás ante una partícula: no forma parte de ninguna palabra.',ex:['みずを のむ','mizu o nomu','tomar agua']},
-  'ん':{r:'n',p:'Una «n» que ocupa un pulso entero. Antes de b, p o m suena «m»: shinbun (diario) se pronuncia «shimbun».',mk:'Lo vas a leer en tu primer saludo, en la unidad 2.',m:'Una «n» manuscrita. Es el único kana que es solo consonante.',ex:['てんき','tenki','el clima']}
+  'わ':{r:'wa',p:'«wa», como «uá».',ex:['わたし','watashi','yo']},
+  'を':{r:'o',p:'Se pronuncia «o» (a veces se transcribe «wo»). Solo se usa como partícula: marca el objeto directo.',ex:['みずを のむ','mizu o nomu','tomar agua']},
+  'ん':{r:'n',p:'Una «n» que ocupa un pulso entero. Antes de b, p o m suena «m»: shinbun (diario) se pronuncia «shimbun».',mk:'Lo vas a leer en tu primer saludo, en la unidad 2.',ex:['てんき','tenki','el clima']}
 };
 
 // Kana con dakuten (゛) y handakuten (゜)
@@ -893,7 +895,7 @@ const DAKU_ROWS = [
 ];
 DAKU_ROWS.forEach(row => row.kana.forEach((k,i) => {
   const b = row.base[i];
-  KANA[k] = {r:row.r[i], p:row.note, m:'Es '+b+' con '+(row.kana[0]==='ぱ'?'el circulito ゜':'las dos rayitas ゛')+'. No es un signo nuevo: es el mismo kana con una marca.', ex:null, base:b};
+  KANA[k] = {r:row.r[i], p:row.note, ex:null, base:b, mark:row.kana[0]==='ぱ' ? '゜' : '゛'};
 }));
 
 const GOJUON = [
@@ -1520,7 +1522,6 @@ function kanaQuestion(k, pool, type){
   }
   q.ans = type === 'k2r' ? info.r : k;    // lo que había que elegir, tal cual
   q.sum = (type === 'k2r' ? k : type === 'r2k' ? '«' + info.r + '»' : 'Audio') + ' → ' + k + ' (' + info.r + ')';
-  q.mn = info.m;
   return q;
 }
 
@@ -2840,7 +2841,7 @@ function renderTable(){
   const cell = k => k ? '<button class="tcell' + (learned.has(k) ? '' : ' faint') + '" data-act="kana" data-k="' + esc(k) + '" aria-label="' + esc(k) + ', ' + esc(KANA[k].r) + '">' + sq(k) + '<span class="kr">' + esc(KANA[k].r) + '</span></button>' : '<span class="tcell empty"></span>';
   const head = '<div class="thead">' + ['a','i','u','e','o'].map(v => '<span>' + v + '</span>').join('') + '</div>';
   return topNav('#/', 'Inicio') +
-    '<header class="page-h"><h1>Tabla de hiragana</h1><p class="lede">Los kana de las lecciones que ya aprobaste aparecen en tinta. Tocá cualquiera para escucharlo y abrir su ficha.</p></header>' +
+    '<header class="page-h"><h1>Tabla de kana</h1><p class="lede">Los kana de las lecciones que ya aprobaste aparecen en tinta. Tocá cualquiera para escucharlo y abrir su ficha.</p></header>' +
     '<div class="ktable">' + head + GOJUON.map(row => row.map(cell).join('')).join('') + '</div>' +
     '<h2>Con dakuten ゛ y handakuten ゜</h2>' +
     '<div class="ktable">' + head + DAKU_ROWS.map(r => r.kana.map(cell).join('')).join('') + '</div>' +
@@ -2860,10 +2861,11 @@ function openKana(k){
     '<div class="sheet" role="dialog" aria-modal="true" aria-label="Ficha de ' + esc(k) + '">' +
       '<div class="sheet-top"><span class="sheet-r">' + esc(k) + ' <b>' + esc(info.r) + '</b></span><button class="btn small" data-act="close">Cerrar</button></div>' +
       '<div class="trace-area"><div class="trace-wrap">' + sq(k, 'trace-sq') + '<canvas aria-label="Zona para practicar el trazo"></canvas></div>' +
-        '<div class="trace-ctl"><button class="btn small" data-act="say" data-jp="' + esc(k) + '">' + ICON_PLAY + ' Escuchar</button><button class="btn small" data-act="clear">Borrar trazo</button><button class="btn small" data-act="guide" aria-pressed="false">Ocultar modelo</button></div>' +
-        '<p class="hint">Trazá encima del modelo; después ocultalo y escribilo de memoria. Regla general del orden: de arriba hacia abajo y de izquierda a derecha.</p></div>' +
+        '<div class="trace-ctl"><button class="btn small" data-act="say" data-jp="' + esc(k) + '">' + ICON_PLAY + ' Escuchar</button><button class="btn small" data-act="clear">Borrar trazo</button></div>' +
+        '<label class="trace-model"><span>Modelo de fondo</span><input type="checkbox" class="switch" data-act="guide" checked></label>' +
+        '<p class="hint">Trazá encima del modelo; después apagalo y escribilo de memoria. Regla general del orden: de arriba hacia abajo y de izquierda a derecha.</p></div>' +
+      (info.base ? '<p class="sheet-base">Es ' + jpify(esc(info.base)) + ' con ' + (info.mark === '゜' ? 'el circulito (handakuten)' : 'las dos rayitas (dakuten)') + ': el mismo kana con una marca.</p>' : '') +
       '<h3>Pronunciación</h3><p>' + jpify(esc(info.p)) + '</p>' + (info.mk ? markLine(info.mk) : '') +
-      '<h3>Para recordarlo</h3><p>' + jpify(esc(info.m)) + '</p>' +
       (ex ? '<h3>Ejemplo</h3><div class="exs">' + exLine({k:ex[0], r:ex[1], es:ex[2]}) + '</div>' : '') +
     '</div>';
   document.body.appendChild(el);
@@ -3320,8 +3322,7 @@ function showFeed(q, ok, given){
     if (parts.length) extra += '<p class="feed-reveal">' + parts.join('') + '</p>';
   }
   if (q.ex) extra += '<p class="feed-ex">' + jpify(esc(q.ex)) + '</p>';
-  if (!ok && q.mn) extra += '<p class="feed-ex">Para recordarlo: ' + jpify(esc(q.mn)) + '</p>';
-  if (!ok && q.reveal && !q.mn) extra += hookHTML(q.reveal, q);
+  if (!ok && q.reveal) extra += hookHTML(q.reveal, q);
   if (!ok && !q.free && (q.tries || 0) < 2) extra += '<p class="feed-ex">Vuelve a aparecer antes de terminar la ronda.</p>';
   f.innerHTML = '<div class="feed-in ' + (ok ? 'is-ok' : 'is-bad') + '"><span class="mark" aria-hidden="true"></span><div class="feed-body">' + head + extra + '</div><button class="btn primary wide" data-act="next">' + (Q.i + 1 >= Q.items.length && !Q.hito ? 'Ver resultado' : 'Seguir') + '</button></div>';
   f.hidden = false;
@@ -3768,7 +3769,7 @@ document.addEventListener('click', e => {
     // la hoja no se cierra antes: se va con la pantalla que sale
     case 'leave': { const h = t.dataset.href || '#/'; if (histDir(location.hash) === histDir(h)) closeSheet(true); else ir(h, true); break; }
     case 'clear': { const r = t.closest('.sheet-back'); if (r && r._clear) r._clear(); break; }
-    case 'guide': { const sqEl = t.closest('.sheet').querySelector('.trace-sq'); const hidden = sqEl.classList.toggle('hide-model'); t.setAttribute('aria-pressed', String(hidden)); t.textContent = hidden ? 'Mostrar modelo' : 'Ocultar modelo'; break; }
+    case 'guide': { t.closest('.sheet').querySelector('.trace-sq').classList.toggle('hide-model', !t.checked); break; }
     case 'hitoread': { const q = Q && Q.items[Q.i]; if (q && q.type === 'hito'){ q.open = true; app.innerHTML = renderQuizScreen(); speak(q.ph.k); const b = app.querySelector('.hito-go'); if (b) b.focus({preventScroll:true}); } break; }
     case 'presrom': { const r = document.getElementById('presRom'); if (r){ r.hidden = !r.hidden; t.textContent = r.hidden ? 'Mostrar romaji' : 'Ocultar romaji'; } break; }
     case 'togglerom': {
