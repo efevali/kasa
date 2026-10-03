@@ -4,7 +4,8 @@ Todas las versiones publicadas de Kasa, de la más nueva a la más vieja. Sigue 
 
 ## Sin publicar
 
-- **0.4.0 · Pantallas generales y Unidad 1**, en preparación: ver su [milestone](https://github.com/efevali/kasa/milestone/1).
+- **0.4.0 · Pantallas generales**, en preparación: ver su [milestone](https://github.com/efevali/kasa/milestone/1).
+- **0.5.0 · Unidad 1**, la tanda siguiente: ver su [milestone](https://github.com/efevali/kasa/milestone/2).
 
 ## 0.3.1 — 1/10/2026
 
