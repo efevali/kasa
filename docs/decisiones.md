@@ -88,6 +88,13 @@ Diseño aprobado el 24/9; la misma lógica en las tres unidades.
 - **Ficha ordenada** (2/10, boceto B-04; #27). El kana y su lectura, más grandes y en tinta, porque identifican la ficha. «Escuchar» y «Borrar trazo» en una fila; «Ocultar modelo» pasa a un interruptor, «Modelo de fondo», porque solo en la segunda fila se veía desprolijo. El mismo aire arriba y abajo del cuadro de trazo.
 - **Orden de trazos animado: queda como está** (2/10). La ficha sigue con la regla general («de arriba hacia abajo y de izquierda a derecha»). Si se retoma: los trazos salen de KanjiVG (los 71 hiragana son 208 trazos, unos 21 KB; el katakana, del mismo lugar), con licencia CC BY-SA 3.0, que pide nombrarlo y compartir esos datos con la misma licencia; irían en un archivo aparte del resto de la app. Los trazos de KanjiVG son de grosor parejo y no coinciden del todo con la letra del modelo.
 
+## Repaso de kana
+
+- **Pantalla propia antes de la práctica** (2/10, boceto B-05; #28). Hasta entonces la herramienta entraba directo a la ronda. La pantalla dice qué entra (cuántas preguntas y cuántos kana, «por ahora» mientras falten), el último repaso con su fecha en palabras (hoy, ayer, hace N días; desde la semana, la fecha) y su puntaje, y abajo «Empezar repaso». *Descartado:* «Iniciar lección», porque no es una lección; «Empezar repaso» ya se usaba en la app.
+- **Se guarda el último repaso** (2/10; #28): fecha, aciertos y total. Antes no se guardaba nada de los repasos, solo los aciertos y errores de cada kana. El progreso anterior no lo tiene, así que la primera vez dice «Todavía no hiciste ningún repaso». «Borrar» en Ajustes también lo borra.
+- **«Los que más te cuestan»** (2/10; #28). Hasta tres kana tocables, que abren su ficha: los que aparecieron al menos tres veces y tienen errores, primero los de más errores por aparición. Cuentan todas las prácticas, no solo los repasos, y la cuenta no tiene fecha, así que un kana que costó al principio baja de a poco. Sin datos suficientes, la sección no aparece.
+- **Al terminar se vuelve a la pantalla del repaso** (2/10; #28), con «Volver al repaso», como Mis palabras con sus tarjetas, para ver el puntaje nuevo.
+
 ## Dibujos y preguntas con dibujo
 
 La regla completa está en la guía de estilo («Dibujos» y «Preguntas con dibujo: zona marcada»).
