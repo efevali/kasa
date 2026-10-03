@@ -222,10 +222,10 @@ body.is-home #app{min-height:100%;display:flex;flex-direction:column;padding-bot
 .uc-lab{font-size:15px;color:var(--ink-2);line-height:1.4}
 .uc-title{font-size:20px;font-weight:700;line-height:1.3}
 .u-kana{white-space:nowrap}
+.uc-title .u-sp{word-spacing:.3px}
 .ucard .dots{align-items:center;gap:7px;margin-top:10px}
 .ucard .dots i{width:11px;height:11px;border-width:1.8px}
 .u-ro{font-size:.8em;font-weight:400;color:var(--ink-2)}
-.uc-n{font-size:15px;color:var(--ink-2);margin-left:6px}
 .uc-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;padding-top:10px;border-top:1.5px solid var(--line);font-size:15.5px}
 .uc-foot .g{color:var(--ink-2)}
 .uc-foot .t{display:flex;align-items:center;gap:8px;color:var(--ai);font-weight:700}
@@ -284,7 +284,8 @@ body.is-home #app{min-height:100%;display:flex;flex-direction:column;padding-bot
 .u-num{font-family:var(--f-jp);font-weight:600;font-size:28px;line-height:1.1;color:var(--ai)}
 .u-body{display:grid;gap:2px}
 .u-title{font-size:18px;font-weight:700}
-.u-kana{font-family:var(--f-jp);font-weight:600;font-size:16px;color:var(--ink-2);margin-left:6px}
+.u-kana{font-family:var(--f-jp);font-weight:600;font-size:16px;color:var(--ink-2)}
+.u-title .u-sp{word-spacing:6px}
 .u-desc{font-size:16px;color:var(--ink-2);line-height:1.55}
 .dots{display:flex;gap:6px;margin-top:8px}
 .dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ai)}
@@ -1236,7 +1237,7 @@ const UNITS = [
      {l:'1-3',q:'かさ (paraguas) puede querer decir…',o:['«Paraguas», «los paraguas» o «un paraguas»: decide el contexto','Solo «un paraguas»','Solo «el paraguas»','Solo «los paraguas»'],a:0,jp:'かさ',ex:'No hay artículos ni plural obligatorio.'}
     ]}
   ]},
- {id:2, title:'Decir qué es cada cosa', kana:'た〜ほ ん',
+ {id:2, title:'Decir qué es cada cosa', kana:'た〜ほ ん', ro:'ta–ho, n',
   desc:'Filas た, な y は con sus variantes y la ん, cómo decir «X es Y», cómo preguntar y tus primeros saludos.',
   lessons:[
    {id:'2-ta', type:'kana', title:'た y だ', min:10, n:13,
@@ -1312,7 +1313,7 @@ const UNITS = [
      {l:'2-ha',q:'¿Cómo se lee el último kana de こんばんは?',o:['wa','ha','ba','a'],a:0,jp:'こんばんは',ex:'Es la partícula は, que en los saludos se lee «wa».'}
     ]}
   ]},
- {id:3, title:'Cosas y personas', kana:'ま〜を',
+ {id:3, title:'Cosas y personas', kana:'ま〜を', ro:'ma–o',
   desc:'El resto del hiragana, más palabras, las frases de todos los días, posesión con の, これ, それ y あれ, la negación y un primer diálogo.',
   lessons:[
    {id:'3-ma', type:'kana', title:'ま', min:8, n:10,
@@ -2469,8 +2470,10 @@ function currentUnit(){
   const avail = UNITS.filter(u => !u.soon);
   return next ? UNITS.find(u => u.id === next.unit) : avail[avail.length - 1];
 }
+// Título de la unidad con sus kana y la lectura fija (no depende del ajuste de romaji); las unidades en preparación
+// no la llevan. Los separa un espacio ensanchado y no un margen: si los kana bajan de renglón, empiezan al ras del título.
+function unitTitle(u){ return esc(u.title) + '<span class="u-sp"> </span><span class="u-kana">' + esc(u.kana) + (u.ro ? '<span class="u-ro"> (' + esc(u.ro) + ')</span>' : '') + '</span>'; }
 function renderHome(){
-  const total = ALL_LESSONS.length;
   const done = ALL_LESSONS.filter(l => isDone(l.id)).length;
   const next = ALL_LESSONS.find(l => !isDone(l.id));
   const u = currentUnit();
@@ -2488,7 +2491,7 @@ function renderHome(){
       '<a class="ucard" href="#/temario">' +
         '<span class="uc-top"><span class="u-num">' + u.id + '</span><span>' +
           '<span class="uc-lab" style="display:block">Unidad actual</span>' +
-          '<span class="uc-title" style="display:block">' + esc(u.title) + '<span class="u-kana">' + esc(u.kana) + (u.ro ? '<span class="u-ro"> (' + u.ro + ')</span>' : '') + '</span></span>' +
+          '<span class="uc-title" style="display:block">' + unitTitle(u) + '</span>' +
           '<span class="dots" aria-label="' + nd + ' de ' + u.lessons.length + ' lecciones aprobadas">' + dots + '</span>' +
         '</span></span>' +
         '<span class="uc-foot"><span class="g">' + nd + ' de ' + u.lessons.length + ' lecciones</span><span class="t">Temario</span></span>' +
@@ -2537,11 +2540,11 @@ function renderTemario(){
   const cur = currentUnit();
   const units = UNITS.map(u => {
     if (u.soon){
-      return '<li id="u-' + u.id + '" class="unit off"><span class="u-num">' + u.id + '</span><span class="u-body"><span class="u-title">' + esc(u.title) + ' <span class="u-kana">' + esc(u.kana) + '</span></span><span class="u-desc">' + jpify(esc(u.desc)) + '</span><span class="u-soon">En preparación</span></span></li>';
+      return '<li id="u-' + u.id + '" class="unit off"><span class="u-num">' + u.id + '</span><span class="u-body"><span class="u-title">' + unitTitle(u) + '</span><span class="u-desc">' + jpify(esc(u.desc)) + '</span><span class="u-soon">En preparación</span></span></li>';
     }
     const dots = u.lessons.map(l => '<i class="' + (isDone(l.id) ? 'on' : '') + '"></i>').join('');
     const nd = u.lessons.filter(l => isDone(l.id)).length;
-    return '<li id="u-' + u.id + '"><a class="unit" href="#/u/' + u.id + '"><span class="u-num">' + u.id + '</span><span class="u-body"><span class="u-title">' + esc(u.title) + ' <span class="u-kana">' + esc(u.kana) + '</span></span><span class="u-desc">' + jpify(esc(u.desc)) + '</span><span class="dots" aria-label="' + nd + ' de ' + u.lessons.length + ' lecciones aprobadas">' + dots + '</span>' + (u === cur ? '<span class="u-cur">Unidad actual</span>' : '') + '</span></a></li>';
+    return '<li id="u-' + u.id + '"><a class="unit" href="#/u/' + u.id + '"><span class="u-num">' + u.id + '</span><span class="u-body"><span class="u-title">' + unitTitle(u) + '</span><span class="u-desc">' + jpify(esc(u.desc)) + '</span><span class="dots" aria-label="' + nd + ' de ' + u.lessons.length + ' lecciones aprobadas">' + dots + '</span>' + (u === cur ? '<span class="u-cur">Unidad actual</span>' : '') + '</span></a></li>';
   }).join('');
   return topNav('#/', 'Inicio') +
     '<header class="page-h"><h1>Temario</h1><p class="lede">' + done + ' de ' + total + ' lecciones aprobadas.</p></header>' +
