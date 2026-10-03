@@ -564,6 +564,8 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .mp-cards{padding-bottom:14px;border-bottom:1.5px solid var(--line)}
 .think-set{margin-top:12px;border-top:0;padding:8px 0}
 .w-stats{font-size:16px;color:var(--ink-2);margin:4px 0 0}
+.rk-main.rk-sep{padding-bottom:18px;border-bottom:1.5px solid var(--line)}
+.rk-last{margin:0 0 14px}
 .mp-nb>h2{margin:26px 0 0}
 .nb-hint{margin-top:8px}
 .nb-again{margin:4px 0 0}
@@ -1973,7 +1975,7 @@ const ICON_PLAY = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="
 /* ---------- Estado y guardado ---------- */
 const STORE_KEY = 'jp-curso-v1';
 // resetAt: momento del último «Borrar». Lo aprobado antes de esa marca no vuelve al sincronizar, venga de donde venga.
-function freshState(){ return {v:1, lessons:{}, kana:{}, hitos:{}, vistos:{}, words:{stats:{}, log:{}, updated:0}, settings:{romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
+function freshState(){ return {v:1, lessons:{}, kana:{}, review:null, hitos:{}, vistos:{}, words:{stats:{}, log:{}, updated:0}, settings:{romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
 function normalize(){
   if (!S.words || typeof S.words !== 'object') S.words = {};
   S.words.stats = S.words.stats && typeof S.words.stats === 'object' ? S.words.stats : {};
@@ -2053,6 +2055,8 @@ function mergeRemote(r){
     const K = r.kana || {};
     for (const k in K){ const a = S.kana[k], b = K[k]; if (Array.isArray(b) && (!a || b[0] > a[0])) S.kana[k] = b; }
   }
+  // último repaso de kana: el más nuevo de las dos copias, si es posterior al último borrado
+  if (r.review && vale(r.review) && (!S.review || (r.review.at || 0) > (S.review.at || 0))) S.review = r.review;
   if (r.settings && (r.updated || 0) > (S.updated || 0)) S.settings = Object.assign({}, S.settings, r.settings);
   if (r.words && (r.words.updated || 0) > (S.words.updated || 0)) S.words = r.words;
   if (r.vistos && typeof r.vistos === 'object') Object.assign(S.vistos, r.vistos);
@@ -2495,7 +2499,7 @@ function renderHome(){
     '<nav class="toolbox" aria-label="Herramientas">' +
       '<a class="tool" href="#/palabras">' + ICON_NOTEBOOK + 'Mis palabras' + (nw ? '<span class="tool-n" aria-label="' + nw + (nw === 1 ? ' palabra' : ' palabras') + '">' + nw + '</span>' : '') + '</a>' +
       '<a class="tool" href="#/tabla">' + ICON_TABLE + 'Tabla de kana</a>' +
-      '<a class="tool" href="#/p/repaso">' + ICON_REVIEW + 'Repaso de kana</a>' +
+      '<a class="tool" href="#/repaso">' + ICON_REVIEW + 'Repaso de kana</a>' +
     '</nav>' +
   '</div>';
 }
@@ -2848,6 +2852,37 @@ function renderTable(){
     '<p class="hint">ぢ y づ suenan igual que じ y ず y casi no se usan.</p>';
 }
 
+/* ---------- Repaso de kana ---------- */
+const REVIEW_N = 20;   // preguntas por ronda (con pocos kana, dos por kana)
+// Cuándo fue algo, en palabras: hoy, ayer, hace N días; desde la semana, la fecha
+function cuando(at){
+  const d = new Date(at), hoy = new Date();
+  const dias = Math.round((new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()) - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 864e5);
+  if (dias <= 0) return 'hoy';
+  if (dias === 1) return 'ayer';
+  if (dias < 7) return 'hace ' + dias + ' días';
+  return d.getDate() + '/' + (d.getMonth() + 1) + (d.getFullYear() !== hoy.getFullYear() ? '/' + d.getFullYear() : '');
+}
+// Los kana que más cuestan: aparecieron al menos 3 veces y tienen errores; primero los de más errores por aparición
+function hardKana(pool, n){
+  return pool.map(k => ({k, s: S.kana[k]})).filter(o => o.s && o.s[0] >= 3 && o.s[1] > 0)
+    .sort((a, b) => b.s[1] / b.s[0] - a.s[1] / a.s[0] || b.s[1] - a.s[1]).slice(0, n).map(o => o.k);
+}
+function renderReview(){
+  const pool = [...learnedKana()].filter(k => !EXCLUDE_QUIZ.has(k));
+  const head = t => topNav('#/', 'Inicio') + '<header class="page-h"><h1>Repaso de kana</h1><p class="lede">' + t + '</p></header>';
+  if (!pool.length) return head('Todavía no hay kana para repasar. Se suman solos al aprobar las lecciones de kana, empezando por «' + nbsp(LESSON['1-2'].title) + '».') +
+    '<div class="actions"><a class="btn primary wide center" href="#/l/1-2">Ir a «' + nbsp(LESSON['1-2'].title) + '»</a></div>';
+  const todos = Object.keys(KANA).filter(k => !EXCLUDE_QUIZ.has(k)).length;
+  const r = S.review, dificiles = hardKana(pool, 3);
+  return head('Una ronda de ' + Math.min(REVIEW_N, pool.length * 2) + ' preguntas con los kana de las lecciones que aprobaste (' + pool.length + (pool.length < todos ? ' por ahora' : '') + '). Los que más fallás salen más seguido.') +
+    '<section class="rk-main' + (dificiles.length ? ' rk-sep' : '') + '">' +
+      '<p class="w-stats rk-last">' + (r ? 'Último repaso: ' + cuando(r.at) + ', ' + r.score + ' de ' + r.n + '.' : 'Todavía no hiciste ningún repaso.') + '</p>' +
+      '<a class="btn primary wide center" href="#/p/repaso">Empezar repaso</a>' +
+    '</section>' +
+    (dificiles.length ? '<h2>Los que más te cuestan</h2><div class="kana-grid small">' + dificiles.map(kanaCell).join('') + '</div><p class="hint">Tocá uno para escucharlo y abrir su ficha.</p>' : '');
+}
+
 /* ---------- Ficha de kana con trazo ---------- */
 function openKana(k){
   const info = KANA[k];
@@ -3001,8 +3036,8 @@ let Q = null;
 function startQuiz(id){
   let items, back, title;
   if (id === 'repaso'){
-    items = kanaReview([...learnedKana()], S.kana, 20);
-    back = '#/'; title = 'Repaso de kana';
+    items = kanaReview([...learnedKana()], S.kana, REVIEW_N);
+    back = '#/repaso'; title = 'Repaso de kana';
   } else if (id === 'palabras'){
     items = wordRound(wordPool(), S.words.stats, 10);
     back = '#/palabras'; title = 'Mis palabras';
@@ -3028,9 +3063,7 @@ function renderQuizScreen(){
   if (!Q.items.length && Q.id === 'palabras'){
     return topNav('#/palabras', 'Mis palabras') + '<header class="page-h"><h1>Todavía faltan palabras</h1><p class="lede">Las tarjetas se habilitan al aprobar «' + nbsp(LESSON['1-v1'].title) + '».</p></header><div class="actions"><a class="btn primary wide center" href="#/l/1-v1">Ir a «' + nbsp(LESSON['1-v1'].title) + '»</a></div>';
   }
-  if (!Q.items.length){
-    return topNav('#/', 'Inicio') + '<header class="page-h"><h1>Repaso de kana</h1><p class="lede">Todavía no hay kana para repasar. Aprobá al menos una lección de escritura y este repaso se arma solo, priorizando los kana en los que más fallás.</p></header><div class="actions"><a class="btn primary wide" href="#/l/1-2">Ir a «Las cinco vocales»</a></div>';
-  }
+  if (!Q.items.length) return renderReview();   // sin kana aprobados (se llegó por la dirección): la pantalla del repaso, vacía
   if (Q.i >= Q.items.length) return Q.hito ? renderHitoClose() : renderResults();
   const q = Q.items[Q.i];
   if (q.type === 'present') return stepHTML(q);
@@ -3366,6 +3399,7 @@ function renderResults(){
     save();
     destrabo = !!nextL && !antes && isUnlocked(nextL.id);
   }
+  if (Q.id === 'repaso' && !Q.guardado){ S.review = {at: Date.now(), score: Q.score, n}; Q.guardado = true; save(); }
   const faltan = Math.ceil(PASS / 100 * n);
   const nFr = esLeccion ? phrasesOf(Q.id).length : 0;
   const hitoNuevo = nFr && pasa && !yaEstaba && !hitoSeen(Q.id);
@@ -3397,7 +3431,7 @@ function renderResults(){
       rep +
       (Q.id === 'palabras' ? '<p class="results-extra">' + wordStatsText() + '</p>' : '') +
       '<div class="actions stack">' + acciones +
-        '<a class="btn wide" href="' + Q.back + '">' + (Q.id === 'repaso' ? 'Volver al inicio' : Q.id === 'palabras' ? 'Volver a Mis palabras' : 'Volver a la lección') + '</a>' +
+        '<a class="btn wide" href="' + Q.back + '">' + (Q.id === 'repaso' ? 'Volver al repaso' : Q.id === 'palabras' ? 'Volver a Mis palabras' : 'Volver a la lección') + '</a>' +
       '</div>' + wrong +
       (esLeccion && LESSON[Q.id].cycle ? '<h2>Las palabras de la lección</h2>' + wordListHTML(LESSON[Q.id]) : '') +
     '</div>';
@@ -3587,7 +3621,7 @@ function pantallaDe(h){
     case 'temario': return {key:'temario', camino:1};
     case 'u': return {key:'u/' + parts[1], camino:2};
     case 'l': return {key:'l/' + parts[1], capa:1, lec:lessonIndex(parts[1])};
-    case 'tabla': case 'ajustes': return {key:parts[0], capa:1};
+    case 'tabla': case 'ajustes': case 'repaso': return {key:parts[0], capa:1};
     case 'palabras': return {key:'palabras', capa:1};
     default: return {key:'', camino:0};
   }
@@ -3710,6 +3744,7 @@ function dibujarRuta(antes){
   else if (parts[0] === 'ajustes') { Q = null; html = renderSettings(); }
   else if (parts[0] === 'l') { Q = null; html = renderLesson(parts[1]); }
   else if (parts[0] === 'tabla') { Q = null; html = renderTable(); }
+  else if (parts[0] === 'repaso') { Q = null; html = renderReview(); }
   else if (parts[0] === 'palabras') { Q = null; NB.help = undefined; html = renderWords(); }
   else if (parts[0] === 'p') {
     if (LESSON[parts[1]] && !isUnlocked(parts[1])){ Q = null; html = renderLesson(parts[1]); }
