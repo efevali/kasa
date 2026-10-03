@@ -143,6 +143,7 @@ La regla completa está en la guía de estilo («Sonidos»). Las alternativas pr
 - **Volumen** (26/9): deslizador en Ajustes, solo para los efectos, con mute a la izquierda y una muestra al soltar: «muy prolijo».
 - **Verano de Evangelion** (26/9): una minminzemi rehecha a partir de grabaciones reales de referencia. Suena en la apertura, sigue sobre la principal («le da continuidad al ingreso a la app») y al tocar el paraguas de la barra; tocar mientras suena no la reinicia.
 - **Tema cerrado** (27/9): «Sonidos listos». Quedan para más adelante el volumen de la pieza de shōgi (#11) y el uso de los insectos (#10).
+- **Cada pantalla se lleva sus sonidos** (3/10, #29). Al tocar «Seguir» rápido, la voz de la respuesta seguía sobre la pantalla siguiente (se veía un kana y se escuchaba otro) o se pisaba con la voz nueva: la regla del 26/9 ordenaba los sonidos dentro de una pantalla, pero no el cambio. Ahora la voz se corta al salir; los efectos terminan solos; la voz automática de la pantalla nueva entra a los 0,2 s y nunca encima de un acierto o error. Las cigarras siguen sobre la principal y Emparejar queda como está. *Descartado:* que «Seguir» aparezca recién cuando termina la voz (alrededor de un segundo más por pregunta, y depende de que Android avise bien el final) y que la pantalla nueva espere a que termine la voz anterior (la voz vieja sonaría con el kana nuevo a la vista).
 
 ## Transiciones
 

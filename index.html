@@ -131,6 +131,12 @@
      y 0,4 s después del error (VOZ_TRAS), contados desde que el efecto empieza a sonar. El motor se despierta al
      mostrar cada pantalla y se suspende tras 60 s sin sonidos. Sin sonido en los toques de botones, la navegación
      ni la apertura.
+   - Cada pantalla se lleva sus sonidos (3/10/2026): al salir de una pantalla (avanzar, repetir, volver, salir) se
+     corta la voz, la que suena y la que espera turno. Los efectos que ya suenan terminan solos; uno que no llegó a
+     empezar ya no suena en la siguiente. La voz automática de la pantalla nueva (consigna de audio, palabra nueva)
+     entra cuando la pantalla terminó de llegar (0,2 s, VOZ_LLEGA) y nunca antes de VOZ_TRAS contado desde el último
+     acierto o error. Las voces que se piden con un toque suenan enseguida. Quedan como excepción las cigarras, que
+     siguen sobre la principal, y Emparejar, donde la voz de la palabra y la campanita pueden coincidir.
    - Verano de Evangelion: minminzemi sintetizada y ajustada a grabaciones reales (una cerca haciendo un ciclo entero
      y dos lejos que ya venían cantando, unos 5 s). Suena al abrir si el navegador deja sonar sin toque previo (con la
      app instalada; si no, al tocar la apertura) y al tocar el paraguas de la barra. Sigue sobre la principal y se
@@ -2149,13 +2155,36 @@ function markPlaying(i){ document.querySelectorAll('.dline').forEach((el, j) => 
 // Al responder: primero el efecto y la palabra cuando el efecto ya se apagó (ver «Sonidos» en la guía de estilo).
 // La espera se cuenta desde que el efecto empieza a sonar de verdad: si el motor estaba en pausa, espera a que arranque.
 const VOZ_TRAS = {acierto: 550, error: 400};
+// Cada pantalla se lleva sus sonidos (#29): la voz automática de la pantalla nueva entra cuando la pantalla terminó de
+// llegar (VOZ_LLEGA, lo que dura la transición, --vt-dur) y nunca antes de que se apague el último acierto o error.
+const VOZ_LLEGA = 200;
+const VOZ = {libre: 0, llega: 0};   // desde cuándo puede entrar una voz automática (performance.now)
 let sayTimer = null, sayTok = 0;
 function cancelSay(){ sayTok++; if (sayTimer){ clearTimeout(sayTimer); sayTimer = null; } }
 function answerSound(ok, text){
   cancelSay();
-  const tok = sayTok, k = ok ? 'acierto' : 'error';
-  const voz = text ? () => { if (tok !== sayTok) return; sayTimer = setTimeout(() => { sayTimer = null; if (tok === sayTok) speak(text); }, SFX.on() ? VOZ_TRAS[k] : 0); } : null;
-  SFX[k](voz);
+  const tok = sayTok, k = ok ? 'acierto' : 'error', espera = SFX.on() ? VOZ_TRAS[k] : 0;
+  SFX[k](() => {
+    VOZ.libre = performance.now() + espera;
+    if (!text || tok !== sayTok) return;
+    sayTimer = setTimeout(() => { sayTimer = null; if (tok === sayTok) speak(text); }, espera);
+  });
+}
+// La pantalla se va: se corta la voz, la que suena y la que espera turno, sin preguntar si el teléfono está hablando.
+// Los efectos que ya suenan terminan solos; uno que no llegó a empezar (motor en pausa) ya no suena en la siguiente.
+// Lo llaman todos los cambios de pantalla: avanzar o repetir la práctica y cualquier dirección nueva.
+function salirDePantalla(){
+  cancelSay();
+  SFX.pantalla();
+  if (TTS.ok){ TTS.token++; try { window.speechSynthesis.cancel(); } catch(e){} }
+  VOZ.llega = performance.now() + VOZ_LLEGA;
+}
+// Voz automática de una pantalla que aparece (consigna de audio, palabra nueva). Las que se piden con un toque, enseguida.
+function vozAlLlegar(text){
+  cancelSay();
+  const tok = sayTok, espera = Math.max(VOZ.llega, VOZ.libre) - performance.now();
+  if (espera <= 0){ speak(text); return; }
+  sayTimer = setTimeout(() => { sayTimer = null; if (tok === sayTok) speak(text); }, espera);
 }
 
 /* ---------- Efectos de sonido (síntesis propia, ver «Sonidos» en la guía de estilo) ---------- */
@@ -2192,12 +2221,15 @@ const SFX = (function(){
   }
   // Ejecuta un sonido: crea o reanuda el motor; tras 60 s sin sonidos lo suspende para no gastar batería.
   // «luego» corre cuando el sonido quedó programado (o enseguida, si no puede sonar): de ahí se cuenta la espera de la voz.
-  function run(fn, luego){
+  // Si la pantalla cambió mientras el motor despertaba, el sonido ya no es de esta pantalla y no suena (salvo «siempre»).
+  let vista = 0;   // cuenta los cambios de pantalla
+  function run(fn, luego, siempre){
     const fin = () => { if (luego) luego(); };
     if (!on()) { fin(); return; }
     const c = init(); if (!c) { fin(); return; }
-    const go = () => { try { fn(c.currentTime + 0.02); } catch(e){ console.error('SFX', e); } fin(); dormir(); };
-    if (c.state === 'running') go(); else c.resume().then(go, fin);
+    const mia = vista, vale = () => siempre || mia === vista;
+    const go = () => { if (!vale()) return; try { fn(c.currentTime + 0.02); } catch(e){ console.error('SFX', e); } fin(); dormir(); };
+    if (c.state === 'running') go(); else c.resume().then(go, () => { if (vale()) fin(); });
   }
   function dormir(){ clearTimeout(idleT); idleT = setTimeout(() => { if (ctx && ctx.state === 'running') ctx.suspend(); }, 60000); }
   function biquad(type, f, q, g){ const b = ctx.createBiquadFilter(); b.type = type; b.frequency.value = f; if (q != null) b.Q.value = q; if (g != null) b.gain.value = g; return b; }
@@ -2401,7 +2433,9 @@ const SFX = (function(){
     on,
     unlock(){ if (on() && init() && ctx.state !== 'running') ctx.resume().catch(() => {}); },
     // Verano de Evangelion al tocar el paraguas de la barra: tocar mientras suena no lo reinicia (la llave de prueba sigue igual)
-    cigarras(){ if (performance.now() < veranoHasta) return; run(t => tocarVerano(t)); },
+    cigarras(){ if (performance.now() < veranoHasta) return; run(t => tocarVerano(t), null, true); },   // siguen sobre la principal
+    // cambio de pantalla (ver salirDePantalla): lo que todavía no empezó a sonar ya no suena
+    pantalla(){ vista++; },
     // al abrir: suena solo si el navegador deja sonar sin un toque previo (con la app instalada) o si se toca la apertura
     apertura(){
       if (!on() || !init()) return;
@@ -3168,7 +3202,7 @@ function onShow(q){
   if (!q) return;
   SFX.despertar();
   if (q.type === 'hito' && !q.open){ SFX.hito(); return; }
-  const au = autoAudio(q); if (au) speak(au);
+  const au = autoAudio(q); if (au) vozAlLlegar(au);
 }
 function promptHTML(q){
   const lab = '<p class="qlabel">' + jpify(esc(q.label)) + '</p>';
@@ -3370,10 +3404,10 @@ function showFeed(q, ok, given){
 function nextQuestion(){
   if (VT.pend) return;
   vtCambio(() => {
+    salirDePantalla();
     Q.i++;
     app.innerHTML = renderQuizScreen();
     window.scrollTo(0, 0);
-    cancelSay();
     if (Q.i < Q.items.length) onShow(Q.items[Q.i]);
     else { finRonda(); animateHanamaru(); resultSfx(); }
     return 'fwd';
@@ -3738,8 +3772,7 @@ function dibujarRuta(antes){
   const h = (location.hash || '#/').slice(1);
   const parts = h.split('/').filter(Boolean);
   closeSheet();
-  cancelSay();
-  if (TTS.ok){ TTS.token++; try { if (window.speechSynthesis.speaking || window.speechSynthesis.pending) window.speechSynthesis.cancel(); } catch(e){} }
+  salirDePantalla();
   let html = '';
   let quizStarted = false;
   if (parts[0] === 'u') { Q = null; html = renderUnit(parts[1]); }
@@ -3847,7 +3880,7 @@ document.addEventListener('click', e => {
       const ag = document.getElementById('nbAgain'); if (ag) ag.hidden = true;
       break; }
     case 'next': nextQuestion(); break;
-    case 'restart': { if (VT.pend) break; const id = Q ? Q.id : 'repaso'; vtCambio(() => { startQuiz(id); app.innerHTML = renderQuizScreen(); window.scrollTo(0, 0); onShow(Q.items[0]); return 'fwd'; }, true); break; }
+    case 'restart': { if (VT.pend) break; const id = Q ? Q.id : 'repaso'; vtCambio(() => { salirDePantalla(); startQuiz(id); app.innerHTML = renderQuizScreen(); window.scrollTo(0, 0); onShow(Q.items[0]); return 'fwd'; }, true); break; }
     case 'rate': S.settings.slow = t.dataset.v === '1'; save(); t.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === t))); speak('かさ'); break;
     case 'volmute': volSet(S.settings.sfxVol ? 0 : (S.settings.sfxPrev || 80), true); break;
     case 'devoff': DEV = false; try { localStorage.removeItem('jp-curso-dev'); } catch(e){} toast('Modo prueba desactivado.'); route(); break;
