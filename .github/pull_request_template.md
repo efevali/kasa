@@ -1,6 +1,6 @@
 ## Versión
 
-Número y nombre de la tanda (por ejemplo, 0.4.0 · Pantallas generales y Unidad 1).
+Número y nombre de la tanda (por ejemplo, 0.4.0 · Pantallas generales).
 
 ## Bocetos incluidos
 

@@ -35,8 +35,8 @@ Criterios que valen siempre:
 1. **Revisión.** Se recorre la app en el teléfono, pantalla por pantalla y lección por lección. Cada observación (una captura con un comentario) se discute antes de registrarla.
 2. **Issue.** Lo acordado se carga como issue con la plantilla «Observación». Se redacta para que alguien pueda implementarlo sin haber visto la conversación ni la captura.
 3. **Boceto.** Si el cambio es visual, se aprueba sobre un boceto (ver «Bocetos») y su código entra en la rama de la versión.
-4. **Tanda.** Los issues acordados se agrupan en el milestone de la versión en preparación. Hay una tanda por unidad del curso: la primera suma las pantallas generales (principal, apertura, temario, ajustes, herramientas).
-5. **Implementación.** Al cerrar la revisión de la unidad se completa el pull request: lo que los bocetos no cubren se hace según el texto de cada issue. Se prueba en la vista previa y se compara con los bocetos.
+4. **Tanda.** Los issues acordados se agrupan en el milestone de la versión en preparación. Cada tanda reúne un grupo de pantallas, para probar en el teléfono pocos cambios por vez: la 0.4.0, las pantallas generales (principal, Mis palabras, Tabla y Repaso de kana, Ajustes y apertura); después, una por unidad del curso, con su temario.
+5. **Implementación.** Al cerrar la revisión de las pantallas de la tanda se completa el pull request: lo que los bocetos no cubren se hace según el texto de cada issue. Se prueba en la vista previa y se compara con los bocetos.
 6. **Publicación.** Con el ok, se sube la versión, se une el pull request a `main`, se borra la rama y se suma la versión a `CHANGELOG.md`. Los issues de la tanda se cierran solos.
 
 **Excepción:** lo que impide avanzar en el curso o enseña japonés incorrecto no espera la tanda. Se arregla en una rama propia y se publica enseguida como parche (0.x.**y**); después, la rama de la tanda se actualiza sobre `main`.

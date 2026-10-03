@@ -21,7 +21,8 @@ Uso:  python3 herramientas/boceto.py salida.png [ruta] [progreso] [opciones]
         --estado X.json   partes del progreso guardado que reemplazan a las de arriba (por ejemplo
                           «words» con palabras propias y estadísticas, o «vistos»)
         --accion "js"     JavaScript que se ejecuta en la pantalla antes de capturar (tocar un botón,
-                          desplazar); se puede repetir y van en orden
+                          desplazar); se puede repetir y van en orden. Después de las acciones se
+                          quita el foco, para que no se vea el anillo que deja un toque simulado
 Ejemplos:
   python3 herramientas/boceto.py docs/bocetos/B-01c-principal-repetir.png "#/" "1-1,1-2,1-3,1-ka,1-v1,!1-v2:65"
   python3 herramientas/boceto.py docs/bocetos/B-02c-mis-palabras-tapado.png "#/palabras" "1-1,1-2,1-v1" \
@@ -77,6 +78,8 @@ async def capturar(puerto, salida, ruta, estado, entera=False, acciones=()):
         for js in acciones:
             await pag.evaluate(js)
             await pag.wait_for_timeout(500)
+        # un toque simulado deja el anillo de foco, que en el teléfono no aparece al tocar
+        await pag.evaluate('document.activeElement && document.activeElement.blur && document.activeElement.blur()')
         if entera:
             # se agranda la ventana al alto de la pantalla, así lo fijo (la barra de «Volver») queda al pie
             alto = await pag.evaluate('document.documentElement.scrollHeight')
