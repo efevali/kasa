@@ -2012,7 +2012,7 @@ let remoteRef = null, writing = false, pendingWrite = false, remoteTimer = null;
 let syncMode = 'local';
 // App instalable: versión de este código, con versionado semántico MAYOR.MENOR.PARCHE (ver README). Tiene que
 // coincidir con VERSION de sw.js: herramientas/version.py sube las dos juntas. ok = hay service worker (app publicada).
-const KASA_VERSION = {v: '0.3.1', fecha: '1/10/2026'};
+const KASA_VERSION = {v: '0.4.0', fecha: '3/10/2026'};
 const APPV = {ok: false, reg: null, nueva: false, buscando: false, recargar: false, ultima: 0};
 
 function saveLocal(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){} }
