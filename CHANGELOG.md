@@ -8,6 +8,8 @@ Todas las versiones publicadas de Kasa, de la más nueva a la más vieja. Sigue 
 
 ## 0.4.0 — 3/10/2026
 
+Commit ad56095.
+
 Pantallas generales ([milestone](https://github.com/efevali/kasa/milestone/1)).
 
 - Principal: la unidad muestra cómo se leen sus kana («あ〜そ (a–so)»), cuenta sus propias lecciones («X de N lecciones») y el botón dice qué lección sigue: «Empezar», «Siguiente» o «Repetir lección». Mis palabras no muestra contador en cero y «Tabla de hiragana» pasa a llamarse «Tabla de kana».
