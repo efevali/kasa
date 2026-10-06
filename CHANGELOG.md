@@ -8,6 +8,8 @@ Todas las versiones publicadas de Kasa, de la más nueva a la más vieja. Sigue 
 
 ## 0.4.1 — 6/10/2026
 
+Commit 7460c2c.
+
 Ajustes ([milestone](https://github.com/efevali/kasa/milestone/3)).
 
 - Ajustes en tres grupos: Audio (la voz con «Probar» primero, la velocidad de la voz y los efectos de sonido), Progreso y Acerca de Kasa. Textos más simples para la voz y los efectos.
