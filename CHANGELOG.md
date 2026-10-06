@@ -14,6 +14,7 @@ Ajustes ([milestone](https://github.com/efevali/kasa/milestone/3)).
 - Sin el interruptor «Mostrar romaji»: el romaji sigue la regla de cada unidad (a la vista en las unidades 1 y 2, detrás de un botón desde la 3).
 - Progreso: aviso de que vive solo en este teléfono y de cómo no perderlo al borrar los datos de Chrome. «Borrar» pide confirmación en una hoja con el aviso en rojo.
 - Créditos: quiénes hacen Kasa, efevali y Claude.
+- Al abrir la app no suenan las cigarras: siguen al tocar el paraguas de la barra.
 
 ## 0.4.0 — 3/10/2026
 

@@ -138,9 +138,9 @@
      acierto o error. Las voces que se piden con un toque suenan enseguida. Quedan como excepción las cigarras, que
      siguen sobre la principal, y Emparejar, donde la voz de la palabra y la campanita pueden coincidir.
    - Verano de Evangelion: minminzemi sintetizada y ajustada a grabaciones reales (una cerca haciendo un ciclo entero
-     y dos lejos que ya venían cantando, unos 5 s). Suena al abrir si el navegador deja sonar sin toque previo (con la
-     app instalada; si no, al tocar la apertura) y al tocar el paraguas de la barra. Sigue sobre la principal y se
-     apaga sola con el «miiiiii» largo; tocar mientras suena no la reinicia.
+     y dos lejos que ya venían cantando, unos 5 s). Suena solo al tocar el paraguas de la barra, en cualquier pantalla;
+     al abrir la app no suena nada, ni sola ni al tocar la apertura (6/10/2026). Sigue sobre la principal y se apaga
+     sola con el «miiiiii» largo; tocar mientras suena no la reinicia.
    - Volumen: deslizador en Ajustes, fila «Efectos de sonido» (solo efectos; la voz y el volumen general quedan
      en los botones del teléfono). En cero no hay efectos; el parlante silencia y vuelve al nivel anterior; al
      soltar suena un acierto de muestra. Curva cuadrática: 80 % es el nivel aprobado.
@@ -2451,13 +2451,10 @@ const SFX = (function(){
     cigarras(){ if (performance.now() < veranoHasta) return; run(t => tocarVerano(t), null, true); },   // siguen sobre la principal
     // cambio de pantalla (ver salirDePantalla): lo que todavía no empezó a sonar ya no suena
     pantalla(){ vista++; },
-    // al abrir: suena solo si el navegador deja sonar sin un toque previo (con la app instalada) o si se toca la apertura
+    // al abrir no suena nada (#32): solo se prepara la escena, para que el primer toque al paraguas suene enseguida
     apertura(){
       if (!on() || !init()) return;
-      const limite = performance.now() + 1500;
       setTimeout(() => { try { prepararVerano(); } catch(e){} }, 60);
-      if (ctx.state === 'running') setTimeout(() => SFX.cigarras(), 80);
-      else ctx.resume().then(() => { if (performance.now() < limite) SFX.cigarras(); }, () => {});
     },
     // al mostrar cada pantalla de la práctica: si el motor estaba en pausa, se despierta antes de que haga falta
     despertar(){ if (on() && ctx && ctx.state === 'suspended'){ ctx.resume().catch(() => {}); dormir(); } },
@@ -3871,7 +3868,7 @@ document.addEventListener('click', e => {
   // salir de una práctica empezada (con «Salir» o la casita) pide confirmación
   const lk = e.target.closest && e.target.closest('.navb a, .kbar a');
   if (lk && practicaEnCurso()){ e.preventDefault(); askLeave(lk.getAttribute('href')); return; }
-  if (e.target.closest && e.target.closest('#splash')){ SFX.cigarras(); hideSplash(); return; }
+  if (e.target.closest && e.target.closest('#splash')){ hideSplash(); return; }   // tocar la apertura la cierra, en silencio (#32)
   const t = e.target.closest('[data-act]');
   if (!t){
     if (e.target.classList && e.target.classList.contains('sheet-back')) closeSheet(true);
