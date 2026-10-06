@@ -2,7 +2,8 @@
 """Arma la vista previa de Kasa para publicarla como artefacto en claude.ai.
 
 La vista previa es el mismo index.html, con dos diferencias que pide el visor de artefactos:
-  - las tipografías y el ícono van adentro del archivo (el visor no carga archivos sueltos);
+  - las tipografías, el ícono y las imágenes de los créditos van adentro del archivo (el visor no carga
+    archivos sueltos);
   - sin manifiesto (ahí no se instala nada; la fila de versión aparece sin botón).
 
 Uso:  python3 herramientas/vista_previa.py [archivo de salida]
@@ -32,6 +33,11 @@ def main():
     with open(os.path.join(RAIZ, 'iconos', 'icono-192.png'), 'rb') as f:
         icono = 'data:image/png;base64,' + base64.b64encode(f.read()).decode('ascii')
     html = html.replace('src="iconos/icono-192.png"', f'src="{icono}"')
+    # las imágenes de los créditos (img:'creditos/…' en CREDITOS), igual
+    def imagen(m):
+        with open(os.path.join(RAIZ, 'creditos', m.group(1)), 'rb') as f:
+            return "img:'data:image/png;base64," + base64.b64encode(f.read()).decode('ascii') + "'"
+    html = re.sub(r"img:'creditos/([a-z0-9-]+\.png)'", imagen, html)
     os.makedirs(os.path.dirname(os.path.abspath(salida)), exist_ok=True)
     with open(salida, 'w', encoding='utf-8') as f:
         f.write(html)

@@ -6,6 +6,16 @@ Todas las versiones publicadas de Kasa, de la más nueva a la más vieja. Sigue 
 
 - **0.5.0 · Unidad 1**, en preparación: ver su [milestone](https://github.com/efevali/kasa/milestone/2).
 
+## 0.4.1 — 6/10/2026
+
+Ajustes ([milestone](https://github.com/efevali/kasa/milestone/3)).
+
+- Ajustes en tres grupos: Audio (la voz con «Probar» primero, la velocidad de la voz y los efectos de sonido), Progreso y Acerca de Kasa. Textos más simples para la voz y los efectos.
+- Sin el interruptor «Mostrar romaji»: el romaji sigue la regla de cada unidad (a la vista en las unidades 1 y 2, detrás de un botón desde la 3).
+- Progreso: aviso de que vive solo en este teléfono y de cómo no perderlo al borrar los datos de Chrome. «Borrar» pide confirmación en una hoja con el aviso en rojo.
+- Créditos: quiénes hacen Kasa, efevali y Claude.
+- Al abrir la app no suenan las cigarras: siguen al tocar el paraguas de la barra.
+
 ## 0.4.0 — 3/10/2026
 
 Commit ad56095.

@@ -6,7 +6,7 @@
    VERSION tiene que coincidir con KASA_VERSION de index.html: herramientas/version.py sube las dos.
    Cualquier cambio en este archivo es lo que le avisa al teléfono que hay algo nuevo: el teléfono no
    compara números, toma lo último que se publica. El número (MAYOR.MENOR.PARCHE) es para ordenarnos. */
-const VERSION = '0.4.0';
+const VERSION = '0.4.1';
 const CACHE = 'kasa-v' + VERSION;
 const ARCHIVOS = [
   './',
@@ -23,7 +23,9 @@ const ARCHIVOS = [
   'iconos/icono-512.png',
   'iconos/icono-maskable-192.png',
   'iconos/icono-maskable-512.png',
-  'iconos/apple-touch-icon.png'
+  'iconos/apple-touch-icon.png',
+  'creditos/efevali.png',
+  'creditos/claude.png'
 ];
 
 // Instalar: bajar todo de nuevo del servidor (sin copias viejas intermedias) y guardarlo junto
