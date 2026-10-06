@@ -23,7 +23,9 @@ const ARCHIVOS = [
   'iconos/icono-512.png',
   'iconos/icono-maskable-192.png',
   'iconos/icono-maskable-512.png',
-  'iconos/apple-touch-icon.png'
+  'iconos/apple-touch-icon.png',
+  'creditos/efevali.png',
+  'creditos/claude.png'
 ];
 
 // Instalar: bajar todo de nuevo del servidor (sin copias viejas intermedias) y guardarlo junto

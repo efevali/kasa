@@ -184,7 +184,6 @@ button{font:inherit;color:inherit}
 .jp,.jpi{font-family:var(--f-jp);font-weight:600}
 .jpi{font-size:1.05em}
 .rom{color:var(--ink-2)}
-body.no-romaji .rom{display:none}
 .lede{font-size:18px;color:var(--ink-2)}
 .hint{font-size:15.5px;color:var(--ink-2);margin-top:14px}
 .note{border-left:3px solid var(--guide);padding:2px 0 2px 14px;color:var(--ink-2);font-size:16.5px}
@@ -514,8 +513,10 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .trace-model{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px;font-size:16px;cursor:pointer}
 .trace-area .hint{text-align:center;max-width:44ch}
 
-/* ---- Ajustes ---- */
-.settings{margin-top:8px;padding:2px 16px 4px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:20px;box-shadow:0 5px 0 var(--edge)}
+/* ---- Ajustes: un título chico y una tarjeta por grupo ---- */
+.set-h{font-size:15.5px;font-weight:700;color:var(--ink-2);margin:26px 4px 8px}
+.page-h+.set-h{margin-top:10px}
+.settings{margin-top:0;padding:2px 16px 4px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:20px;box-shadow:0 5px 0 var(--edge)}
 .set{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-top:1.5px solid var(--line)}
 .settings .set:first-child{border-top:0}
 .dev-set b{color:var(--shu)}
@@ -544,9 +545,12 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 @media (max-height:720px){.home-mid:has(.inst){gap:14px;padding:6px 0 14px}}
 @media (max-width:380px){.inst{gap:10px;padding:10px 12px}.inst .inst-ic{width:38px;height:38px}}
 .set-t{display:grid}
+.set-t b{line-height:1.35}
 .set-t small{font-size:15.5px;color:var(--ink-2);line-height:1.45}
 /* Volumen de los efectos: el parlante silencia y vuelve al nivel anterior; al soltar suena un acierto de muestra */
 .set-vol{flex-direction:column;align-items:stretch;gap:10px}
+/* Progreso: el aviso es largo, así que va a todo el ancho y «Borrar» abajo */
+.set-col{flex-direction:column;align-items:flex-start;gap:12px}
 .vol{display:flex;align-items:center;gap:12px}
 .vol-n{flex:none;min-width:3.2em;text-align:right;font-size:15.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .switch{appearance:none;-webkit-appearance:none;flex:none;width:54px;height:32px;border-radius:16px;background:var(--paper);border:var(--bw) solid var(--edge);position:relative;cursor:pointer;margin:0;transition:background .2s}
@@ -700,7 +704,6 @@ body.capa .navb .back::before{transform:translateY(-3px) rotate(-45deg)}
 
 /* ---- Lecciones de mapa: marcas «dónde se retoma» y romaji siempre a la vista ---- */
 .mk-line{font-size:15.5px;line-height:1.5;color:var(--ai);margin:-2px 0 14px;max-width:62ch}
-body.no-romaji .keep-rom .rom{display:block}
 /* ---- Hitos: «¡Ya podés leer!» (diseño aprobado sobre bocetos, 24/9/2026) ---- */
 .unlock-note{margin:22px 0 0;padding:10px 14px;border:var(--bw) dashed var(--midori);border-radius:12px;background:var(--ok-soft);color:var(--midori);font-weight:700;font-size:16px;text-align:center;max-width:none}
 .hito .present-card{padding-bottom:18px}
@@ -748,6 +751,16 @@ body.no-romaji .keep-rom .rom{display:block}
 .conf h2{margin:6px 0 8px;font-size:21px}
 .conf p{color:var(--ink-2);margin:0 0 4px}
 .conf .actions{margin:20px 0 4px}
+/* aviso de una acción que no se deshace (Borrar el progreso) */
+.aviso-rojo{margin-top:6px;padding:12px 14px;border-radius:12px;background:var(--shu-soft);border:2px solid var(--shu);color:var(--ink);font-size:16.5px;line-height:1.5}
+.aviso-rojo b{color:var(--shu)}
+.btn.peligro{background:var(--shu);color:#FFFFFF;font-weight:700}
+@media (hover:hover){.btn.peligro:hover{background:var(--shu);filter:brightness(1.07)}}
+/* ---- Créditos ---- */
+.cred-p{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:start;margin-top:18px}
+.cred-p img{display:block;width:96px;height:96px;border-radius:16px;border:var(--bw) solid var(--edge);image-rendering:pixelated;background:var(--tint)}
+.cred-p b{display:block;font-size:18px;line-height:1.3}
+.cred-p span>span{display:block;margin-top:4px;font-size:15.5px;line-height:1.45;color:var(--ink-2)}
 
 </style>
 </head>
@@ -1108,7 +1121,7 @@ const HTML_KOSOADO = `
 function W(list, ...ks){ return ks.map(k => { const w = list.find(x => x.k === k); if (!w) throw new Error('Palabra no encontrada: ' + k); return w; }); }
 
 // Lecciones de mapa («Cómo funciona el japonés» I y II): la única excepción a la regla de kana.
-// Todo el japonés lleva romaji, siempre visible aunque esté apagado en Ajustes (map:true).
+// Todo el japonés lleva romaji, siempre visible (map:true).
 // Texto: **negrita**, *itálica*. Bloques: p, note, html, ex (ejemplos con audio) y mk (marca «dónde se retoma»).
 const UNITS = [
  {id:1, title:'Primeros pasos', kana:'あ〜そ', ro:'a–so',
@@ -1129,7 +1142,7 @@ const UNITS = [
        {p:'Los saludos de todos los días llegan cuando ya podés leerlos. El primero, こんにちは (konnichiwa, hola), en la unidad 2.'}]},
      {h:'El romaji, un andamio', b:[
        {p:'El romaji escribe el japonés con nuestras letras. No es una escritura japonesa: es una transcripción pensada para extranjeros.'},
-       {p:'Al principio te ayuda a pronunciar mientras aprendés los kana. Pero el ojo siempre se va a lo conocido: si leés el romaji, no estás leyendo japonés. Conviene soltarlo cuanto antes. Desde la unidad 3 aparece solo si tocás un botón, y en Ajustes (el engranaje del inicio) podés apagarlo cuando quieras.'},
+       {p:'Al principio te ayuda a pronunciar mientras aprendés los kana. Pero el ojo siempre se va a lo conocido: si leés el romaji, no estás leyendo japonés. Conviene soltarlo cuanto antes. Desde la unidad 3 aparece solo si tocás un botón.'},
        {p:'Se lee casi como en español, con estas diferencias: la *j* suena como en inglés (*jeans*); la *sh*, como en inglés (*show*); la *h* es una aspiración suave, más leve que nuestra jota; la raya sobre una vocal (ā, ō) indica que es larga.'}]},
      {h:'Cómo suena', b:[
        {p:'Buena noticia: las cinco vocales japonesas son prácticamente las del español. La u se dice con los labios menos redondeados, y a veces casi desaparece: です (desu, es) suena «des».'},
@@ -1983,7 +1996,7 @@ const ICON_PLAY = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="
 /* ---------- Estado y guardado ---------- */
 const STORE_KEY = 'jp-curso-v1';
 // resetAt: momento del último «Borrar». Lo aprobado antes de esa marca no vuelve al sincronizar, venga de donde venga.
-function freshState(){ return {v:1, lessons:{}, kana:{}, review:null, hitos:{}, vistos:{}, words:{stats:{}, log:{}, updated:0}, settings:{romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
+function freshState(){ return {v:1, lessons:{}, kana:{}, review:null, hitos:{}, vistos:{}, words:{stats:{}, log:{}, updated:0}, settings:{slow:false, think:false, sfxVol:80, sfxPrev:80}, updated:0, resetAt:0}; }
 function normalize(){
   if (!S.words || typeof S.words !== 'object') S.words = {};
   S.words.stats = S.words.stats && typeof S.words.stats === 'object' ? S.words.stats : {};
@@ -1993,7 +2006,8 @@ function normalize(){
   S.words.updated = S.words.updated || 0;
   // ayudas «?» ya vistas: se abren solas solo la primera vez
   if (!S.vistos || typeof S.vistos !== 'object') S.vistos = {};
-  S.settings = Object.assign({romaji:true, slow:false, think:false, sfxVol:80, sfxPrev:80}, S.settings || {});
+  S.settings = Object.assign({slow:false, think:false, sfxVol:80, sfxPrev:80}, S.settings || {});
+  delete S.settings.romaji;   // el interruptor «Mostrar romaji» se quitó: el romaji sigue la regla de cada unidad
   if ('sfx' in S.settings){ if (S.settings.sfx === false) S.settings.sfxVol = 0; delete S.settings.sfx; }
   S.resetAt = S.resetAt || 0;
   if (S.lessons && typeof S.lessons === 'object') Object.keys(S.lessons).forEach(id => { if (!LESSON[id]) delete S.lessons[id]; });
@@ -2080,7 +2094,7 @@ async function initSync(){
     if (!uid) return;
     const ref = db.doc('data/users/' + uid + '/progress');
     const snap = await ref.get();
-    if (snap.exists){ mergeRemote(snap.data()); saveLocal(); applySettings(); if (!Q) route(); }
+    if (snap.exists){ mergeRemote(snap.data()); saveLocal(); if (!Q) route(); }
     remoteRef = ref; syncMode = 'cuenta'; updateSyncLabel();
     queueRemote();
   } catch(e){ /* sin sincronización: queda en el dispositivo */ }
@@ -2476,7 +2490,6 @@ function toast(msg){
   t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 4200);
 }
-function applySettings(){ document.body.classList.toggle('no-romaji', !S.settings.romaji); }
 function sq(k, cls){ return '<span class="sq ' + (cls || '') + '"><span>' + esc(k) + '</span></span>'; }
 function topNav(href, label, center){ return topBar(center) + '<nav class="navb" aria-label="Navegación"><div class="navb-in"><a class="back" href="' + href + '">' + esc(label) + '</a></div></nav>'; }
 function playBtn(jp, label){ return '<button class="play-btn" data-act="say" data-jp="' + esc(jp) + '" aria-label="Escuchar ' + esc(label || jp) + '">' + ICON_PLAY + '</button>'; }
@@ -2550,7 +2563,7 @@ function volIcon(v){
 }
 function volRowHTML(){
   const v = S.settings.sfxVol;
-  return '<div class="set set-vol"><span class="set-t"><b>Efectos de sonido</b><small>Aciertos, errores, fichas y resultados. La voz y el volumen general, con los botones del teléfono.</small></span>' +
+  return '<div class="set set-vol"><span class="set-t"><b>Efectos de sonido</b><small>Solo afecta a los efectos. La voz se regula con los botones del teléfono.</small></span>' +
     '<div class="vol"><button class="vol-btn' + (v ? '' : ' off') + '" data-act="volmute" aria-label="' + (v ? 'Silenciar los efectos' : 'Activar los efectos') + '">' + volIcon(v) + '</button>' +
     '<input class="vol-rng" id="volRng" type="range" min="0" max="100" step="5" value="' + v + '" style="--v:' + v + '%" aria-label="Volumen de los efectos">' +
     '<span class="vol-n" id="volN">' + v + ' %</span></div></div>';
@@ -2588,24 +2601,31 @@ function renderTemario(){
 
 /* ---------- Ajustes ---------- */
 function renderSettings(){
+  const grupo = (t, filas) => '<h2 class="set-h">' + t + '</h2><section class="settings">' + filas + '</section>';
   return topNav('#/', 'Inicio') + '<header class="page-h"><h1>Ajustes</h1></header>' +
-    '<section class="settings">' +
-    '<label class="set"><span class="set-t"><b>Mostrar romaji</b><small>Conviene sacarlo a medida que leas con soltura.</small></span><input type="checkbox" class="switch" data-set="romaji"' + (S.settings.romaji ? ' checked' : '') + '></label>' +
-    '<div class="set"><span class="set-t"><b>Velocidad del audio</b></span><span class="seg" role="group" aria-label="Velocidad del audio"><button data-act="rate" data-v="0" aria-pressed="' + (!S.settings.slow) + '">Normal</button><button data-act="rate" data-v="1" aria-pressed="' + (!!S.settings.slow) + '">Lenta</button></span></div>' +
-    '<div class="set"><span class="set-t"><b>Audio</b><small id="voiceLabel">' + voiceText() + '</small></span><button class="btn small" data-act="say" data-jp="かさ">Probar</button></div>' +
-    volRowHTML() +
-    '<div class="set"><span class="set-t"><b>Progreso</b><small id="syncLabel">' + syncText() + '</small><small>«Borrar» reinicia el curso.</small></span><button class="btn small" data-act="reset">Borrar</button></div>' +
-    (DEV ? '<div class="set dev-set"><span class="set-t"><b>Modo prueba</b><small>Todas las lecciones están destrabadas, solo en este dispositivo. También se activa y desactiva con cinco toques al paraguas del inicio.</small></span><button class="btn small" data-act="devoff">Desactivar</button></div>' : '') +
-    versionRowHTML() +
-  '</section>';
+    grupo('Audio',
+      '<div class="set"><span class="set-t"><b>Voz</b><small id="voiceLabel">' + voiceText() + '</small></span><button class="btn small" data-act="say" data-jp="かさ">Probar</button></div>' +
+      '<div class="set"><span class="set-t"><b>Velocidad de la voz</b></span><span class="seg" role="group" aria-label="Velocidad de la voz"><button data-act="rate" data-v="0" aria-pressed="' + (!S.settings.slow) + '">Normal</button><button data-act="rate" data-v="1" aria-pressed="' + (!!S.settings.slow) + '">Lenta</button></span></div>' +
+      volRowHTML()) +
+    grupo('Progreso',
+      '<div class="set set-col"><span class="set-t"><small id="syncLabel">' + syncText() + '</small></span><button class="btn small" data-act="reset">Borrar</button></div>') +
+    grupo('Acerca de Kasa',
+      '<div class="set"><span class="set-t"><b>Créditos</b><small>Quiénes hacen Kasa.</small></span><button class="btn small" data-act="creditos">Ver</button></div>' +
+      versionRowHTML()) +
+    (DEV ? grupo('Prueba', '<div class="set dev-set"><span class="set-t"><b>Modo prueba</b><small>Todas las lecciones están destrabadas, solo en este dispositivo. También se activa y desactiva con cinco toques al paraguas del inicio.</small></span><button class="btn small" data-act="devoff">Desactivar</button></div>') : '');
 }
 function voiceText(){
   if (!TTS.ok) return 'Este visor no tiene síntesis de voz. Abrí el enlace en Chrome o Safari para escuchar.';
-  if (TTS.voice) return 'Voz japonesa: ' + esc(TTS.voice.name) + '. Es sintética: sirve para practicar, aunque a veces falla en la entonación.';
+  if (TTS.voice) return 'Voz sintética, como apoyo para practicar.';
   if (TTS.count) return 'No encontré una voz japonesa instalada. En Android: Ajustes, Accesibilidad, Texto a voz, y descargá el paquete de japonés.';
   return 'Si «Probar» no suena, instalá una voz japonesa en el sistema.';
 }
-function syncText(){ return syncMode === 'cuenta' ? 'Se guarda en tu cuenta y se sincroniza entre dispositivos.' : 'Se guarda en este dispositivo.'; }
+// Progreso: dónde se guarda y cómo no perderlo. La línea de Chrome (traída de Fogonazo) no va en iPhone, donde no hay esa opción
+function syncText(){
+  if (syncMode === 'cuenta') return 'Se guarda en tu cuenta y se sincroniza entre dispositivos.';
+  return 'Se guarda solo en este teléfono. Si borrás los datos del navegador o desinstalás la app, el progreso se pierde.' +
+    (esIOS() ? '' : ' Al borrar los datos de navegación de Chrome, destildá «Cookies y datos de sitios» para no perderlo.');
+}
 function updateVoiceLabel(){ const el = document.getElementById('voiceLabel'); if (el) el.innerHTML = voiceText(); }
 function updateSyncLabel(){ const el = document.getElementById('syncLabel'); if (el) el.textContent = syncText(); }
 
@@ -2830,8 +2850,8 @@ function renderLesson(id){
     body += wordListHTML(L);
     body += practiceBar(L);
   } else if (L.type === 'concept' || L.type === 'grammar'){
-    // lecciones de mapa: el romaji queda siempre a la vista, aunque esté apagado en Ajustes
-    const art = '<article class="lesson-text' + (L.map ? ' keep-rom' : '') + '">' + L.sections.map(s => '<section><h2>' + jpify(esc(s.h)) + '</h2>' + renderBlocks(s.b) + '</section>').join('') + '</article>';
+    // lecciones de mapa: el romaji queda siempre a la vista
+    const art = '<article class="lesson-text">' + L.sections.map(s => '<section><h2>' + jpify(esc(s.h)) + '</h2>' + renderBlocks(s.b) + '</section>').join('') + '</article>';
     body += L.unit >= 3 && !L.map ? romBar(false) + '<div class="rom-wrap">' + art + '</div>' : art;
     body += practiceBar(L, L.type === 'concept' ? 'Comprobar lo que entendiste' : 'Practicar');
   } else if (L.type === 'listen'){
@@ -2949,6 +2969,34 @@ function openKana(k){
 }
 // Cerrar una hoja: con «anim», baja y después se quita (mientras baja ya no recibe toques); sin «anim», se quita
 // en el acto (al cambiar de pantalla, la hoja se va con la foto de la pantalla que sale).
+// Créditos: hoja con quienes hacen Kasa (las imágenes, en creditos/; el bunchō sale de herramientas/buncho.py)
+const CREDITOS = [
+  {img:'creditos/efevali.png', nombre:'efevali', alt:'Retrato de efevali en pixel art, con anteojos de sol', texto:'Un sujeto curioso, que se encuentra aprendiendo japonés mientras desarrolla una app para aprender japonés. Tampoco sabe desarrollar.'},
+  {img:'creditos/claude.png', nombre:'Claude', alt:'Un bunchō (pájaro japonés) en pixel art, con hachimaki y parado sobre un pincel', texto:'Una inteligencia artificial que escribe el código y las lecciones. Sabe desarrollar, pero su japonés es de libro: escribe cada palabra sin haberla oído nunca.'}
+];
+function abrirCreditos(){
+  closeSheet();
+  const el = document.createElement('div');
+  el.className = 'sheet-back';
+  el.innerHTML = '<div class="sheet conf cred" role="dialog" aria-modal="true" aria-labelledby="credT"><h2 id="credT">Créditos</h2>' +
+    CREDITOS.map(c => '<div class="cred-p"><img src="' + c.img + '" alt="' + esc(c.alt) + '" width="96" height="96"><span><b>' + esc(c.nombre) + '</b><span>' + esc(c.texto) + '</span></span></div>').join('') +
+    '<div class="actions"><button class="btn wide" data-act="close">Cerrar</button></div></div>';
+  document.body.appendChild(el);
+  document.body.classList.add('sheet-open');
+  el.querySelector('.actions .btn').focus({preventScroll: true});
+}
+// Borrar el progreso: hoja con el aviso en rojo; lo seguro (Cancelar) queda con el foco
+function askReset(){
+  closeSheet();
+  const el = document.createElement('div');
+  el.className = 'sheet-back conf-back';
+  el.innerHTML = '<div class="sheet conf" role="dialog" aria-modal="true" aria-labelledby="resetT"><h2 id="resetT">¿Borrar el progreso?</h2>' +
+    '<div class="aviso-rojo">Se borran todas las lecciones aprobadas, el avance en los kana y el de tus palabras. El curso vuelve a empezar desde cero. <b>No se puede deshacer.</b></div>' +
+    '<div class="actions stack"><button class="btn wide center peligro" data-act="resetok">Borrar</button><button class="btn wide center" data-act="close">Cancelar</button></div></div>';
+  document.body.appendChild(el);
+  document.body.classList.add('sheet-open');
+  el.querySelector('[data-act="close"]').focus({preventScroll:true});
+}
 function closeSheet(anim){
   document.querySelectorAll('.sheet-back:not(.closing)').forEach(el => {
     if (anim && !vtQuieto()){ el.classList.add('closing'); setTimeout(() => el.remove(), VT_DUR); }
@@ -3885,13 +3933,16 @@ document.addEventListener('click', e => {
     case 'rate': S.settings.slow = t.dataset.v === '1'; save(); t.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b === t))); speak('かさ'); break;
     case 'volmute': volSet(S.settings.sfxVol ? 0 : (S.settings.sfxPrev || 80), true); break;
     case 'devoff': DEV = false; try { localStorage.removeItem('jp-curso-dev'); } catch(e){} toast('Modo prueba desactivado.'); route(); break;
-    case 'reset':
-      if (t.dataset.armed === '1'){ const keep = {settings:S.settings}; S = Object.assign(freshState(), keep, {resetAt: Date.now()}); normalize(); save(); clearTimeout(remoteTimer); flushRemote(); applySettings(); toast('Progreso borrado.'); route(); }
-      else { t.dataset.armed = '1'; t.textContent = '¿Seguro? Tocá de nuevo'; setTimeout(() => { if (t.isConnected){ t.dataset.armed = ''; t.textContent = 'Borrar'; } }, 4000); }
+    case 'reset': askReset(); break;
+    case 'resetok': {
+      const keep = {settings:S.settings}; S = Object.assign(freshState(), keep, {resetAt: Date.now()}); normalize(); save(); clearTimeout(remoteTimer); flushRemote();
+      closeSheet(true); toast('Progreso borrado.'); route();
       break;
+    }
     case 'verbuscar': buscarVersion(); break;
     case 'verup': actualizarApp(); break;
     case 'instalar': instalar(); break;
+    case 'creditos': abrirCreditos(); break;
     case 'abrirchrome': abrirChrome(); break;
   }
 });
@@ -3902,7 +3953,6 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const t = e.target;
   if (t.id === 'volRng'){ volSet(Number(t.value), true); return; }
-  if (t.dataset && t.dataset.set === 'romaji'){ S.settings.romaji = t.checked; save(); applySettings(); }
   if (t.dataset && t.dataset.set === 'think'){ S.settings.think = t.checked; save(); }
 });
 document.addEventListener('keydown', e => {
@@ -3967,7 +4017,6 @@ window.addEventListener('resize', trasPintar);
 if (document.fonts){ document.fonts.ready.then(trasPintar).catch(() => {}); try { document.fonts.addEventListener('loadingdone', trasPintar); } catch(e){} }
 new MutationObserver(trasPintar).observe(app, {childList: true, subtree: true});
 
-applySettings();
 route();
 initSync();
 iniciarApp();

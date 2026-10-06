@@ -58,7 +58,7 @@ def progreso(texto):
             lecciones[parte] = {'done': True, 'best': 90, 'at': 1}
     return {'v': 1, 'lessons': lecciones, 'kana': {}, 'hitos': {},
             'words': {'own': [], 'stats': {}, 'log': {}, 'updated': 0},
-            'settings': {'romaji': True, 'slow': False, 'think': False, 'sfxVol': 0, 'sfxPrev': 80},
+            'settings': {'slow': False, 'think': False, 'sfxVol': 0, 'sfxPrev': 80},
             'updated': 0, 'resetAt': 0}
 
 
