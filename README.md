@@ -23,7 +23,8 @@ La única dirección escrita en los archivos es la del manifiesto (`related_appl
 | `sw.js` | El *service worker*: guarda la app en el teléfono para que funcione sin conexión y maneja las versiones nuevas. |
 | `fuentes/` | Klee One, Shippori Mincho y Zen Kaku Gothic New, recortadas a lo que usa el curso, con sus licencias (SIL OFL 1.1). |
 | `iconos/` | El ícono (el wagasa del logo, solo, sobre crudo) en los tamaños que pide Android. |
-| `herramientas/` | Ayudantes para el armado: `version.py`, `fuentes.py`, `iconos.py`, `vista_previa.py` y `boceto.py` (ver abajo). |
+| `creditos/` | Las imágenes de la hoja de créditos (Ajustes): el retrato de efevali y el bunchō de Claude. |
+| `herramientas/` | Ayudantes para el armado: `version.py`, `fuentes.py`, `iconos.py`, `vista_previa.py`, `boceto.py` y `buncho.py` (ver abajo). |
 | `docs/` | El manifiesto del curso, el registro de decisiones, los bocetos aprobados y el muestrario de sonidos (ver su [índice](docs/README.md)). |
 | `CONTRIBUTING.md` | El método de trabajo: issues, etiquetas, bocetos, ramas y commits. |
 | `CHANGELOG.md` | El registro de las versiones publicadas. |
@@ -54,7 +55,7 @@ Cada versión publicada se encuentra en el historial del repositorio («Commits�
 
 ## Progreso
 
-Se guarda en el teléfono, dentro de los datos de Chrome para este sitio. Desinstalar la app o borrar los datos del sitio lo borra. La app le pide a Android que no lo borre por falta de espacio.
+Se guarda en el teléfono, dentro de los datos de Chrome para este sitio. Desinstalar la app o borrar los datos del sitio lo borra (en «Borrar datos de navegación», la opción «Cookies y datos de sitios»). Ajustes lo avisa. La app le pide a Android que no lo borre por falta de espacio. Exportarlo a un archivo es una idea pendiente (#36).
 
 ## Herramientas
 
@@ -63,5 +64,6 @@ Requieren Python 3 con `pip install fonttools brotli playwright` y, para los íc
 - `herramientas/version.py`: sube la versión (`parche`, `menor` o `mayor`) y pone la fecha de hoy.
 - `herramientas/fuentes.py`: baja las tipografías originales de Google Fonts y las recorta a los caracteres de `index.html`, más hiragana y katakana completos.
 - `herramientas/iconos.py`: dibuja el ícono a partir del paraguas del logo que está en `index.html`.
-- `herramientas/vista_previa.py`: arma la vista previa para el artefacto de claude.ai (el mismo `index.html`, con las tipografías adentro del archivo y sin manifiesto).
+- `herramientas/vista_previa.py`: arma la vista previa para el artefacto de claude.ai (el mismo `index.html`, con las tipografías y las imágenes adentro del archivo y sin manifiesto).
 - `herramientas/boceto.py`: captura una pantalla tal como se ve en el teléfono, con el progreso que se le indique, para los bocetos (ver [CONTRIBUTING.md](CONTRIBUTING.md#bocetos)).
+- `herramientas/buncho.py`: dibuja, píxel por píxel, el bunchō de Claude para los créditos (`python3 herramientas/buncho.py creditos/claude.png 6`).

@@ -130,7 +130,12 @@ La regla completa está en la guía de estilo («Dibujos» y «Preguntas con dib
 - **El gesto de volver del teléfono también navega** (25/9), y se mantiene el botón propio.
 - **Indicador de «hay más abajo».** Degradé y una flecha centrada que salta tres veces, se va al llegar al final y, al tocarla, baja.
 - **Tarjetas con un dato largo** (p. ej. あお). Si solo una fracción de «Seguir» queda bajo la barra de «Salir», la tarjeta se compacta (espacios, nunca letras, y solo lo necesario); si hay más contenido debajo, se mantiene la flecha.
-- **Ajustes en pantalla propia:** romaji, velocidad del audio, audio, efectos de sonido, progreso, llave de prueba (visible si está activa) y versión.
+- **Ajustes en pantalla propia:** romaji, velocidad del audio, audio, efectos de sonido, progreso, llave de prueba (visible si está activa) y versión (reemplazado el 6/10: ver «Ajustes en grupos»).
+- **Ajustes en grupos** (6/10, 0.4.1, B-06). Tres grupos con título chico y una tarjeta cada uno: Audio (voz con «Probar», velocidad de la voz, efectos de sonido), Progreso y Acerca de Kasa (créditos y versión); el modo prueba, aparte. Textos sin detalles técnicos: «Voz sintética, como apoyo para practicar.»
+- **Sin interruptor de romaji** (6/10, #33). Casi no hacía nada (solo escondía el romaji en 2-g, 2-e y la corrección de las unidades 1 y 2) y contradecía la regla del curso, que es la que suelta el andamio: a la vista en las unidades 1 y 2, detrás de un botón desde la 3.
+- **Progreso: aviso y hoja roja para Borrar** (6/10, #30). Viene de Fogonazo. La fila dice que el progreso vive solo en el teléfono y cómo no perderlo al borrar los datos de Chrome (no en iPhone). «Borrar» pide confirmación en una hoja con el aviso en rojo; el foco queda en «Cancelar». *Descartado por ahora:* una clave de texto como la de Fogonazo (el progreso de Kasa es demasiado grande) y descargar el progreso en un archivo (queda como idea, #36).
+- **Créditos** (6/10, #35). efevali, con su retrato en pixel art (el de su perfil de GitHub), y Claude, con un 文鳥 (bunchō, «pájaro de las letras») con hachimaki sobre un pincel, que eligió porque se identifica con la escritura. *Descartados:* el logo oficial de Claude (es una marca) y un daruma rojo, que desentonaba con el curso.
+- **0.4.1 para Ajustes** (6/10). Ajustes quedó fuera de la revisión de la 0.4.0 y se publica sola, antes de la unidad 1, como cierre de las pantallas generales. Lleva algo nuevo (créditos), que por la regla sería una versión menor; se eligió 0.4.1 para que la 0.5.0 siga siendo la unidad 1.
 - **Modo oscuro:** al final (issue #16). La paleta está guardada en el CSS.
 
 ## Sonidos
