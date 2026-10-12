@@ -4,6 +4,7 @@
 |---|---|
 | [manifiesto.md](manifiesto.md) | Qué es Kasa, sus diez principios y la ruta del curso. Se consulta ante cualquier duda de diseño. |
 | [decisiones.md](decisiones.md) | Registro de decisiones por tema, con fecha, motivo y lo descartado. |
+| [analisis-pedagogico.md](analisis-pedagogico.md) | Análisis de la dinámica del tramo de hiragana (unidades 1 a 3): qué funciona, hallazgos, propuestas y criterios para medir cada unidad nueva. |
 | [bocetos/](bocetos/) | Bocetos aprobados, con su índice. |
 | [sonidos/muestrario.html](sonidos/muestrario.html) | Muestrario para escuchar los sonidos elegidos, las alternativas descartadas y los insectos de Japón. Se abre en Chrome: https://efevali.github.io/kasa/docs/sonidos/muestrario.html |
 
