@@ -373,6 +373,17 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .scripts-line .s-kj{border-bottom:4px double currentColor}
 .scripts .rom,.scripts .es{margin:4px 0 0;font-size:16px}
 .legend{margin:14px 0 0;display:grid;gap:10px}
+/* La tabla del hiragana de la lección 1 */
+.tabla-h{margin:12px 0 18px;padding:12px 10px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:16px}
+.th-row{display:grid;grid-template-columns:34px repeat(5,minmax(0,1fr));align-items:center;padding:3px 6px;border-radius:10px}
+.th-row.hoy{background:var(--ok-soft)}
+.th-letra{text-align:center;font-size:17px;font-weight:700;color:var(--ai)}
+.th-head{padding-bottom:6px}
+.th-cell{display:grid;justify-items:center;line-height:1.15;padding:3px 0}
+.th-cell .jp{font-size:23px}
+.th-cell .rom{font-size:12px}
+.th-key{display:flex;align-items:center;gap:8px;margin:10px 6px 0;font-size:14px;color:var(--ink-2)}
+.th-swatch{width:18px;height:18px;border-radius:5px;background:var(--ok-soft);border:1.5px solid var(--guide)}
 .legend div{display:grid;grid-template-columns:86px 1fr;gap:10px}
 .legend dt{font-weight:700;font-size:16px;justify-self:start;align-self:start;line-height:1.4}
 .legend dt.s-h{border-bottom:3px solid currentColor}.legend dt.s-k{border-bottom:3px dashed currentColor}.legend dt.s-kj{border-bottom:4px double currentColor}
@@ -473,7 +484,30 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .present-rom{font-size:18px;line-height:1.3;color:var(--ink-2);margin:2px 0 0}
 .present-es{font-size:26px;line-height:1.3;font-weight:700;margin:6px 0 12px;max-width:none}
 .present-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.l-best>span{white-space:nowrap}
 .present>.btn{margin-top:18px}
+/* Lección de kana en ciclo: presentar un kana, presentar una fila con marca y leer una palabra */
+.pk-head{display:flex;align-items:baseline;justify-content:center;gap:12px;margin:0 0 12px;line-height:1}
+.pk-head .jp{font-size:44px;font-weight:600}
+.pk-head b{font-size:26px;font-weight:600}
+.present-k .trace-wrap{width:min(60vw,220px);box-shadow:none}
+.pk-hint{margin:10px 0 12px;font-size:15px;line-height:1.35;color:var(--ink-2)}
+.present-k .present-actions{margin-bottom:14px}
+.pr-title{margin:0 0 12px;font-size:20px;line-height:1.3;font-weight:700}
+.present-row .kana-grid{width:100%;margin:0}
+.present-row .pr-base .sq{width:100%;height:auto;aspect-ratio:1/1;container-type:inline-size;border-style:dashed;color:var(--ink-2)}
+.present-row .pr-base .sq>span{font-size:26px}
+.pr-arrows{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;font-size:18px;line-height:1.5;color:var(--ink-2)}
+.leer-lead{margin:16px 0 0;font-size:15.5px;line-height:1.4;color:var(--ink-2)}
+.ej-list{display:grid;gap:10px;margin:14px 0 4px}
+.ej-row{display:grid;grid-template-columns:minmax(96px,auto) 1fr auto;align-items:center;gap:14px;width:100%;padding:10px 14px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:14px;box-shadow:0 3px 0 var(--edge);text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.ej-row:active{transform:translateY(2px);box-shadow:0 1px 0 var(--edge)}
+.ej-k{font-size:32px;line-height:1.25}
+.ej-k .key{color:var(--midori)}
+.ej-t{display:grid;line-height:1.3}
+.ej-t .rom{font-size:15px}
+.ej-es{font-size:17px;font-weight:700}
+.ej-row svg{color:var(--ai)}
 .enr{width:100%;text-align:left;padding:12px 14px;background:var(--tint);border-radius:12px}
 .enr p{margin:0;font-size:16px;line-height:1.45;max-width:none}
 .enr .enr-label{font-size:15px;line-height:1.4;font-weight:700;color:var(--midori);margin-bottom:2px}
@@ -707,7 +741,6 @@ body.capa .navb .back::before{transform:translateY(-3px) rotate(-45deg)}
 /* ---- Hitos: «¡Ya podés leer!» (diseño aprobado sobre bocetos, 24/9/2026) ---- */
 .unlock-note{margin:22px 0 0;padding:10px 14px;border:var(--bw) dashed var(--midori);border-radius:12px;background:var(--ok-soft);color:var(--midori);font-weight:700;font-size:16px;text-align:center;max-width:none}
 .hito .present-card{padding-bottom:18px}
-.hito .present-card.pre{padding-bottom:22px}
 .hito-phrase{font-size:min(54px,14vw);line-height:1.2;margin:4px 0 0}
 .hito-phrase.long{font-size:min(42px,10.6vw);line-height:1.25}
 .hito-phrase .ln{display:block}
@@ -715,13 +748,11 @@ body.capa .navb .back::before{transform:translateY(-3px) rotate(-45deg)}
 .hito-key{margin:6px 0 0;font-size:15.5px;font-weight:700;color:var(--midori)}
 .hito-key .jpi{font-size:18px}
 .hito .present-rom + .hito-key{margin-top:8px}
-.hito-try{margin:18px 0 6px;font-size:17px;color:var(--ink-2)}
 .hito .present-card .present-es{margin-top:10px}
 .hito-read{width:100%;text-align:left;margin:12px 0 0;padding:2px 0 2px 14px;border-left:3px solid var(--ai);font-size:16px;line-height:1.45;color:var(--ink-2)}
 .hito-read b{color:var(--ink)}
 .hito-read .mk{display:block;font-size:14.5px;color:var(--ai);margin-top:3px}
-.hito .hito-go{margin-top:26px}
-.hito .present-card:not(.pre) + .hito-go{margin-top:22px}
+.hito .hito-go{margin-top:22px}
 /* cierre del hito */
 .cierre{padding-top:6px}
 .fr-h{font-family:var(--f-jp);font-weight:600;font-size:30px;line-height:1.25;margin:10px 0 4px}
@@ -859,7 +890,7 @@ const KANA = {
   // Fila か
   'か':{r:'ka',p:'«ka», como en «casa».',ex:['かお','kao','cara']},
   'き':{r:'ki',p:'«ki», como en «kilo».',ex:['あき','aki','otoño']},
-  'く':{r:'ku',p:'«ku», con la u relajada.',ex:['きく','kiku','escuchar']},
+  'く':{r:'ku',p:'«ku», con la u relajada.',ex:['かく','kaku','escribir']},
   'け':{r:'ke',p:'«ke», como en «queso».',ex:['いけ','ike','estanque']},
   'こ':{r:'ko',p:'«ko», como en «cosa».',ex:['ここ','koko','aquí']},
   // Fila さ
@@ -1103,11 +1134,24 @@ const HTML_SCRIPTS = `
   <p class="rom">watashi wa kōhī o nomimasu</p>
   <p class="es">Yo tomo café.</p>
   <dl class="legend">
-    <div><dt class="s-h">Hiragana</dt><dd>Partículas, terminaciones y palabras japonesas. Con él se puede escribir cualquier palabra.</dd></div>
-    <div><dt class="s-k">Katakana</dt><dd>Los mismos sonidos con otras formas: palabras extranjeras como コーヒー, nombres como フェデリコ y onomatopeyas.</dd></div>
-    <div><dt class="s-kj">Kanji</dt><dd>Caracteres de origen chino que cargan el significado. Hay unos 2.000 de uso común y se aprenden de a poco.</dd></div>
+    <div><dt class="s-h">Hiragana</dt><dd>La escritura básica: las palabras japonesas y las partes que arman la oración. Con él se puede escribir cualquier palabra.</dd></div>
+    <div><dt class="s-k">Katakana</dt><dd>Los mismos sonidos con otras formas: palabras extranjeras como コーヒー, nombres extranjeros como マリア y onomatopeyas.</dd></div>
+    <div><dt class="s-kj">Kanji</dt><dd>Caracteres de origen chino. Cada uno representa una idea, y suele tener más de una lectura. Hay unos 2.000 de uso común y se aprenden de a poco.</dd></div>
   </dl>
 </div>`;
+
+// La tabla del hiragana como figura de la lección 1. Arriba, las cinco vocales; a la izquierda, la consonante de
+// cada fila: así se ve que cada kana es consonante + vocal. Debajo de cada kana va su romaji, que muestra las
+// irregularidades (shi, chi, tsu, fu). Las primeras `deLaUnidad` filas van resaltadas: son las de la unidad.
+function tablaHiraganaHTML(deLaUnidad){
+  const consonantes = ['', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', ''];
+  return '<div class="tabla-h" role="table" aria-label="Tabla del hiragana">' +
+    '<div class="th-row th-head" role="row"><span></span>' + ['a', 'i', 'u', 'e', 'o'].map(v => '<span class="th-letra" role="columnheader">' + v + '</span>').join('') + '</div>' +
+    GOJUON.map((fila, i) =>
+    '<div class="th-row' + (i < deLaUnidad ? ' hoy' : '') + '" role="row"><span class="th-letra" role="rowheader">' + consonantes[i] + '</span>' +
+    fila.map(k => '<span class="th-cell" role="cell">' + (k ? '<span class="jp">' + k + '</span><span class="rom">' + KANA[k].r + '</span>' : '') + '</span>').join('') + '</div>').join('') +
+    '<p class="th-key"><span class="th-swatch" aria-hidden="true"></span>Las filas de esta unidad</p></div>';
+}
 
 const HTML_KOSOADO = `
 <div class="kosoado" role="list">
@@ -1125,60 +1169,59 @@ function W(list, ...ks){ return ks.map(k => { const w = list.find(x => x.k === k
 // Texto: **negrita**, *itálica*. Bloques: p, note, html, ex (ejemplos con audio) y mk (marca «dónde se retoma»).
 const UNITS = [
  {id:1, title:'Primeros pasos', kana:'あ〜そ', ro:'a–so',
-  desc:'Cómo funciona el japonés, las vocales, las filas か y さ con sus variantes y las primeras 24 palabras.',
+  desc:'Cómo funciona el japonés, las vocales, las filas か y さ con sus marcas y las primeras 24 palabras.',
   lessons:[
-   {id:'1-1', type:'concept', map:true, short:'Cómo funciona el japonés I', title:'Cómo funciona el japonés I: cómo se ve y cómo suena', min:10,
-    intro:'Antes de aprender el primer signo, un mapa del idioma: cómo se escribe y cómo suena. Todavía no hace falta leer nada: todo el japonés de esta lección va con romaji, su transcripción con nuestras letras.',
+   {id:'1-1', type:'concept', map:true, short:'Cómo funciona el japonés I', title:'Cómo funciona el japonés I: cómo se ve y cómo suena',
+    intro:'Antes de aprender a leer, un mapa del idioma: cómo se escribe y cómo suena. Todavía no hace falta leer nada: todo el japonés de esta lección va con romaji, su transcripción con nuestras letras.',
     sections:[
      {h:'Tres escrituras a la vez', b:[
-       {p:'Una oración japonesa corriente mezcla tres sistemas de escritura. En esta, cada color es uno distinto:'},
+       {p:'El japonés se escribe con tres sistemas distintos, y una oración corriente los mezcla. En esta, cada color es uno:'},
        {html:HTML_SCRIPTS},
-       {p:'No hace falta aprender los tres a la vez. Este curso empieza por el hiragana, porque con él se puede escribir cualquier palabra.'},
-       {p:'Los textos del curso van en hiragana y con espacios entre palabras, como en los libros para chicos. El japonés normal no deja espacios: los kanji ayudan a ver dónde empieza cada palabra.'},
+       {p:'El japonés normal no deja espacios entre palabras. La mezcla de escrituras ayuda a ver dónde empieza cada una; cuando hay varias seguidas en hiragana, quien lee las separa porque las conoce. Los textos del curso van solo en hiragana, y por eso llevan espacios, como los libros para chicos.'},
        {mk:'El hiragana se aprende en las unidades 1 a 3; el katakana y los kanji, más adelante.'}]},
+     {h:'Los kana: una sílaba por vez', b:[
+       {p:'El hiragana y el katakana se llaman, juntos, los **kana**. Son silabarios. Nuestras letras representan sonidos sueltos, como la k o la a; cada kana, en cambio, representa una sílaba entera. か es «ka», y no se puede separar en k y a.'},
+       {p:'Son pocos: 46 kana básicos, que con sus marcas y combinaciones alcanzan para escribir todo el idioma. Y son regulares: cada kana se lee siempre igual, con muy pocas excepciones.'},
+       {p:'Los kana se ordenan en una tabla. Cada **fila** combina una consonante con las cinco vocales, con unas pocas irregularidades que vas a ver en la tabla. La primera fila son las vocales solas; la segunda es la fila de か: ka, ki, ku, ke, ko.'},
+       {html:tablaHiraganaHTML(3)},
+       {p:'Algunas filas tienen además una versión con una **marca** que cambia la consonante; la más común son dos rayitas. か (ka) con la marca es が (ga).'},
+       {p:'No hace falta memorizar la tabla ahora: es el mapa del camino. La tenés siempre a mano en «Tabla de kana».'},
+       {mk:'En esta unidad aprendés las tres primeras filas: las vocales, か y さ, con sus marcas.'}]},
      {h:'Cómo vas a avanzar', b:[
        {p:'Vas a aprender el hiragana de a una fila por vez. Después de cada fila llegan palabras escritas solo con los kana que ya conocés, así que las vas a leer desde el principio.'},
-       {p:'Más adelante se suman lecciones de gramática, para armar oraciones con esas palabras, y de escucha.'},
-       {p:'Los saludos de todos los días llegan cuando ya podés leerlos. El primero, こんにちは (konnichiwa, hola), en la unidad 2.'}]},
+       {p:'Más adelante se suman lecciones de gramática, para armar oraciones con esas palabras, y de escucha. Los saludos llegan cuando ya podés leerlos: el primero, こんにちは (konnichiwa, hola), en la unidad 2.'}]},
      {h:'El romaji, un andamio', b:[
        {p:'El romaji escribe el japonés con nuestras letras. No es una escritura japonesa: es una transcripción pensada para extranjeros.'},
        {p:'Al principio te ayuda a pronunciar mientras aprendés los kana. Pero el ojo siempre se va a lo conocido: si leés el romaji, no estás leyendo japonés. Conviene soltarlo cuanto antes. Desde la unidad 3 aparece solo si tocás un botón.'},
-       {p:'Se lee casi como en español, con estas diferencias: la *j* suena como en inglés (*jeans*); la *sh*, como en inglés (*show*); la *h* es una aspiración suave, más leve que nuestra jota; la raya sobre una vocal (ā, ō) indica que es larga.'}]},
+       {p:'Se lee casi como en español, con estas diferencias: la *g* es siempre suave, como en «gato» (*ge* suena «gue» y *gi*, «gui»); la *j* y la *sh* suenan como en inglés (*jeans*, *show*); la *z* es sonora, como el zumbido de una abeja; la *h* es una aspiración suave, más leve que nuestra jota.'}]},
      {h:'Cómo suena', b:[
        {p:'Buena noticia: las cinco vocales japonesas son prácticamente las del español. La u se dice con los labios menos redondeados, y a veces casi desaparece: です (desu, es) suena «des».'},
        {p:'El japonés se cuenta en pulsos (moras) de duración pareja, como golpes de metrónomo. Cada kana vale un pulso, incluida la ん (n) final:'},
        {ex:[{k:'にほん',r:'ni-ho-n',es:'Japón: tres pulsos'}]},
        {p:'Por eso alargar una vocal no es un detalle: suma un pulso y cambia la palabra.'},
        {ex:[{k:'おばさん',r:'obasan',es:'tía, señora (cuatro pulsos)'},{k:'おばあさん',r:'obāsan',es:'abuela, señora mayor (cinco pulsos)'}]},
-       {p:'Lo mismo pasa con las consonantes dobles, que suman una pausa de un pulso:'},
-       {ex:[{k:'きて',r:'kite',es:'vení'},{k:'きって',r:'kitte',es:'estampilla'}]},
+       {p:'En romaji, la vocal larga se escribe con una raya encima: ā, ō.'},
        {mk:'La primera vocal larga aparece enseguida, en Palabras 1: いいえ (iie, no).'}]},
-     {h:'Tres sonidos que no existen en español', b:[
-       {p:'Casi todo el japonés se pronuncia con sonidos que ya tenés. Las excepciones son tres:'},
-       {p:'**tsu:** una t y una s pegadas, como en «tsunami».'},
-       {ex:[{k:'くつ',r:'kutsu',es:'zapatos'}]},
-       {p:'**fu:** se sopla con los labios apenas abiertos, como para enfriar la sopa, sin apoyar los dientes en el labio.'},
-       {ex:[{k:'ふじさん',r:'Fujisan',es:'monte Fuji'}]},
-       {p:'**r:** un toque suave de la lengua detrás de los dientes, como la r de «pero», nunca la de «perro».'},
-       {ex:[{k:'さくら',r:'sakura',es:'cerezo'}]},
-       {mk:'Los tres llegan en las unidades 2 y 3.'}]},
-     {h:'Los tonos, sin estudiarlos todavía', b:[
-       {p:'El español pronuncia una sílaba con más fuerza: *casa*, *casó*. El japonés, en cambio, sube y baja el tono entre pulsos, sin darle más fuerza a ninguno.'},
-       {p:'A veces el tono es lo único que separa dos palabras. あめ (ame) es «lluvia» si la *a* va más alta, y «caramelo» si la más alta es la *me*.'},
-       {p:'En la práctica, el contexto casi siempre resuelve la duda, y en la escritura normal los kanji las distinguen. Para empezar, alcanza con escuchar mucho e imitar la melodía de los audios.'}]}
+     {h:'Lo que vas a encontrar más adelante', b:[
+       {p:'**Consonantes dobles.** Una pausa de un pulso en medio de la palabra también la cambia: きて (kite) es «vení» y きって (kitte), «estampilla».'},
+       {p:'**Tres sonidos para afinar.** *tsu*, *fu* y la *r* no suenan como sugiere el romaji. Cada uno se explica cuando llega su kana.'},
+       {p:'**Los tonos.** El japonés no pronuncia una sílaba con más fuerza, como el español: sube y baja el tono. Para empezar, alcanza con escuchar e imitar la melodía de los audios.'},
+       {mk:'Las consonantes dobles llegan en la unidad 4; *tsu* y *fu*, en la 2; la *r*, en la 3.'}]}
     ],
     quiz:[
-     {q:'En el ejemplo, ¿con qué escritura va コーヒー (kōhī, café)?',o:['Katakana','Hiragana','Kanji','Romaji'],a:0,ex:'El katakana se usa para palabras de otros idiomas, nombres extranjeros y onomatopeyas.'},
-     {q:'¿Qué se puede escribir solo con hiragana?',o:['Cualquier palabra japonesa','Solo las palabras extranjeras','Solo los nombres propios','Solo las partículas'],a:0,ex:'Todo el japonés se puede escribir en hiragana; por eso lo usan los libros para chicos.'},
+     {q:'¿Con qué escritura va una palabra extranjera como コーヒー (kōhī, café)?',o:['Katakana','Hiragana','Kanji','Romaji'],a:0,ex:'El katakana se usa para palabras de otros idiomas, nombres extranjeros y onomatopeyas.'},
+     {q:'¿Qué se puede escribir solo con hiragana?',o:['Cualquier palabra japonesa','Solo las palabras extranjeras','Solo los nombres propios','Solo las palabras cortas'],a:0,ex:'Todo el japonés se puede escribir en hiragana; por eso lo usan los libros para chicos.'},
+     {q:'¿Qué representa cada kana?',o:['Una sílaba','Una letra suelta','Una idea','Una palabra entera'],a:0,ex:'Los kana son silabarios: か es «ka», una sílaba entera. Los que representan ideas son los kanji.'},
+     {q:'¿Qué tienen en común los kana de una misma fila?',o:['La consonante','La vocal','El significado','La cantidad de trazos'],a:0,ex:'Cada fila combina una consonante con las cinco vocales: la fila de か es ka, ki, ku, ke, ko.'},
+     {q:'En romaji, ¿cómo suena «ge»?',o:['«gue», como en «guerra»','«je», como en «jefe»','«ye», como en «yema»','«she», como en inglés'],a:0,ex:'La g del romaji es siempre suave, como en «gato»: «ge» suena «gue» y «gi», «gui».'},
      {q:'¿Cuántos pulsos tiene にほん (nihon, Japón)?',o:['3','2','4','5'],a:0,ex:'に, ほ y ん: la ん final cuenta como un pulso propio.'},
-     {q:'¿Qué distingue おばさん (obasan, tía) de おばあさん (obāsan, abuela)?',o:['Una vocal larga','El tono','Una consonante doble','La fuerza del acento'],a:0,ex:'La a larga dura un pulso más y cambia el significado.'},
-     {q:'あめ (ame) puede ser «lluvia» o «caramelo». Al hablar, ¿qué las distingue?',o:['El tono: qué parte va más alta','Una vocal larga','Una consonante doble','La fuerza del acento'],a:0,ex:'El japonés sube y baja el tono entre pulsos. Al escribir, los kanji las distinguen.'},
-     {q:'¿Cómo suena la r de さくら (sakura, cerezo)?',o:['Un toque suave de la lengua, como en «pero»','Como la rr de «perro»','Como la r francesa, en la garganta','Como la r inglesa, sin tocar el paladar'],a:0,ex:'La r japonesa es un toque breve, a veces cercano a una l, pero nunca vibrante.'}
+     {q:'¿Qué distingue おばさん (obasan, tía) de おばあさん (obāsan, abuela)?',o:['Una vocal larga','La primera consonante','El orden de los kana','Nada: son la misma palabra'],a:0,ex:'La a larga dura un pulso más y cambia el significado.'},
+     {q:'¿Cuál escuchaste?',audio:true,azar:true,o:[['おばさん','obasan · tía'],['おばあさん','obāsan · abuela']],ex:'La a larga de おばあさん (obāsan) dura un pulso más que la de おばさん (obasan).'}
     ]},
-   {id:'1-2', type:'kana', title:'Las cinco vocales', min:10, n:10,
+   {id:'1-2', type:'kana', title:'Las cinco vocales', n:10,
     intro:'El hiragana es un silabario: cada signo es una sílaba o una vocal sola. Empezamos por las cinco vocales, que suenan igual que en español. El resto del sistema se arma sobre ellas: ka es k + a, ki es k + i, y así.',
     set:['あ','い','う','え','お']},
-   {id:'1-3', type:'concept', map:true, short:'Cómo funciona el japonés II', title:'Cómo funciona el japonés II: cómo se arma una oración', min:10,
+   {id:'1-3', type:'concept', map:true, short:'Cómo funciona el japonés II', title:'Cómo funciona el japonés II: cómo se arma una oración',
     intro:'Ya sabés cómo se ve y cómo suena el japonés, y conocés sus cinco vocales. Ahora, cómo se ordenan las palabras. La lógica es muy distinta de la del español, pero muy pareja: con pocas ideas se entiende casi todo. Como en la parte I, todo el japonés va con romaji.',
     sections:[
      {h:'Lo importante va al final', b:[
@@ -1226,25 +1269,25 @@ const UNITS = [
      {q:'¿Qué cambia de たべます (tabemasu) a たべました (tabemashita)?',o:['El tiempo: pasa al pasado','La persona: pasa a «nosotros»','La cortesía: pasa a informal','Nada: son sinónimos'],a:0,ex:'El verbo cambia por tiempo, negación y cortesía, nunca por persona.'},
      {q:'¿Con qué nombre no se usa さん (san)?',o:['Con el propio','Con el de un desconocido','Con el de una mujer','Con el de un compañero de trabajo'],a:0,ex:'さん es trato respetuoso hacia otros; con el propio nombre sonaría presuntuoso.'}
     ]},
-   {id:'1-ka', type:'kana', title:'か y が', min:10, n:15,
+   {id:'1-ka', type:'kana', title:'か y が', n:15,
     intro:'Cada fila combina una consonante con las cinco vocales, siempre en el orden a, i, u, e, o. Esta es la fila de la k.',
     set:['か','き','く','け','こ'],
     daku:['が','ぎ','ぐ','げ','ご'],
     dakuIntro:'Con dos rayitas arriba a la derecha (゛, dakuten), la k se vuelve g: か pasa a が, き pasa a ぎ, y así. No son signos nuevos, sino el mismo kana con una marca: por eso conviene aprenderlos de a pares.'},
-   {id:'1-v1', type:'vocab', cycle:true, title:'Palabras 1', min:7, words:W(VOCAB_1,'あい','いえ','あお','かお','いいえ','えき'),
+   {id:'1-v1', type:'vocab', cycle:true, title:'Palabras 1', words:W(VOCAB_1,'あい','いえ','あお','かお','いいえ','えき'),
     intro:'Seis palabras escritas solo con las vocales y la fila か. Las vas a conocer de a dos y a practicarlas enseguida.'},
-   {id:'1-v2', type:'vocab', cycle:true, title:'Palabras 2', min:7, words:W(VOCAB_1,'うえ','あか','あき','かぎ','えいご','ここ'),
+   {id:'1-v2', type:'vocab', cycle:true, title:'Palabras 2', words:W(VOCAB_1,'うえ','あか','あき','かぎ','えいご','ここ'),
     intro:'Seis palabras más con los mismos kana, de a dos, como en Palabras 1.'},
-   {id:'1-sa', type:'kana', title:'さ y ざ', min:10, n:15,
+   {id:'1-sa', type:'kana', title:'さ y ざ', n:15,
     intro:'La fila de la s. La única excepción de pronunciación es し, que se lee «shi».',
     set:['さ','し','す','せ','そ'],
     daku:['ざ','じ','ず','ぜ','ぞ'],
     dakuIntro:'Con ゛, la s se vuelve z: さ pasa a ざ. Ojo con じ, que sigue la excepción de し: se lee «ji», como en el inglés «jeep», y no «zi».'},
-   {id:'1-v3', type:'vocab', cycle:true, title:'Palabras 3', min:7, words:W(VOCAB_1,'あさ','いす','しお','うし','そこ','いけ'),
+   {id:'1-v3', type:'vocab', cycle:true, title:'Palabras 3', words:W(VOCAB_1,'あさ','いす','しお','うし','そこ','いけ'),
     intro:'Seis palabras que ya usan la fila さ.'},
-   {id:'1-v4', type:'vocab', cycle:true, title:'Palabras 4', min:7, words:W(VOCAB_1,'かさ','すし','かぜ','おかし','すき','すいか'),
+   {id:'1-v4', type:'vocab', cycle:true, title:'Palabras 4', words:W(VOCAB_1,'かさ','すし','かぜ','おかし','すき','すいか'),
     intro:'El último grupo de la unidad: con estas ya son 24 palabras.'},
-   {id:'1-r', type:'review', title:'Repaso de la unidad 1', min:10,
+   {id:'1-r', type:'review', title:'Repaso de la unidad 1',
     rv:{kana:8, marked:3, words:8, puente:2},
     intro:'Veinte preguntas de toda la unidad: los kana de あ a そ con sus marcas, palabras de las cuatro lecciones y algunas ideas de «Cómo funciona el japonés», ahora con palabras que ya sabés leer. Al final, cada error indica de qué lección viene.',
     // preguntas puente: ideas de las lecciones de mapa, con kana ya enseñados; salen dos de cada una
@@ -1258,31 +1301,31 @@ const UNITS = [
     ]}
   ]},
  {id:2, title:'Decir qué es cada cosa', kana:'た〜ほ ん', ro:'ta–ho, n',
-  desc:'Filas た, な y は con sus variantes y la ん, cómo decir «X es Y», cómo preguntar y tus primeros saludos.',
+  desc:'Filas た, な y は con sus marcas y la ん, cómo decir «X es Y», cómo preguntar y tus primeros saludos.',
   lessons:[
-   {id:'2-ta', type:'kana', title:'た y だ', min:10, n:13,
+   {id:'2-ta', type:'kana', title:'た y だ', n:13,
     intro:'La fila de la t tiene dos excepciones: ち se lee «chi» y つ se lee «tsu», un sonido que no existe en español.',
     set:['た','ち','つ','て','と'],
     daku:['だ','で','ど'],
     dakuIntro:'Con ゛, la t se vuelve d: た pasa a だ, て pasa a で y と pasa a ど. También existen ぢ y づ, que suenan igual que じ y ず y casi no se usan.'},
-   {id:'2-v1', type:'vocab', cycle:true, title:'Palabras 5', min:7, words:W(VOCAB_2,'て','つくえ','たかい','がくせい','おおきい','たこ'),
+   {id:'2-v1', type:'vocab', cycle:true, title:'Palabras 5', words:W(VOCAB_2,'て','つくえ','たかい','がくせい','おおきい','たこ'),
     intro:'Seis palabras con la fila た y todo lo anterior.'},
-   {id:'2-v2', type:'vocab', cycle:true, title:'Palabras 6', min:7, words:W(VOCAB_2,'くち','とけい','ちいさい','でぐち','そう','くつ'),
+   {id:'2-v2', type:'vocab', cycle:true, title:'Palabras 6', words:W(VOCAB_2,'くち','とけい','ちいさい','でぐち','そう','くつ'),
     intro:'Seis palabras más. そう («así») va a ser clave para responder preguntas en la gramática de esta unidad.'},
-   {id:'2-na', type:'kana', title:'な y ん', min:10, n:12,
+   {id:'2-na', type:'kana', title:'な y ん', n:12,
     intro:'La fila de la n es completamente regular. Su kana más importante es の, una de las partículas más frecuentes del japonés, que vas a usar en la unidad 3. Y se suma ん, el único kana que es solo una consonante; aparece en muchísimas palabras.',
     set:['な','に','ぬ','ね','の','ん']},
-   {id:'2-v3', type:'vocab', cycle:true, title:'Palabras 7', min:7, words:W(VOCAB_2,'ねこ','さかな','なつ','あなた','なに','おかね'),
+   {id:'2-v3', type:'vocab', cycle:true, title:'Palabras 7', words:W(VOCAB_2,'ねこ','さかな','なつ','あなた','なに','おかね'),
     intro:'Seis palabras con la fila な, entre ellas dos que vas a necesitar para preguntar: あなた y なに.'},
-   {id:'2-ha', type:'kana', title:'は, ば y ぱ', min:12, n:16,
+   {id:'2-ha', type:'kana', title:'は, ば y ぱ', n:16,
     intro:'La fila de la h tiene una h aspirada, más suave que la «j» española, y ふ se lee «fu». Además, は y へ tienen doble vida como partículas: se leen «wa» y «e».',
     set:['は','ひ','ふ','へ','ほ'],
     daku:['ば','び','ぶ','べ','ぼ','ぱ','ぴ','ぷ','ぺ','ぽ'],
-    dakuIntro:'Esta fila tiene dos variantes. Con ゛, la h se vuelve b: は pasa a ば. Con el circulito ゜ (handakuten), exclusivo de esta fila, se vuelve p: は pasa a ぱ. Son 15 sonidos, pero solo 5 formas nuevas.',
+    dakuIntro:'Esta fila tiene dos marcas. Con ゛, la h se vuelve b: は pasa a ば. Con el circulito ゜ (handakuten), exclusivo de esta fila, se vuelve p: は pasa a ぱ. Son 15 sonidos, pero solo 5 formas nuevas.',
     uso:{q:'Llegás a una cena a las nueve de la noche. ¿Cómo saludás?',o:['こんばんは','こんにちは'],a:0,jp:'こんばんは',ex:'こんばんは es el saludo de la noche; こんにちは, el del día.'}},
-   {id:'2-v4', type:'vocab', cycle:true, title:'Palabras 8', min:7, words:W(VOCAB_2,'いぬ','はな','ひと','ふね','ふく','ほし'),
+   {id:'2-v4', type:'vocab', cycle:true, title:'Palabras 8', words:W(VOCAB_2,'いぬ','はな','ひと','ふね','ふく','ほし'),
     intro:'Seis palabras con la fila は. Con estas completás el vocabulario de la unidad.'},
-   {id:'2-g', type:'grammar', title:'X は Y です', min:15,
+   {id:'2-g', type:'grammar', title:'X は Y です',
     intro:'La primera estructura completa: decir qué es algo, preguntarlo y responder.',
     sections:[
      {h:'X は Y です: «X es Y»', b:[
@@ -1317,7 +1360,7 @@ const UNITS = [
      {q:'¿Cómo se pregunta «¿Qué es?»?',o:['なんですか。','なにですか。','ですなに。','なんか。'],a:0,ex:'なに se convierte en なん delante de です.',jp:'なんですか。'},
      {t:'order',q:'Armá: «Sí, así es.»',tiles:['はい、','そう','です'],jp:'はい、そうです。'}
     ]},
-   {id:'2-e', type:'listen', title:'Escucha', min:12, items:LISTEN_2,
+   {id:'2-e', type:'listen', title:'Escucha', items:LISTEN_2,
     intro:'Oraciones cortas. Primero escuchá sin leer. Buscá palabras que reconozcas y fijate si la oración termina en か: si termina así, es una pregunta. Recién después mirá el texto.',
     note:'Dos detalles que ya viste en «Cómo funciona el japonés»: lo que describe va antes, como en おおきい いぬ (perro grande), y la u de です casi no se escucha.',
     quiz:[
@@ -1325,7 +1368,7 @@ const UNITS = [
      {q:'¿Qué escuchaste?',o:['No, es un gato.','Sí, es un gato.','¿Es un gato?','No, es un perro.'],a:0,jp:'いいえ、ねこです。',audio:true},
      {q:'¿Qué escuchaste?',o:['El perro es grande.','Es un perro grande.','¿Es grande?','Es un gato grande.'],a:0,jp:'いぬは おおきいです。',audio:true,ex:'いぬは おおきいです: «en cuanto al perro, es grande».'}
     ]},
-   {id:'2-r', type:'review', title:'Repaso de la unidad 2', min:10,
+   {id:'2-r', type:'review', title:'Repaso de la unidad 2',
     rv:{kana:5, marked:2, prev:2, words:8, fixed:3, listen:1, extra:1},
     intro:'Veinte preguntas de toda la unidad: los kana de た a ほ y ん, con sus marcas, y algunos de la unidad 1; palabras de las cuatro lecciones, X は Y です, escucha y tus primeros saludos. Al final, cada error indica de qué lección viene.',
     extra:[
@@ -1336,27 +1379,27 @@ const UNITS = [
  {id:3, title:'Cosas y personas', kana:'ま〜を', ro:'ma–o',
   desc:'El resto del hiragana, más palabras, las frases de todos los días, posesión con の, これ, それ y あれ, la negación y un primer diálogo.',
   lessons:[
-   {id:'3-ma', type:'kana', title:'ま', min:8, n:10,
+   {id:'3-ma', type:'kana', title:'ま', n:10,
     intro:'La fila de la m es regular. Ojo con め y ぬ, que se parecen: め no tiene rulo al final. Y も es como し con dos rayas atravesadas.',
     set:['ま','み','む','め','も'],
     uso:{q:'En un restaurante, querés llamar al mozo. ¿Qué decís?',o:['すみません','いただきます','はじめまして','こんにちは'],a:0,jp:'すみません',ex:'すみません también sirve para llamar la atención de alguien.'}},
-   {id:'3-v1', type:'vocab', cycle:true, title:'Palabras 9', min:7, words:W(VOCAB_3,'なまえ','ともだち','みず','め','さむい','だいがくせい'),
+   {id:'3-v1', type:'vocab', cycle:true, title:'Palabras 9', words:W(VOCAB_3,'なまえ','ともだち','みず','め','さむい','だいがくせい'),
     intro:'Seis palabras con la fila ま y todo lo anterior.'},
-   {id:'3-ya', type:'kana', title:'や, わ y を', min:10, n:10,
+   {id:'3-ya', type:'kana', title:'や, わ y を', n:10,
     intro:'Los kana sueltos de la tabla. La fila や tiene solo tres: ya, yu y yo; ojo con la pronunciación porteña, や es «ia» y no «sha». わ se lee «wa». を se lee «o» y solo aparece como partícula.',
     set:['や','ゆ','よ','わ','を'],
     uso:{q:'Son las once de la noche y tu familia se va a dormir. ¿Qué decís?',o:['おやすみなさい','こんばんは','おはよう ございます','すみません'],a:0,jp:'おやすみなさい',ex:'こんばんは saluda al llegar; おやすみなさい despide al irse a dormir.'}},
-   {id:'3-v2', type:'vocab', cycle:true, title:'Palabras 10', min:7, words:W(VOCAB_3,'わたし','やま','でんわ','かばん','みみ','うみ'),
+   {id:'3-v2', type:'vocab', cycle:true, title:'Palabras 10', words:W(VOCAB_3,'わたし','やま','でんわ','かばん','みみ','うみ'),
     intro:'Seis palabras con や, わ y todo lo anterior. Por fin aparece わたし, «yo».'},
-   {id:'3-v3', type:'vocab', cycle:true, title:'Palabras 11', min:7, words:W(VOCAB_3,'にほん','にほんご','ほん','あめ','ゆき','せんせい'),
+   {id:'3-v3', type:'vocab', cycle:true, title:'Palabras 11', words:W(VOCAB_3,'にほん','にほんご','ほん','あめ','ゆき','せんせい'),
     intro:'Seis palabras. Fijate en にほん y にほんご: la ご final significa «idioma». Y あめ, «lluvia», es la del ejemplo de los tonos en «Cómo funciona el japonés I».'},
-   {id:'3-ra', type:'kana', title:'ら', min:8, n:10,
+   {id:'3-ra', type:'kana', title:'ら', n:10,
     intro:'Con esta lección completás el hiragana básico. La r japonesa es la «r» suave del español, la de «pero»: acá tenés ventaja sobre quienes hablan inglés.',
     set:['ら','り','る','れ','ろ'],
     uso:{q:'En el trabajo, te presentan a alguien. Ya dijiste はじめまして y tu nombre. ¿Con qué cerrás?',o:['よろしく おねがいします','ありがとう ございます','さようなら','すみません'],a:0,jp:'よろしく おねがいします',ex:'よろしく おねがいします cierra la presentación: «cuento con vos».'}},
-   {id:'3-v4', type:'vocab', cycle:true, title:'Palabras 12', min:7, words:W(VOCAB_3,'くるま','りんご','よる','だれ','さくら','とり'),
+   {id:'3-v4', type:'vocab', cycle:true, title:'Palabras 12', words:W(VOCAB_3,'くるま','りんご','よる','だれ','さくら','とり'),
     intro:'Seis palabras con la fila ら. Con estas completás el vocabulario de la unidad.'},
-   {id:'3-f', type:'phrases', title:'Frases de todos los días', min:10, nAuto:10,
+   {id:'3-f', type:'phrases', title:'Frases de todos los días', nAuto:10,
     items:W(PHRASES,'おはよう ございます','こんにちは','こんばんは','おやすみなさい','さようなら','ありがとう ございます','すみません','はじめまして','よろしく おねがいします','いただきます'),
     intro:'Las diez frases que fuiste destrabando, juntas. Ya sabés leerlas todas: ahora se trata de elegir la que corresponde a cada momento del día y a cada situación. Tocá cada una para escucharla.',
     quiz:[
@@ -1368,7 +1411,7 @@ const UNITS = [
      {q:'Conocés a un compañero nuevo. ¿Con qué frase abrís la presentación?',o:['はじめまして','よろしく おねがいします','さようなら','いただきます'],a:0,ex:'はじめまして abre; よろしく おねがいします cierra.'},
      {q:'¿Cómo se lee el último kana de こんばんは?',o:['wa','ha','ba','a'],a:0,jp:'こんばんは',ex:'Es la partícula は, que en los saludos se lee «wa».'}
     ]},
-   {id:'3-g', type:'grammar', title:'の, これ, それ, あれ y la negación', min:15,
+   {id:'3-g', type:'grammar', title:'の, これ, それ, あれ y la negación',
     words:W(VOCAB_3,'これ','それ','あれ'),
     intro:'Cuatro herramientas que multiplican lo que podés decir con X は Y です. Al completar la práctica, これ, それ y あれ se suman a Mis palabras.',
     sections:[
@@ -1403,7 +1446,7 @@ const UNITS = [
      {q:'¿Cómo se pregunta «¿Quién es?»?',o:['だれですか。','なんですか。','どれですか。','それですか。'],a:0,jp:'だれですか。'},
      {q:'En ふじさん (el monte Fuji), ¿qué es さん?',o:['«Montaña», con otra lectura: no es el honorífico','El honorífico, por respeto al monte','Un diminutivo','Parte del nombre, sin significado'],a:0,ex:'やま, «montaña», en palabras compuestas suele leerse さん.'}
     ]},
-   {id:'3-d', type:'dialogue', title:'Yamada y Kimura se presentan', min:15, lines:DIALOGUE_3,
+   {id:'3-d', type:'dialogue', title:'Yamada y Kimura se presentan', lines:DIALOGUE_3,
     intro:'Yamada y Kimura se conocen. Escuchá el diálogo completo sin leer, al menos dos veces. Después respondé las preguntas, y recién al final mirá el texto.',
     note:'なんの せんせい = «profesor de qué» (なに + の). Fijate también en cómo cada uno dice el nombre del otro con さん, pero el propio sin ella.',
     quiz:[
@@ -1416,7 +1459,7 @@ const UNITS = [
      {q:'¿Qué escuchaste?',o:['No soy estudiante.','Soy estudiante.','¿Sos estudiante?','Yo también soy estudiante.'],a:0,jp:'がくせいでは ありません。',audio:true},
      {q:'¿Qué escuchaste?',o:['¿Usted también es estudiante?','Usted es estudiante.','¿Usted no es estudiante?','¿De qué es estudiante?'],a:0,jp:'やまださんも がくせいですか。',audio:true}
     ]},
-   {id:'3-r', type:'review', title:'Repaso de la unidad 3', min:10,
+   {id:'3-r', type:'review', title:'Repaso de la unidad 3',
     rv:{kana:4, prev:2, words:8, fixed:4, frases:2},
     intro:'Veinte preguntas de toda la unidad, con kana de todo el hiragana: palabras de las cuatro lecciones, の, これ, それ y あれ, el diálogo y las frases de todos los días. Al final, cada error indica de qué lección viene.'}
   ]},
@@ -1625,6 +1668,8 @@ function phraseKeys(p){
 }
 
 function fixedQ(f){
+  // azar: la respuesta es una de las opciones, elegida cada vez; es lo que suena (#55)
+  if (f.azar){ const a = Math.floor(Math.random() * f.o.length); f = Object.assign({}, f, {a, jp: f.o[a][0]}); }
   if (f.t === 'order'){
     const idx = f.tiles.map((_, i) => i);
     let order = shuffle(idx), guard = 0;
@@ -1680,7 +1725,7 @@ function buildQuiz(L){
     case 'grammar':
       return shuffle(L.quiz.map(fixedQ));
     case 'kana':
-      return kanaQuestions(L.set, L.daku, kanaPoolUpTo(L.id), L.n || 15);
+      return kanaCycle(L);
     case 'vocab':
       if (L.cycle) return cycleSteps(L);
       return vocabQuestions(L.words, vocabPoolUpTo(L.id), Math.max(10, L.words.length * 2));
@@ -1772,7 +1817,7 @@ function pairsQuestion(words, pool){
 }
 // Mezcla sin que la misma palabra aparezca dos veces seguidas
 function mezclar(items){
-  const key = q => (q.reveal && q.reveal.k) || q.answer || q.ans;
+  const key = q => (q.reveal && q.reveal.k) || q.kk || q.answer || q.ans;
   let out = shuffle(items), guard = 0;
   while (out.some((q, i) => i && key(q) === key(out[i - 1])) && guard++ < 60) out = shuffle(items);
   return out;
@@ -1827,6 +1872,68 @@ function cycleSteps(L){
   fin.splice(Math.floor(fin.length / 2), 0, parB);
   steps.push(...fin);
   return steps;
+}
+
+// Lección de kana en ciclo (#7): la lógica de la lección de palabras, aplicada a los kana.
+// Tandas de hasta tres kana: se presentan (kana, sonido y trazo) y se reconocen enseguida; desde la segunda
+// tanda vuelven los anteriores. Los kana con marca van después, una fila por pantalla, presentados como el
+// mismo kana con una marca. El cierre completa la dosis (tres veces cada kana base y dos cada kana con marca,
+// al menos una por audio) y termina leyendo palabras reales: los ejemplos de las fichas que ya se pueden leer.
+// En las tandas, las opciones salen solo de lo ya visto.
+function kanaCycle(L){
+  const pool = kanaPoolUpTo(L.id), base = L.set, marcas = L.daku || [];
+  const entra = k => !EXCLUDE_QUIZ.has(k);
+  const cuenta = new Map(), oido = new Set();
+  const tipos = k => k === 'を' ? ['k2r'] : ['a2k', 'r2k', 'k2r'];   // を suena igual que お: solo se pregunta escrita
+  const preguntar = (k, visto, tipo) => { cuenta.set(k, (cuenta.get(k) || 0) + 1); if (tipo === 'a2k') oido.add(k); return kanaQuestion(k, visto, tipo); };
+  const menosVistos = ks => shuffle(ks).sort((a, b) => (cuenta.get(a) || 0) - (cuenta.get(b) || 0));
+  const previos = pool.filter(k => !base.includes(k) && !marcas.includes(k));
+  const steps = [], vistos = [];
+  for (let i = 0; i < base.length; i += 3){
+    const grupo = base.slice(i, i + 3), viejos = vistos.slice();
+    grupo.forEach(k => steps.push({type:'presentk', kana:k, n: base.indexOf(k) + 1, of: base.length}));
+    vistos.push(...grupo);
+    const visto = previos.concat(vistos);
+    const qs = grupo.map(k => preguntar(k, visto, 'k2r'));              // recién presentado: reconocerlo escrito
+    menosVistos(viejos).slice(0, 2).forEach((k, j) => qs.push(preguntar(k, visto, tipos(k)[j % tipos(k).length])));
+    steps.push(...mezclar(qs));
+  }
+  for (let i = 0; i < marcas.length; i += 5){
+    const fila = marcas.slice(i, i + 5);
+    steps.push({type:'presentrow', kana: fila});
+    vistos.push(...fila);
+    const visto = previos.concat(vistos);
+    const qs = fila.filter(entra).map(k => preguntar(k, visto, 'k2r'));
+    menosVistos(base).slice(0, 2).forEach(k => qs.push(preguntar(k, visto, tipos(k)[0])));
+    steps.push(...mezclar(qs));
+  }
+  const todos = [...base, ...marcas].filter(entra);
+  const falta = k => (cuenta.get(k) || 0) < (marcas.includes(k) ? 2 : 3);
+  const cierre = [];
+  let t = 0, guard = 0;
+  while (todos.some(falta) && guard++ < 90){
+    const k = menosVistos(todos.filter(falta))[0], ts = tipos(k);
+    cierre.push(preguntar(k, pool, ts.includes('a2k') && !oido.has(k) ? 'a2k' : ts[t++ % ts.length]));
+  }
+  steps.push(...mezclar(cierre));
+  const lect = lecturasDe(L);
+  if (lect.length) steps.push({type:'leer', words:lect, keys:[...base, ...marcas]});
+  return steps;
+}
+// Las palabras del cierre de una lección de kana: ejemplos de las fichas, escritos solo con kana ya enseñados.
+// Primero las que usan más kana de la lección; hasta tres, de dos kana o más (si no alcanzan, también de uno).
+function lecturasDe(L){
+  const pool = new Set(kanaPoolUpTo(L.id)), nuevos = new Set([...L.set, ...(L.daku || [])]);
+  const vistas = new Set(), cands = [];
+  L.set.forEach(k => {
+    const ex = KANA[k] && KANA[k].ex;
+    if (!ex || vistas.has(ex[0]) || ![...ex[0].replace(/\s/g, '')].every(c => pool.has(c))) return;
+    vistas.add(ex[0]);
+    cands.push({k:ex[0], r:ex[1], es:ex[2], n:[...new Set(ex[0])].filter(c => nuevos.has(c)).length});
+  });
+  const orden = shuffle(cands).sort((a, b) => b.n - a.n);
+  const largas = orden.filter(w => kanaUnits(w.k).length > 1);
+  return (largas.length >= 2 ? largas : orden).slice(0, 3);
 }
 
 // Repasos de unidad (una sola lógica para los tres; ver el manifiesto). Veinte preguntas, todas puntuadas:
@@ -2026,7 +2133,7 @@ let remoteRef = null, writing = false, pendingWrite = false, remoteTimer = null;
 let syncMode = 'local';
 // App instalable: versión de este código, con versionado semántico MAYOR.MENOR.PARCHE (ver README). Tiene que
 // coincidir con VERSION de sw.js: herramientas/version.py sube las dos juntas. ok = hay service worker (app publicada).
-const KASA_VERSION = {v: '0.4.1', fecha: '6/10/2026'};
+const KASA_VERSION = {v: '0.5.0', fecha: '10/11/2026'};
 const APPV = {ok: false, reg: null, nueva: false, buscando: false, recargar: false, ultima: 0};
 
 function saveLocal(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){} }
@@ -2773,13 +2880,16 @@ if (enNavegador() && typeof navigator.getInstalledRelatedApps === 'function'){
 function renderUnit(id){
   const u = UNITS.find(x => String(x.id) === String(id) && !x.soon);
   if (!u) return renderHome();
+  // De las lecciones trabadas, solo la primera dice cómo se destraba (#53); las demás muestran su tipo y su duración.
+  // El resultado va en un renglón propio, en tramos que no se cortan por el medio (#52).
+  const primeraTrabada = u.lessons.find(l => !isUnlocked(l.id));
   const rows = u.lessons.map((l, i) => {
     const st = S.lessons[l.id];
+    const datos = TYPE_LABEL[l.type] + ', unos ' + minutosDe(l) + ' minutos';
     if (!isUnlocked(l.id))
-      return '<li><div class="lesson-row locked" aria-disabled="true"><span class="l-mark">' + ICON_LOCK + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">Se destraba al aprobar la anterior</span></span></div></li>';
-    const best = st && st.best ? '. Mejor resultado: ' + st.best + ' %' + (st.done ? '' : ' (se aprueba con ' + PASS + ' %)') : '';
-    const meta = TYPE_LABEL[l.type] + ', unos ' + l.min + ' minutos' + best;
-    return '<li><a class="lesson-row' + (st && st.done ? ' done' : '') + '" href="#/l/' + l.id + '"><span class="l-mark" aria-hidden="true">' + (st && st.done ? '' : (i + 1)) + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">' + meta + '</span></span></a></li>';
+      return '<li><div class="lesson-row locked" aria-disabled="true"><span class="l-mark">' + ICON_LOCK + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">' + (l === primeraTrabada ? 'Se destraba al aprobar la anterior' : datos) + '</span></span></div></li>';
+    const best = st && st.best ? '<span class="l-meta l-best"><span>Mejor resultado: ' + st.best + '\u00a0%.</span>' + (st.done ? '' : ' <span>Se aprueba con ' + PASS + '\u00a0%.</span>') + '</span>' : '';
+    return '<li><a class="lesson-row' + (st && st.done ? ' done' : '') + '" href="#/l/' + l.id + '"><span class="l-mark" aria-hidden="true">' + (st && st.done ? '' : (i + 1)) + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">' + datos + '</span>' + best + '</span></a></li>';
   }).join('');
   return topNav('#/temario', 'Temario') +
     '<header class="page-h"><p class="u-label">Unidad ' + u.id + '</p><h1>' + esc(u.title) + '</h1><p class="lede">' + jpify(esc(u.desc)) + '</p></header>' +
@@ -2828,7 +2938,7 @@ function renderLesson(id){
   let body = '';
   if (L.type === 'kana'){
     body += '<div class="kana-grid">' + L.set.map(k => kanaCell(k)).join('') + '</div>';
-    body += '<p class="hint">Tocá cada kana para escucharlo, ver cómo recordarlo y practicar el trazo con el dedo.</p>';
+    body += '<p class="hint">Tocá cada kana para escucharlo y practicar el trazo con el dedo.</p>';
     if (L.daku){
       body += '<h2>Con marcas: ゛ y ゜</h2><p>' + jpify(esc(L.dakuIntro)) + '</p>';
       body += '<div class="kana-grid small">' + L.daku.map(k => kanaCell(k)).join('') + '</div>';
@@ -3114,8 +3224,20 @@ function setupTrace(root, k){
   root._clear = () => { pts = []; raws = []; emitted = 0; ctx.clearRect(0, 0, rect.width, rect.height); };
 }
 
+// Cuánto lleva una lección (#50): una misma regla para todas. Quince segundos por pantalla de la práctica
+// (presentaciones y preguntas), más el texto de la lección a 150 palabras por minuto. Se calcula una vez por sesión.
+const MINUTOS = {};
+function minutosDe(L){
+  if (MINUTOS[L.id]) return MINUTOS[L.id];
+  const texto = JSON.stringify([L.intro || '', L.sections || [], L.puente || []]).replace(/<[^>]+>/g, ' ');
+  const palabras = (texto.match(/[A-Za-zÁÉÍÓÚÑáéíóúñü]{2,}/g) || []).length;
+  const pasos = buildQuiz(L).length;
+  return MINUTOS[L.id] = Math.max(2, Math.round((pasos * 15 + palabras / 150 * 60) / 60));
+}
+
 /* ---------- Práctica ---------- */
 let Q = null;
+const PASOS = new Set(['present', 'presentk', 'presentrow', 'leer', 'hito']);   // pantallas de la práctica que no son preguntas: no puntúan
 function startQuiz(id){
   let items, back, title;
   if (id === 'repaso'){
@@ -3128,7 +3250,7 @@ function startQuiz(id){
     // «¡Ya podés leer!»: una tarjeta por frase, la pregunta de uso (no suma) y el cierre
     const lid = id.slice(5), L = LESSON[lid], fr = phrasesOf(lid);
     if (!L || !fr.length || !isDone(lid)) return false;
-    items = fr.map((p, i) => ({type:'hito', ph:p, n:i + 1, of:fr.length, open:false}));
+    items = fr.map((p, i) => ({type:'hito', ph:p, n:i + 1, of:fr.length}));
     if (L.uso) items.push(Object.assign(fixedQ(L.uso), {free:true}));
     back = '#/l/' + lid; title = 'Ya podés leer';
     S.hitos[lid] = true; save();
@@ -3137,7 +3259,7 @@ function startQuiz(id){
     if (!L) return false;
     items = buildQuiz(L); back = '#/l/' + id; title = L.title;
   }
-  const scored = items.reduce((n, q) => n + (q.free || q.type === 'present' || q.type === 'hito' ? 0 : q.type === 'pairs' ? q.words.length : 1), 0);
+  const scored = items.reduce((n, q) => n + (q.free || PASOS.has(q.type) ? 0 : q.type === 'pairs' ? q.words.length : 1), 0);
   Q = {id, items, i:0, score:0, wrong:[], back, title, answered:false, placed:[], total:scored, repeats:0};
   if (id.indexOf('hito-') === 0) Q.hito = id.slice(5);
   return true;
@@ -3151,6 +3273,9 @@ function renderQuizScreen(){
   const q = Q.items[Q.i];
   if (q.type === 'present') return stepHTML(q);
   if (q.type === 'hito') return hitoHTML(q);
+  if (q.type === 'presentk') return presentKanaHTML(q);
+  if (q.type === 'presentrow') return presentRowHTML(q);
+  if (q.type === 'leer') return leerHTML(q);
   Q.answered = false; Q.placed = []; Q.shown = false; Q.sel = {l:null, r:null}; Q.matched = 0; Q.pairErr = 0; Q.pairFail = new Set();
   const thinkHide = Q.id === 'palabras' && S.settings.think && q.type !== 'order';
   return '<div class="quiz">' +
@@ -3186,12 +3311,58 @@ function stepHTML(q){
       '<button class="btn primary wide center" data-act="next">Seguir</button>' +
     '</div></div>';
 }
+// Presentar un kana (#7): el kana y su lectura, el cuadro para trazarlo y su pronunciación. Suena al llegar.
+function presentKanaHTML(q){
+  const k = q.kana, info = KANA[k];
+  return '<div class="quiz">' + stepTop() +
+    '<div class="present present-k">' +
+      '<div class="present-card"><div class="present-top"><span class="present-count">' + q.n + ' de ' + q.of + '</span><span class="badge-new">¡Kana nuevo!</span></div>' +
+      '<p class="pk-head"><span class="jp">' + esc(k) + '</span><b>' + esc(info.r) + '</b></p>' +
+      '<div class="trace-wrap">' + sq(k, 'trace-sq') + '<canvas aria-label="Zona para practicar el trazo"></canvas></div>' +
+      '<p class="pk-hint">Trazalo con el dedo, encima del modelo.</p>' +
+      '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(k) + '">' + ICON_PLAY + ' Escuchar</button><button class="btn small" data-act="clear">Borrar trazo</button></div>' +
+      '<div class="enr"><p class="enr-label">Pronunciación</p><p>' + jpify(esc(info.p)) + '</p></div></div>' +
+      '<button class="btn primary wide center" data-act="next">Seguir</button>' +
+    '</div></div>';
+}
+// Presentar una fila con marca (#7): arriba los kana que ya se conocen; abajo, los mismos con la marca.
+// Cada uno abre su ficha, con el audio y el trazo.
+function presentRowHTML(q){
+  const row = DAKU_ROWS.find(r => r.kana[0] === q.kana[0]), mark = KANA[q.kana[0]].mark;
+  return '<div class="quiz">' + stepTop() +
+    '<div class="present present-row">' +
+      '<div class="present-card"><div class="present-top"><span class="badge-new">¡Kana nuevos!</span></div>' +
+      '<p class="pr-title">Los mismos kana, con ' + (mark === '゜' ? 'un circulito' : 'dos rayitas') + '</p>' +
+      '<div class="kana-grid pr-base" aria-hidden="true">' + row.base.map(k => sq(k)).join('') + '</div>' +
+      '<div class="pr-arrows" aria-hidden="true">' + row.base.map(() => '<span>↓</span>').join('') + '</div>' +
+      '<div class="kana-grid small">' + row.kana.map(k => kanaCell(k)).join('') + '</div>' +
+      '<p class="pk-hint">Tocá cada kana para escucharlo y practicar el trazo.</p>' +
+      '<div class="enr"><p class="enr-label">Pronunciación</p><p>' + jpify(esc(row.note)) + '</p></div></div>' +
+      '<button class="btn primary wide center" data-act="next">Seguir</button>' +
+    '</div></div>';
+}
+// Cierre de la lección de kana (#7): hasta tres palabras reales de ejemplo en una sola pantalla, escritas con los
+// kana de la lección (en verde), con su lectura y su significado. Cada una se toca para escucharla. No puntúa.
+function leerHTML(q){
+  const L = LESSON[Q.id], u3 = L && L.unit >= 3;
+  const filas = q.words.map(w =>
+    '<button class="ej-row" data-act="say" data-jp="' + esc(w.k) + '" aria-label="Escuchar ' + esc(w.k) + '">' +
+    '<span class="jp ej-k">' + [...w.k].map(c => q.keys.includes(c) ? '<span class="key">' + esc(c) + '</span>' : esc(c)).join('') + '</span>' +
+    '<span class="ej-t"><span class="rom ej-rom"' + (u3 ? ' hidden' : '') + '>' + esc(w.r) + '</span><span class="ej-es">' + jpify(esc(w.es)) + '</span></span>' + ICON_PLAY + '</button>').join('');
+  return '<div class="quiz">' + stepTop() + '<div class="present leer">' +
+    '<div class="present-card"><div class="present-top"><span class="badge-new">Ejemplos</span></div>' +
+    '<p class="leer-lead">Palabras con los kana de esta lección. Tocá cada una para escucharla.</p>' +
+    '<div class="ej-list">' + filas + '</div>' +
+    (u3 ? '<div class="present-actions"><button class="btn small" data-act="presrom">Mostrar romaji</button></div>' : '') + '</div>' +
+    '<button class="btn primary wide center" data-act="next">' + (Q.i + 1 >= Q.items.length ? 'Ver resultado' : 'Seguir') + '</button>' +
+    '</div></div>';
+}
 function stepTop(){
   return topNav(Q.back, 'Salir', (Q.i + 1) + ' de ' + Q.items.length);
 }
-// Hito, en dos momentos. Primero la frase sola, con la llave en verde: ni audio, ni romaji, ni significado.
-// Al tocar «Ver cómo se lee», la tarjeta crece en el lugar y suena el audio. Romaji: en la unidad 2
-// aparece al revelar; desde la 3 sigue detrás de su botón (la comprobación de la lectura es el audio).
+// Hito: la frase que se destraba, con la llave en verde, presentada de una vez: suena al llegar y muestra su
+// lectura, su significado y cuándo se usa. (Hasta la 0.4.1 iba en dos momentos, con «Probá leerla en voz alta»:
+// se quitó porque la app no escucha.) Romaji: en la unidad 2 va a la vista; desde la 3, detrás de su botón.
 function hitoHTML(q){
   const p = q.ph, L = LESSON[p.h], keys = phraseKeys(p);
   const lines = p.k.split(' ');
@@ -3200,20 +3371,14 @@ function hitoHTML(q){
   const keyTxt = (keys.length === 1 ? keys[0] : keys.slice(0, -1).join(', ') + ' y ' + keys[keys.length - 1]) + (keys.length === 1 ? ', la llave de esta lección' : ', las llaves de esta lección');
   const keyLine = '<p class="hito-key">' + jpify(esc(keyTxt)) + '</p>';
   const top = '<div class="present-top"><span class="present-count">' + q.n + ' de ' + q.of + '</span><span class="badge-new">¡Ya podés leer!</span></div>';
-  let card, btn;
-  if (!q.open){
-    card = '<div class="present-card pre">' + top + phrase + keyLine + '<p class="hito-try">Probá leerla en voz alta.</p></div>';
-    btn = '<button class="btn primary wide center hito-go" data-act="hitoread">Ver cómo se lee</button>';
-  } else {
-    const u3 = L.unit >= 3;
-    const read = p.leer ? '<p class="hito-read"><b>Al leer:</b> ' + jpify(esc(p.leer)) + (p.mk ? '<span class="mk">→ ' + jpify(esc(p.mk)) + '</span>' : '') + '</p>' : '';
-    card = '<div class="present-card">' + top + phrase +
-      '<p class="present-rom" id="presRom"' + (u3 ? ' hidden' : '') + '>' + esc(p.r) + '</p>' + keyLine +
-      '<p class="present-es">' + jpify(esc(p.es)) + '</p>' +
-      '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(p.k) + '">' + ICON_PLAY + ' Escuchar</button>' + (u3 ? '<button class="btn small" data-act="presrom">Mostrar romaji</button>' : '') + '</div>' +
-      '<div class="enr"><p class="enr-label">¿Cuándo se usa?</p><p>' + jpify(esc(p.uso)) + '</p></div>' + read + '</div>';
-    btn = '<button class="btn primary wide center hito-go" data-act="next">Seguir</button>';
-  }
+  const u3 = L.unit >= 3;
+  const read = p.leer ? '<p class="hito-read"><b>Al leer:</b> ' + jpify(esc(p.leer)) + (p.mk ? '<span class="mk">→ ' + jpify(esc(p.mk)) + '</span>' : '') + '</p>' : '';
+  const card = '<div class="present-card">' + top + phrase +
+    '<p class="present-rom" id="presRom"' + (u3 ? ' hidden' : '') + '>' + esc(p.r) + '</p>' + keyLine +
+    '<p class="present-es">' + jpify(esc(p.es)) + '</p>' +
+    '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(p.k) + '">' + ICON_PLAY + ' Escuchar</button>' + (u3 ? '<button class="btn small" data-act="presrom">Mostrar romaji</button>' : '') + '</div>' +
+    '<div class="enr"><p class="enr-label">¿Cuándo se usa?</p><p>' + jpify(esc(p.uso)) + '</p></div>' + read + '</div>';
+  const btn = '<button class="btn primary wide center hito-go" data-act="next">Seguir</button>';
   return '<div class="quiz">' + stepTop() + '<div class="present hito">' + card + btn + '</div></div>';
 }
 // Cierre: barra de diez segmentos agrupada por hito, las frases destrabadas y las próximas, sin mostrarlas
@@ -3242,13 +3407,15 @@ function renderHitoClose(){
       '</div>' +
     '</div>';
 }
-function autoAudio(q){ return q.type === 'present' ? q.word.k : (q.show && q.show.audio) || null; }
-// Al aparecer una pantalla de la práctica: la tarjeta del hito suena con su fūrin; el resto, con su audio si lo tiene
+function autoAudio(q){ return q.type === 'present' ? q.word.k : q.type === 'presentk' ? q.kana : (q.show && q.show.audio) || null; }
+// Al aparecer una pantalla de la práctica: la tarjeta del hito suena con su fūrin y, un momento después, con su frase;
+// el resto, con su audio si lo tiene
 function onShow(q){
   if (!q) return;
   SFX.despertar();
-  if (q.type === 'hito' && !q.open){ SFX.hito(); return; }
+  if (q.type === 'hito'){ SFX.hito(); setTimeout(() => { if (Q && Q.items[Q.i] === q) speak(q.ph.k); }, 1100); return; }
   const au = autoAudio(q); if (au) vozAlLlegar(au);
+  if (q.type === 'presentk'){ const pk = app.querySelector('.present-k'); if (pk) setupTrace(pk, q.kana); }
 }
 function promptHTML(q){
   const lab = '<p class="qlabel">' + jpify(esc(q.label)) + '</p>';
@@ -3885,10 +4052,9 @@ document.addEventListener('click', e => {
     case 'stay': closeSheet(true); break;
     // la hoja no se cierra antes: se va con la pantalla que sale
     case 'leave': { const h = t.dataset.href || '#/'; if (histDir(location.hash) === histDir(h)) closeSheet(true); else ir(h, true); break; }
-    case 'clear': { const r = t.closest('.sheet-back'); if (r && r._clear) r._clear(); break; }
+    case 'clear': { const r = t.closest('.sheet-back, .present-k'); if (r && r._clear) r._clear(); break; }
     case 'guide': { t.closest('.sheet').querySelector('.trace-sq').classList.toggle('hide-model', !t.checked); break; }
-    case 'hitoread': { const q = Q && Q.items[Q.i]; if (q && q.type === 'hito'){ q.open = true; app.innerHTML = renderQuizScreen(); speak(q.ph.k); const b = app.querySelector('.hito-go'); if (b) b.focus({preventScroll:true}); } break; }
-    case 'presrom': { const r = document.getElementById('presRom'); if (r){ r.hidden = !r.hidden; t.textContent = r.hidden ? 'Mostrar romaji' : 'Ocultar romaji'; } break; }
+    case 'presrom': { const rs = document.querySelectorAll('#presRom, .ej-rom'); if (rs.length){ const ver = rs[0].hidden; rs.forEach(r => { r.hidden = !ver; }); t.textContent = ver ? 'Ocultar romaji' : 'Mostrar romaji'; } break; }
     case 'togglerom': {
       const bar = t.closest('.reveal-bar'), sig = bar && bar.nextElementSibling;
       const w = (sig && sig.classList.contains('rom-wrap')) ? sig : (t.closest('.rom-wrap') || document.querySelector('.rom-wrap'));

@@ -4,7 +4,18 @@ Todas las versiones publicadas de Kasa, de la más nueva a la más vieja. Sigue 
 
 ## Sin publicar
 
-- **0.5.0 · Unidad 1**, en preparación: ver su [milestone](https://github.com/efevali/kasa/milestone/2).
+Nada por ahora.
+
+## 0.5.0 — 10/11/2026
+
+Unidad 1, primera parte ([milestone](https://github.com/efevali/kasa/milestone/2)): lo que salió del [análisis pedagógico](docs/analisis-pedagogico.md) y de revisar la pantalla de la unidad y la lección 1.
+
+- Lecciones de kana en ciclo, como las de palabras: cada kana se presenta (con su sonido y su trazo) antes de preguntarse, en tandas de hasta tres; los kana con marca se presentan por fila; cada kana base se pregunta al menos tres veces y cada kana con marca, dos, una de ellas por audio; y la lección termina con hasta tres palabras reales de ejemplo, que se tocan para escucharlas. Vale para las nueve lecciones de kana.
+- Las frases de los hitos se presentan de una vez, con su audio: ya no piden leerlas en voz alta antes de mostrarlas.
+- Lección 1, «Cómo funciona el japonés I», rehecha: más corta, con cada concepto explicado antes de usarse. Suma una sección sobre los kana (qué es un silabario, las filas y las marcas) con la tabla del hiragana, agrega la g y la z al romaji y deja las consonantes dobles, *tsu*, *fu*, la *r* y los tonos como anuncios de un párrafo. Su práctica pregunta sobre lo que la lección enseña y suma una pregunta por audio sobre la vocal larga.
+- Pantalla de la unidad: el resultado de cada lección va en su renglón, y de las lecciones trabadas solo la primera dice cómo se destraba; las demás muestran su tipo y su duración.
+- Los minutos de cada lección se calculan con una misma regla, a partir de sus pantallas y su texto.
+- Textos: «con sus marcas» en lugar de «con sus variantes», y las lecciones de kana ya no dicen «ver cómo recordarlo».
 
 ## 0.4.1 — 6/10/2026
 
