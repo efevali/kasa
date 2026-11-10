@@ -11,6 +11,7 @@ Bocetos aprobados de Kasa. Cada uno es la app real con los cambios propuestos, c
 | B-05 | Repaso de kana | [a · sin kana aprobados](B-05a-repaso-sin-kana.png), [b · con kana, sin repasos](B-05b-repaso-sin-repasos.png), [c · con un repaso hecho](B-05c-repaso-con-repaso.png) | #28 | 2/10/2026 | Vigente (0.4.0) |
 | B-06 | Ajustes, Borrar y Créditos | [a · Ajustes](B-06a-ajustes.png), [b · borrar el progreso](B-06b-borrar.png), [c · créditos](B-06c-creditos.png) | #30, #33, #34, #35 | 6/10/2026 | Vigente (0.4.1) |
 | B-07 | Lección de kana en ciclo | [a · presentar un kana](B-07a-presentar-kana.png), [b · presentar la fila con marca](B-07b-fila-con-marca.png), [c · leer una palabra](B-07c-leer.png), [d · la palabra, abierta](B-07d-leer-abierta.png) | #7 | 9/11/2026 | Vigente (0.5.0) |
+| B-08 | Pantalla de la unidad | [el resultado en su renglón y una sola lección trabada con el aviso](B-08-pantalla-de-la-unidad.png) | #52, #53 | 9/11/2026 | Vigente (0.5.0) |
 
 Desde B-02, las pantallas que se desplazan se capturan enteras, de arriba abajo (`--entera`), como la captura desplazada del teléfono. El progreso de ejemplo que no se puede escribir en la línea de comandos (palabras propias, estadísticas) va en un archivo junto a las imágenes, como [B-03.json](B-03.json) o [B-05.json](B-05.json).
 

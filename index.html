@@ -473,6 +473,7 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .present-rom{font-size:18px;line-height:1.3;color:var(--ink-2);margin:2px 0 0}
 .present-es{font-size:26px;line-height:1.3;font-weight:700;margin:6px 0 12px;max-width:none}
 .present-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.l-best>span{white-space:nowrap}
 .present>.btn{margin-top:18px}
 /* Lección de kana en ciclo: presentar un kana, presentar una fila con marca y leer una palabra */
 .pk-head{display:flex;align-items:baseline;justify-content:center;gap:12px;margin:0 0 12px;line-height:1}
@@ -2848,13 +2849,16 @@ if (enNavegador() && typeof navigator.getInstalledRelatedApps === 'function'){
 function renderUnit(id){
   const u = UNITS.find(x => String(x.id) === String(id) && !x.soon);
   if (!u) return renderHome();
+  // De las lecciones trabadas, solo la primera dice cómo se destraba (#53); las demás muestran su tipo y su duración.
+  // El resultado va en un renglón propio, en tramos que no se cortan por el medio (#52).
+  const primeraTrabada = u.lessons.find(l => !isUnlocked(l.id));
   const rows = u.lessons.map((l, i) => {
     const st = S.lessons[l.id];
+    const datos = TYPE_LABEL[l.type] + ', unos ' + l.min + ' minutos';
     if (!isUnlocked(l.id))
-      return '<li><div class="lesson-row locked" aria-disabled="true"><span class="l-mark">' + ICON_LOCK + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">Se destraba al aprobar la anterior</span></span></div></li>';
-    const best = st && st.best ? '. Mejor resultado: ' + st.best + ' %' + (st.done ? '' : ' (se aprueba con ' + PASS + ' %)') : '';
-    const meta = TYPE_LABEL[l.type] + ', unos ' + l.min + ' minutos' + best;
-    return '<li><a class="lesson-row' + (st && st.done ? ' done' : '') + '" href="#/l/' + l.id + '"><span class="l-mark" aria-hidden="true">' + (st && st.done ? '' : (i + 1)) + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">' + meta + '</span></span></a></li>';
+      return '<li><div class="lesson-row locked" aria-disabled="true"><span class="l-mark">' + ICON_LOCK + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">' + (l === primeraTrabada ? 'Se destraba al aprobar la anterior' : datos) + '</span></span></div></li>';
+    const best = st && st.best ? '<span class="l-meta l-best"><span>Mejor resultado: ' + st.best + '\u00a0%.</span>' + (st.done ? '' : ' <span>Se aprueba con ' + PASS + '\u00a0%.</span>') + '</span>' : '';
+    return '<li><a class="lesson-row' + (st && st.done ? ' done' : '') + '" href="#/l/' + l.id + '"><span class="l-mark" aria-hidden="true">' + (st && st.done ? '' : (i + 1)) + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">' + datos + '</span>' + best + '</span></a></li>';
   }).join('');
   return topNav('#/temario', 'Temario') +
     '<header class="page-h"><p class="u-label">Unidad ' + u.id + '</p><h1>' + esc(u.title) + '</h1><p class="lede">' + jpify(esc(u.desc)) + '</p></header>' +
