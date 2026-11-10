@@ -19,6 +19,7 @@ Las fechas son de 2026.
 - **Tandas más cortas** (2/10). Con once issues acumulados, se implementa antes: la 0.4.0 reúne las pantallas generales (principal, Mis palabras, Tabla y Repaso de kana, Ajustes y apertura) y se publica al terminar de revisarlas, sin esperar a la unidad 1. El temario va con la unidad 1, en la 0.5.0, porque es la puerta de sus lecciones. Motivo: probar en el teléfono pocos cambios por vez.
 - **Bocetos con su código** (2/10). Si el cambio es visual, se aprueba sobre un boceto que es la app real con el cambio aplicado, y su código se guarda para implementarlo tal cual. Para cambios de texto no hace falta.
 - **GitHub como única fuente de verdad** (2/10). Backlog, método, bocetos, manifiesto y decisiones viven en este repositorio, con la metodología habitual de la industria, para que un tercero pueda trabajar en el proyecto. Se aceptó que todo sea público (el código ya lo era). Reemplazó al documento «Kasa — Backlog» de claude.ai, que se usó solo ese día.
+- **Análisis pedagógico y criterios de dinámica** (9/11). El [análisis](analisis-pedagogico.md) del tramo de hiragana (12/10) midió cuánto se practica cada cosa, cuándo vuelve y si se usa: generó cada práctica 400 veces con el código de la app. Sus propuestas se aprobaron y sus ocho criterios se sumaron al [manifiesto](manifiesto.md#los-ocho-criterios-de-dinámica), junto a los diez principios. *Descartado:* guardar esos criterios como una skill de Claude: viviría en una cuenta y no en el repositorio, y un tercero no la vería.
 - **Licencia: pendiente.** Hoy el repositorio no tiene licencia (rigen los derechos de autor por defecto). Se evalúa antes de invitar a un tercero.
 
 ## Ruta y contenido
@@ -34,6 +35,13 @@ Las fechas son de 2026.
 - **Cómo funciona el japonés II: «perro grande»** (25/9). La pregunta lleva la traducción literal junto al romaji, porque mide el orden y no el vocabulario. *Descartado:* aclarar el adjetivo al final («el perro es grande»): «un detalle muy fino para incluir al principio».
 - **Ejercicios de armar la estructura con bloques en español** (25/9), en Cómo funciona el japonés II: «Yo como sushi» (con verbo) y «El perro de Tanaka» (sin verbo, suma variedad), de tres piezas. *Descartado:* uno de cinco piezas: nadie que recién leyó un párrafo sobre estructura puede armarlo.
 - **Seis palabras por lección de palabras** (desde la unidad 1; se sumaron いけ, すいか, たこ, くつ y おかね para completarlas).
+
+## Lecciones de kana
+
+- **El ciclo de la lección de palabras, en las lecciones de kana** (9/11; #7, en la 0.5.0). Tandas de dos o tres kana que se presentan (kana, sonido y trazo) y se preguntan enseguida, los kana con marca en una tanda propia, al menos tres recuperaciones por kana base y dos por kana con marca, y un cierre leyendo palabras reales. Motivo: las lecciones de kana no presentaban y cada kana se recuperaba dos veces (una, los que llevan marca), contra cuatro de cada palabra; el kana es la base de todo lo demás.
+- **«は, ば y ぱ» se parte en dos lecciones** (9/11; #44, con la unidad 2): は por un lado; ば y ぱ por otro. Con el ciclo nuevo llegaría a unas 35 respuestas.
+- **Todo kana se lee en palabras** (9/11; #40 y #45). 18 de los 69 kana del tramo no aparecían en ninguna palabra. Se reemplazan palabras, sin pasar de seis por lección. を es la excepción: espera a los verbos.
+- **Oraciones antes, y generadas** (9/11; #43, con la unidad 2). «Y です», «Y ですか» y «はい / いいえ» se adelantan a Palabras 5 y 6, y las oraciones de práctica se arman con plantillas verificadas y el vocabulario aprendido, en lugar de listas fijas.
 
 ## Lección de palabras
 
@@ -72,6 +80,8 @@ Diseño aprobado el 24/9; la misma lógica en las tres unidades.
 - **Dos palabras de cada lección de palabras**, con los tipos del ciclo. El repaso prioriza cubrir la unidad; la práctica ponderada vive en Repaso de kana y Mis palabras.
 - **Nunca preguntas de las lecciones de mapa.** Sus ideas vuelven en el repaso de la unidad 1 como preguntas puente, hechas con palabras que ya se leen.
 - **Cada error indica de qué lección viene.**
+- **Repaso por tiempo, sin obligar** (9/11; #9, en una versión propia). Cada kana y cada palabra aprobados guardan cuándo les toca volver, con intervalos que crecen al acertar. Aparece como un botón en la principal y como un aviso de «Repaso pendiente» al entrar a una lección; el aviso se puede ignorar. «Firme» pasa a significar «acertada después de una semana o más». *Descartado:* un calentamiento obligatorio de preguntas pendientes al empezar cada lección: «no quisiera obligar a repasar».
+- **Repasos de unidad acumulativos** (9/11; #42). Unas seis de las veinte preguntas vienen de unidades anteriores. Reemplaza, para esas preguntas, a «el repaso prioriza cubrir la unidad»: como repasar por tiempo es voluntario, el repaso de unidad es el único lugar del camino donde lo anterior vuelve seguro.
 
 ## Mis palabras
 
