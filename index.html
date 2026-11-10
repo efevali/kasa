@@ -1117,9 +1117,9 @@ const HTML_SCRIPTS = `
   <p class="rom">watashi wa kōhī o nomimasu</p>
   <p class="es">Yo tomo café.</p>
   <dl class="legend">
-    <div><dt class="s-h">Hiragana</dt><dd>Partículas, terminaciones y palabras japonesas. Con él se puede escribir cualquier palabra.</dd></div>
-    <div><dt class="s-k">Katakana</dt><dd>Los mismos sonidos con otras formas: palabras extranjeras como コーヒー, nombres como マリア y onomatopeyas.</dd></div>
-    <div><dt class="s-kj">Kanji</dt><dd>Caracteres de origen chino que cargan el significado. Hay unos 2.000 de uso común y se aprenden de a poco.</dd></div>
+    <div><dt class="s-h">Hiragana</dt><dd>La escritura básica: las palabras japonesas y las partes que arman la oración. Con él se puede escribir cualquier palabra.</dd></div>
+    <div><dt class="s-k">Katakana</dt><dd>Los mismos sonidos con otras formas: palabras extranjeras como コーヒー, nombres extranjeros como マリア y onomatopeyas.</dd></div>
+    <div><dt class="s-kj">Kanji</dt><dd>Caracteres de origen chino. Cada uno representa una idea, y suele tener más de una lectura. Hay unos 2.000 de uso común y se aprenden de a poco.</dd></div>
   </dl>
 </div>`;
 
@@ -1145,25 +1145,31 @@ const UNITS = [
     intro:'Antes de aprender a leer, un mapa del idioma: cómo se escribe y cómo suena. Todavía no hace falta leer nada: todo el japonés de esta lección va con romaji, su transcripción con nuestras letras.',
     sections:[
      {h:'Tres escrituras a la vez', b:[
-       {p:'Una oración japonesa corriente mezcla tres sistemas de escritura. En esta, cada color es uno distinto:'},
+       {p:'El japonés se escribe con tres sistemas distintos, y una oración corriente los mezcla. En esta, cada color es uno:'},
        {html:HTML_SCRIPTS},
-       {p:'El hiragana y el katakana son los **kana**: cada kana representa un sonido, no un significado. Este curso empieza por el hiragana, porque con él se puede escribir cualquier palabra.'},
-       {p:'Los textos del curso van en hiragana y con espacios entre palabras, como en los libros para chicos. El japonés normal no deja espacios: los kanji ayudan a ver dónde empieza cada palabra.'},
+       {p:'El japonés normal no deja espacios entre palabras. La mezcla de escrituras ayuda a ver dónde empieza cada una; cuando hay varias seguidas en hiragana, quien lee las separa porque las conoce. Los textos del curso van solo en hiragana, y por eso llevan espacios, como los libros para chicos.'},
        {mk:'El hiragana se aprende en las unidades 1 a 3; el katakana y los kanji, más adelante.'}]},
+     {h:'Los kana: una sílaba por vez', b:[
+       {p:'El hiragana y el katakana se llaman, juntos, los **kana**. Son silabarios. Nuestras letras representan sonidos sueltos, como la k o la a; cada kana, en cambio, representa una sílaba entera. か es «ka», y no se puede separar en k y a.'},
+       {p:'Son pocos: 46 kana básicos, que con sus marcas y combinaciones alcanzan para escribir todo el idioma. Y son regulares: cada kana se lee siempre igual, con muy pocas excepciones.'},
+       {p:'Los kana se ordenan en una tabla. Cada **fila** combina una consonante con las cinco vocales, con unas pocas irregularidades que vas a ver en la tabla. La primera fila son las vocales solas; la segunda es la fila de か: ka, ki, ku, ke, ko.'},
+       {p:'Algunas filas tienen además una versión con una **marca** que cambia la consonante; la más común son dos rayitas. か (ka) con la marca es が (ga).'},
+       {p:'No hace falta memorizar la tabla ahora: es el mapa del camino. La tenés siempre a mano en «Tabla de kana».'},
+       {mk:'En esta unidad aprendés las tres primeras filas: las vocales, か y さ, con sus marcas.'}]},
      {h:'Cómo vas a avanzar', b:[
        {p:'Vas a aprender el hiragana de a una fila por vez. Después de cada fila llegan palabras escritas solo con los kana que ya conocés, así que las vas a leer desde el principio.'},
        {p:'Más adelante se suman lecciones de gramática, para armar oraciones con esas palabras, y de escucha. Los saludos llegan cuando ya podés leerlos: el primero, こんにちは (konnichiwa, hola), en la unidad 2.'}]},
      {h:'El romaji, un andamio', b:[
        {p:'El romaji escribe el japonés con nuestras letras. No es una escritura japonesa: es una transcripción pensada para extranjeros.'},
        {p:'Al principio te ayuda a pronunciar mientras aprendés los kana. Pero el ojo siempre se va a lo conocido: si leés el romaji, no estás leyendo japonés. Conviene soltarlo cuanto antes. Desde la unidad 3 aparece solo si tocás un botón.'},
-       {p:'Se lee casi como en español, con estas diferencias: la *g* es siempre suave, como en «gato» (*ge* suena «gue» y *gi*, «gui»); la *j* y la *sh* suenan como en inglés (*jeans*, *show*); la *z* es sonora, como el zumbido de una abeja; la *h* es una aspiración suave, más leve que nuestra jota.'},
-       {p:'La raya sobre una vocal (ā, ō) indica que es larga.'}]},
+       {p:'Se lee casi como en español, con estas diferencias: la *g* es siempre suave, como en «gato» (*ge* suena «gue» y *gi*, «gui»); la *j* y la *sh* suenan como en inglés (*jeans*, *show*); la *z* es sonora, como el zumbido de una abeja; la *h* es una aspiración suave, más leve que nuestra jota.'}]},
      {h:'Cómo suena', b:[
        {p:'Buena noticia: las cinco vocales japonesas son prácticamente las del español. La u se dice con los labios menos redondeados, y a veces casi desaparece: です (desu, es) suena «des».'},
        {p:'El japonés se cuenta en pulsos (moras) de duración pareja, como golpes de metrónomo. Cada kana vale un pulso, incluida la ん (n) final:'},
        {ex:[{k:'にほん',r:'ni-ho-n',es:'Japón: tres pulsos'}]},
        {p:'Por eso alargar una vocal no es un detalle: suma un pulso y cambia la palabra.'},
        {ex:[{k:'おばさん',r:'obasan',es:'tía, señora (cuatro pulsos)'},{k:'おばあさん',r:'obāsan',es:'abuela, señora mayor (cinco pulsos)'}]},
+       {p:'En romaji, la vocal larga se escribe con una raya encima: ā, ō.'},
        {mk:'La primera vocal larga aparece enseguida, en Palabras 1: いいえ (iie, no).'}]},
      {h:'Lo que vas a encontrar más adelante', b:[
        {p:'**Consonantes dobles.** Una pausa de un pulso en medio de la palabra también la cambia: きて (kite) es «vení» y きって (kitte), «estampilla».'},
@@ -1173,8 +1179,9 @@ const UNITS = [
     ],
     quiz:[
      {q:'¿Con qué escritura va una palabra extranjera como コーヒー (kōhī, café)?',o:['Katakana','Hiragana','Kanji','Romaji'],a:0,ex:'El katakana se usa para palabras de otros idiomas, nombres extranjeros y onomatopeyas.'},
-     {q:'¿Qué se puede escribir solo con hiragana?',o:['Cualquier palabra japonesa','Solo las palabras extranjeras','Solo los nombres propios','Solo las partículas'],a:0,ex:'Todo el japonés se puede escribir en hiragana; por eso lo usan los libros para chicos.'},
-     {q:'¿Qué es el romaji?',o:['Una transcripción con nuestras letras','Una de las tres escrituras japonesas','El nombre del hiragana y el katakana juntos','La escritura de las palabras extranjeras'],a:0,ex:'El romaji no es una escritura japonesa: es una ayuda para extranjeros, y conviene soltarla cuanto antes.'},
+     {q:'¿Qué se puede escribir solo con hiragana?',o:['Cualquier palabra japonesa','Solo las palabras extranjeras','Solo los nombres propios','Solo las palabras cortas'],a:0,ex:'Todo el japonés se puede escribir en hiragana; por eso lo usan los libros para chicos.'},
+     {q:'¿Qué representa cada kana?',o:['Una sílaba','Una letra suelta','Una idea','Una palabra entera'],a:0,ex:'Los kana son silabarios: か es «ka», una sílaba entera. Los que representan ideas son los kanji.'},
+     {q:'¿Qué tienen en común los kana de una misma fila?',o:['La consonante','La vocal','El significado','La cantidad de trazos'],a:0,ex:'Cada fila combina una consonante con las cinco vocales: la fila de か es ka, ki, ku, ke, ko.'},
      {q:'En romaji, ¿cómo suena «ge»?',o:['«gue», como en «guerra»','«je», como en «jefe»','«ye», como en «yema»','«she», como en inglés'],a:0,ex:'La g del romaji es siempre suave, como en «gato»: «ge» suena «gue» y «gi», «gui».'},
      {q:'¿Cuántos pulsos tiene にほん (nihon, Japón)?',o:['3','2','4','5'],a:0,ex:'に, ほ y ん: la ん final cuenta como un pulso propio.'},
      {q:'¿Qué distingue おばさん (obasan, tía) de おばあさん (obāsan, abuela)?',o:['Una vocal larga','La primera consonante','El orden de los kana','Nada: son la misma palabra'],a:0,ex:'La a larga dura un pulso más y cambia el significado.'},

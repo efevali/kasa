@@ -34,6 +34,8 @@ Criterios que valen siempre:
 
 1. **Revisión.** Se recorre la app en el teléfono, pantalla por pantalla y lección por lección. Cada observación (una captura con un comentario) se discute antes de registrarla.
    - **Las lecciones se revisan con dos criterios fijos** (desde el 9/11/2026): que sea didáctica y tenga lógica pedagógica, y que sea coherente con el resto del curso en contenido, estrategia y tono. Claude revisa cada lección contra esos dos criterios, los diez principios y los ocho criterios de dinámica del [manifiesto](docs/manifiesto.md), y presenta lo que encuentra separado en «para corregir» y «para discutir». El dueño suma lo suyo y decide qué pasa a issue.
+   - **Cada concepto se explica o se muestra antes de usarse** (desde el 10/11/2026), y lo que es base de lo que sigue no se comprime: una lección puede ser más larga si eso evita dar por sabido un término.
+   - **Una simplificación no puede afirmar algo falso.** Si hace falta, se dice «casi siempre» o «en general». El dueño no sabe japonés: cada revisión lista aparte qué afirmaciones sobre el idioma son exactas y cuáles son simplificaciones, para que decida con eso a la vista. Pendiente a futuro: que el contenido lo revise alguien que sepa japonés.
    - **Si la revisión cambia el texto de una lección, el texto nuevo se aprueba antes de implementarlo,** como un boceto.
 2. **Issue.** Lo acordado se carga como issue con la plantilla «Observación». Se redacta para que alguien pueda implementarlo sin haber visto la conversación ni la captura.
 3. **Boceto.** Si el cambio es visual, se aprueba sobre un boceto (ver «Bocetos») y su código entra en la rama de la versión.
