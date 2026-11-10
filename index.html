@@ -498,7 +498,16 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .present-row .pr-base .sq{width:100%;height:auto;aspect-ratio:1/1;container-type:inline-size;border-style:dashed;color:var(--ink-2)}
 .present-row .pr-base .sq>span{font-size:26px}
 .pr-arrows{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;font-size:18px;line-height:1.5;color:var(--ink-2)}
-.leer .hito-phrase{margin-top:10px}
+.leer-lead{margin:16px 0 0;font-size:15.5px;line-height:1.4;color:var(--ink-2)}
+.ej-list{display:grid;gap:10px;margin:14px 0 4px}
+.ej-row{display:grid;grid-template-columns:minmax(96px,auto) 1fr auto;align-items:center;gap:14px;width:100%;padding:10px 14px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:14px;box-shadow:0 3px 0 var(--edge);text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.ej-row:active{transform:translateY(2px);box-shadow:0 1px 0 var(--edge)}
+.ej-k{font-size:32px;line-height:1.25}
+.ej-k .key{color:var(--midori)}
+.ej-t{display:grid;line-height:1.3}
+.ej-t .rom{font-size:15px}
+.ej-es{font-size:17px;font-weight:700}
+.ej-row svg{color:var(--ai)}
 .enr{width:100%;text-align:left;padding:12px 14px;background:var(--tint);border-radius:12px}
 .enr p{margin:0;font-size:16px;line-height:1.45;max-width:none}
 .enr .enr-label{font-size:15px;line-height:1.4;font-weight:700;color:var(--midori);margin-bottom:2px}
@@ -732,7 +741,6 @@ body.capa .navb .back::before{transform:translateY(-3px) rotate(-45deg)}
 /* ---- Hitos: «¡Ya podés leer!» (diseño aprobado sobre bocetos, 24/9/2026) ---- */
 .unlock-note{margin:22px 0 0;padding:10px 14px;border:var(--bw) dashed var(--midori);border-radius:12px;background:var(--ok-soft);color:var(--midori);font-weight:700;font-size:16px;text-align:center;max-width:none}
 .hito .present-card{padding-bottom:18px}
-.hito .present-card.pre{padding-bottom:22px}
 .hito-phrase{font-size:min(54px,14vw);line-height:1.2;margin:4px 0 0}
 .hito-phrase.long{font-size:min(42px,10.6vw);line-height:1.25}
 .hito-phrase .ln{display:block}
@@ -740,13 +748,11 @@ body.capa .navb .back::before{transform:translateY(-3px) rotate(-45deg)}
 .hito-key{margin:6px 0 0;font-size:15.5px;font-weight:700;color:var(--midori)}
 .hito-key .jpi{font-size:18px}
 .hito .present-rom + .hito-key{margin-top:8px}
-.hito-try{margin:18px 0 6px;font-size:17px;color:var(--ink-2)}
 .hito .present-card .present-es{margin-top:10px}
 .hito-read{width:100%;text-align:left;margin:12px 0 0;padding:2px 0 2px 14px;border-left:3px solid var(--ai);font-size:16px;line-height:1.45;color:var(--ink-2)}
 .hito-read b{color:var(--ink)}
 .hito-read .mk{display:block;font-size:14.5px;color:var(--ai);margin-top:3px}
-.hito .hito-go{margin-top:26px}
-.hito .present-card:not(.pre) + .hito-go{margin-top:22px}
+.hito .hito-go{margin-top:22px}
 /* cierre del hito */
 .cierre{padding-top:6px}
 .fr-h{font-family:var(--f-jp);font-weight:600;font-size:30px;line-height:1.25;margin:10px 0 4px}
@@ -884,7 +890,7 @@ const KANA = {
   // Fila か
   'か':{r:'ka',p:'«ka», como en «casa».',ex:['かお','kao','cara']},
   'き':{r:'ki',p:'«ki», como en «kilo».',ex:['あき','aki','otoño']},
-  'く':{r:'ku',p:'«ku», con la u relajada.',ex:['きく','kiku','escuchar']},
+  'く':{r:'ku',p:'«ku», con la u relajada.',ex:['かく','kaku','escribir']},
   'け':{r:'ke',p:'«ke», como en «queso».',ex:['いけ','ike','estanque']},
   'こ':{r:'ko',p:'«ko», como en «cosa».',ex:['ここ','koko','aquí']},
   // Fila さ
@@ -1911,7 +1917,7 @@ function kanaCycle(L){
   }
   steps.push(...mezclar(cierre));
   const lect = lecturasDe(L);
-  lect.forEach((w, i) => steps.push({type:'leer', word:w, n:i + 1, of:lect.length, open:false, keys:[...base, ...marcas]}));
+  if (lect.length) steps.push({type:'leer', words:lect, keys:[...base, ...marcas]});
   return steps;
 }
 // Las palabras del cierre de una lección de kana: ejemplos de las fichas, escritos solo con kana ya enseñados.
@@ -3244,7 +3250,7 @@ function startQuiz(id){
     // «¡Ya podés leer!»: una tarjeta por frase, la pregunta de uso (no suma) y el cierre
     const lid = id.slice(5), L = LESSON[lid], fr = phrasesOf(lid);
     if (!L || !fr.length || !isDone(lid)) return false;
-    items = fr.map((p, i) => ({type:'hito', ph:p, n:i + 1, of:fr.length, open:false}));
+    items = fr.map((p, i) => ({type:'hito', ph:p, n:i + 1, of:fr.length}));
     if (L.uso) items.push(Object.assign(fixedQ(L.uso), {free:true}));
     back = '#/l/' + lid; title = 'Ya podés leer';
     S.hitos[lid] = true; save();
@@ -3335,31 +3341,28 @@ function presentRowHTML(q){
       '<button class="btn primary wide center" data-act="next">Seguir</button>' +
     '</div></div>';
 }
-// Cierre de la lección de kana (#7): una palabra real para leer, en dos momentos, como las frases de los hitos.
-// Primero la palabra sola, con los kana de la lección en verde; al tocar «Ver cómo se lee», el audio, la lectura y el significado.
+// Cierre de la lección de kana (#7): hasta tres palabras reales de ejemplo en una sola pantalla, escritas con los
+// kana de la lección (en verde), con su lectura y su significado. Cada una se toca para escucharla. No puntúa.
 function leerHTML(q){
-  const w = q.word, L = LESSON[Q.id], u3 = L && L.unit >= 3;
-  const palabra = '<p class="jp hito-phrase">' + [...w.k].map(c => q.keys.includes(c) ? '<span class="key">' + esc(c) + '</span>' : esc(c)).join('') + '</p>';
-  const top = '<div class="present-top"><span class="present-count">' + q.n + ' de ' + q.of + '</span><span class="badge-new">¡Ya podés leer!</span></div>';
-  let card, btn;
-  if (!q.open){
-    card = '<div class="present-card pre">' + top + palabra + '<p class="hito-try">Probá leerla en voz alta.</p></div>';
-    btn = '<button class="btn primary wide center hito-go" data-act="hitoread">Ver cómo se lee</button>';
-  } else {
-    card = '<div class="present-card">' + top + palabra +
-      '<p class="present-rom" id="presRom"' + (u3 ? ' hidden' : '') + '>' + esc(w.r) + '</p>' +
-      '<p class="present-es">' + jpify(esc(w.es)) + '</p>' +
-      '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(w.k) + '">' + ICON_PLAY + ' Escuchar</button>' + (u3 ? '<button class="btn small" data-act="presrom">Mostrar romaji</button>' : '') + '</div></div>';
-    btn = '<button class="btn primary wide center hito-go" data-act="next">' + (Q.i + 1 >= Q.items.length ? 'Ver resultado' : 'Seguir') + '</button>';
-  }
-  return '<div class="quiz">' + stepTop() + '<div class="present hito leer">' + card + btn + '</div></div>';
+  const L = LESSON[Q.id], u3 = L && L.unit >= 3;
+  const filas = q.words.map(w =>
+    '<button class="ej-row" data-act="say" data-jp="' + esc(w.k) + '" aria-label="Escuchar ' + esc(w.k) + '">' +
+    '<span class="jp ej-k">' + [...w.k].map(c => q.keys.includes(c) ? '<span class="key">' + esc(c) + '</span>' : esc(c)).join('') + '</span>' +
+    '<span class="ej-t"><span class="rom ej-rom"' + (u3 ? ' hidden' : '') + '>' + esc(w.r) + '</span><span class="ej-es">' + jpify(esc(w.es)) + '</span></span>' + ICON_PLAY + '</button>').join('');
+  return '<div class="quiz">' + stepTop() + '<div class="present leer">' +
+    '<div class="present-card"><div class="present-top"><span class="badge-new">Ejemplos</span></div>' +
+    '<p class="leer-lead">Palabras con los kana de esta lección. Tocá cada una para escucharla.</p>' +
+    '<div class="ej-list">' + filas + '</div>' +
+    (u3 ? '<div class="present-actions"><button class="btn small" data-act="presrom">Mostrar romaji</button></div>' : '') + '</div>' +
+    '<button class="btn primary wide center" data-act="next">' + (Q.i + 1 >= Q.items.length ? 'Ver resultado' : 'Seguir') + '</button>' +
+    '</div></div>';
 }
 function stepTop(){
   return topNav(Q.back, 'Salir', (Q.i + 1) + ' de ' + Q.items.length);
 }
-// Hito, en dos momentos. Primero la frase sola, con la llave en verde: ni audio, ni romaji, ni significado.
-// Al tocar «Ver cómo se lee», la tarjeta crece en el lugar y suena el audio. Romaji: en la unidad 2
-// aparece al revelar; desde la 3 sigue detrás de su botón (la comprobación de la lectura es el audio).
+// Hito: la frase que se destraba, con la llave en verde, presentada de una vez: suena al llegar y muestra su
+// lectura, su significado y cuándo se usa. (Hasta la 0.4.1 iba en dos momentos, con «Probá leerla en voz alta»:
+// se quitó porque la app no escucha.) Romaji: en la unidad 2 va a la vista; desde la 3, detrás de su botón.
 function hitoHTML(q){
   const p = q.ph, L = LESSON[p.h], keys = phraseKeys(p);
   const lines = p.k.split(' ');
@@ -3368,20 +3371,14 @@ function hitoHTML(q){
   const keyTxt = (keys.length === 1 ? keys[0] : keys.slice(0, -1).join(', ') + ' y ' + keys[keys.length - 1]) + (keys.length === 1 ? ', la llave de esta lección' : ', las llaves de esta lección');
   const keyLine = '<p class="hito-key">' + jpify(esc(keyTxt)) + '</p>';
   const top = '<div class="present-top"><span class="present-count">' + q.n + ' de ' + q.of + '</span><span class="badge-new">¡Ya podés leer!</span></div>';
-  let card, btn;
-  if (!q.open){
-    card = '<div class="present-card pre">' + top + phrase + keyLine + '<p class="hito-try">Probá leerla en voz alta.</p></div>';
-    btn = '<button class="btn primary wide center hito-go" data-act="hitoread">Ver cómo se lee</button>';
-  } else {
-    const u3 = L.unit >= 3;
-    const read = p.leer ? '<p class="hito-read"><b>Al leer:</b> ' + jpify(esc(p.leer)) + (p.mk ? '<span class="mk">→ ' + jpify(esc(p.mk)) + '</span>' : '') + '</p>' : '';
-    card = '<div class="present-card">' + top + phrase +
-      '<p class="present-rom" id="presRom"' + (u3 ? ' hidden' : '') + '>' + esc(p.r) + '</p>' + keyLine +
-      '<p class="present-es">' + jpify(esc(p.es)) + '</p>' +
-      '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(p.k) + '">' + ICON_PLAY + ' Escuchar</button>' + (u3 ? '<button class="btn small" data-act="presrom">Mostrar romaji</button>' : '') + '</div>' +
-      '<div class="enr"><p class="enr-label">¿Cuándo se usa?</p><p>' + jpify(esc(p.uso)) + '</p></div>' + read + '</div>';
-    btn = '<button class="btn primary wide center hito-go" data-act="next">Seguir</button>';
-  }
+  const u3 = L.unit >= 3;
+  const read = p.leer ? '<p class="hito-read"><b>Al leer:</b> ' + jpify(esc(p.leer)) + (p.mk ? '<span class="mk">→ ' + jpify(esc(p.mk)) + '</span>' : '') + '</p>' : '';
+  const card = '<div class="present-card">' + top + phrase +
+    '<p class="present-rom" id="presRom"' + (u3 ? ' hidden' : '') + '>' + esc(p.r) + '</p>' + keyLine +
+    '<p class="present-es">' + jpify(esc(p.es)) + '</p>' +
+    '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(p.k) + '">' + ICON_PLAY + ' Escuchar</button>' + (u3 ? '<button class="btn small" data-act="presrom">Mostrar romaji</button>' : '') + '</div>' +
+    '<div class="enr"><p class="enr-label">¿Cuándo se usa?</p><p>' + jpify(esc(p.uso)) + '</p></div>' + read + '</div>';
+  const btn = '<button class="btn primary wide center hito-go" data-act="next">Seguir</button>';
   return '<div class="quiz">' + stepTop() + '<div class="present hito">' + card + btn + '</div></div>';
 }
 // Cierre: barra de diez segmentos agrupada por hito, las frases destrabadas y las próximas, sin mostrarlas
@@ -3411,11 +3408,12 @@ function renderHitoClose(){
     '</div>';
 }
 function autoAudio(q){ return q.type === 'present' ? q.word.k : q.type === 'presentk' ? q.kana : (q.show && q.show.audio) || null; }
-// Al aparecer una pantalla de la práctica: la tarjeta del hito suena con su fūrin; el resto, con su audio si lo tiene
+// Al aparecer una pantalla de la práctica: la tarjeta del hito suena con su fūrin y, un momento después, con su frase;
+// el resto, con su audio si lo tiene
 function onShow(q){
   if (!q) return;
   SFX.despertar();
-  if (q.type === 'hito' && !q.open){ SFX.hito(); return; }
+  if (q.type === 'hito'){ SFX.hito(); setTimeout(() => { if (Q && Q.items[Q.i] === q) speak(q.ph.k); }, 1100); return; }
   const au = autoAudio(q); if (au) vozAlLlegar(au);
   if (q.type === 'presentk'){ const pk = app.querySelector('.present-k'); if (pk) setupTrace(pk, q.kana); }
 }
@@ -4056,8 +4054,7 @@ document.addEventListener('click', e => {
     case 'leave': { const h = t.dataset.href || '#/'; if (histDir(location.hash) === histDir(h)) closeSheet(true); else ir(h, true); break; }
     case 'clear': { const r = t.closest('.sheet-back, .present-k'); if (r && r._clear) r._clear(); break; }
     case 'guide': { t.closest('.sheet').querySelector('.trace-sq').classList.toggle('hide-model', !t.checked); break; }
-    case 'hitoread': { const q = Q && Q.items[Q.i]; if (q && (q.type === 'hito' || q.type === 'leer')){ q.open = true; app.innerHTML = renderQuizScreen(); speak(q.type === 'hito' ? q.ph.k : q.word.k); const b = app.querySelector('.hito-go'); if (b) b.focus({preventScroll:true}); } break; }
-    case 'presrom': { const r = document.getElementById('presRom'); if (r){ r.hidden = !r.hidden; t.textContent = r.hidden ? 'Mostrar romaji' : 'Ocultar romaji'; } break; }
+    case 'presrom': { const rs = document.querySelectorAll('#presRom, .ej-rom'); if (rs.length){ const ver = rs[0].hidden; rs.forEach(r => { r.hidden = !ver; }); t.textContent = ver ? 'Ocultar romaji' : 'Mostrar romaji'; } break; }
     case 'togglerom': {
       const bar = t.closest('.reveal-bar'), sig = bar && bar.nextElementSibling;
       const w = (sig && sig.classList.contains('rom-wrap')) ? sig : (t.closest('.rom-wrap') || document.querySelector('.rom-wrap'));
