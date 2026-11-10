@@ -474,6 +474,19 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .present-es{font-size:26px;line-height:1.3;font-weight:700;margin:6px 0 12px;max-width:none}
 .present-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
 .present>.btn{margin-top:18px}
+/* Lección de kana en ciclo: presentar un kana, presentar una fila con marca y leer una palabra */
+.pk-head{display:flex;align-items:baseline;justify-content:center;gap:12px;margin:0 0 12px;line-height:1}
+.pk-head .jp{font-size:44px;font-weight:600}
+.pk-head b{font-size:26px;font-weight:600}
+.present-k .trace-wrap{width:min(60vw,220px);box-shadow:none}
+.pk-hint{margin:10px 0 12px;font-size:15px;line-height:1.35;color:var(--ink-2)}
+.present-k .present-actions{margin-bottom:14px}
+.pr-title{margin:0 0 12px;font-size:20px;line-height:1.3;font-weight:700}
+.present-row .kana-grid{width:100%;margin:0}
+.present-row .pr-base .sq{width:100%;height:auto;aspect-ratio:1/1;container-type:inline-size;border-style:dashed;color:var(--ink-2)}
+.present-row .pr-base .sq>span{font-size:26px}
+.pr-arrows{width:100%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;font-size:18px;line-height:1.5;color:var(--ink-2)}
+.leer .hito-phrase{margin-top:10px}
 .enr{width:100%;text-align:left;padding:12px 14px;background:var(--tint);border-radius:12px}
 .enr p{margin:0;font-size:16px;line-height:1.45;max-width:none}
 .enr .enr-label{font-size:15px;line-height:1.4;font-weight:700;color:var(--midori);margin-bottom:2px}
@@ -1680,7 +1693,7 @@ function buildQuiz(L){
     case 'grammar':
       return shuffle(L.quiz.map(fixedQ));
     case 'kana':
-      return kanaQuestions(L.set, L.daku, kanaPoolUpTo(L.id), L.n || 15);
+      return kanaCycle(L);
     case 'vocab':
       if (L.cycle) return cycleSteps(L);
       return vocabQuestions(L.words, vocabPoolUpTo(L.id), Math.max(10, L.words.length * 2));
@@ -1772,7 +1785,7 @@ function pairsQuestion(words, pool){
 }
 // Mezcla sin que la misma palabra aparezca dos veces seguidas
 function mezclar(items){
-  const key = q => (q.reveal && q.reveal.k) || q.answer || q.ans;
+  const key = q => (q.reveal && q.reveal.k) || q.kk || q.answer || q.ans;
   let out = shuffle(items), guard = 0;
   while (out.some((q, i) => i && key(q) === key(out[i - 1])) && guard++ < 60) out = shuffle(items);
   return out;
@@ -1827,6 +1840,68 @@ function cycleSteps(L){
   fin.splice(Math.floor(fin.length / 2), 0, parB);
   steps.push(...fin);
   return steps;
+}
+
+// Lección de kana en ciclo (#7): la lógica de la lección de palabras, aplicada a los kana.
+// Tandas de hasta tres kana: se presentan (kana, sonido y trazo) y se reconocen enseguida; desde la segunda
+// tanda vuelven los anteriores. Los kana con marca van después, una fila por pantalla, presentados como el
+// mismo kana con una marca. El cierre completa la dosis (tres veces cada kana base y dos cada kana con marca,
+// al menos una por audio) y termina leyendo palabras reales: los ejemplos de las fichas que ya se pueden leer.
+// En las tandas, las opciones salen solo de lo ya visto.
+function kanaCycle(L){
+  const pool = kanaPoolUpTo(L.id), base = L.set, marcas = L.daku || [];
+  const entra = k => !EXCLUDE_QUIZ.has(k);
+  const cuenta = new Map(), oido = new Set();
+  const tipos = k => k === 'を' ? ['k2r'] : ['a2k', 'r2k', 'k2r'];   // を suena igual que お: solo se pregunta escrita
+  const preguntar = (k, visto, tipo) => { cuenta.set(k, (cuenta.get(k) || 0) + 1); if (tipo === 'a2k') oido.add(k); return kanaQuestion(k, visto, tipo); };
+  const menosVistos = ks => shuffle(ks).sort((a, b) => (cuenta.get(a) || 0) - (cuenta.get(b) || 0));
+  const previos = pool.filter(k => !base.includes(k) && !marcas.includes(k));
+  const steps = [], vistos = [];
+  for (let i = 0; i < base.length; i += 3){
+    const grupo = base.slice(i, i + 3), viejos = vistos.slice();
+    grupo.forEach(k => steps.push({type:'presentk', kana:k, n: base.indexOf(k) + 1, of: base.length}));
+    vistos.push(...grupo);
+    const visto = previos.concat(vistos);
+    const qs = grupo.map(k => preguntar(k, visto, 'k2r'));              // recién presentado: reconocerlo escrito
+    menosVistos(viejos).slice(0, 2).forEach((k, j) => qs.push(preguntar(k, visto, tipos(k)[j % tipos(k).length])));
+    steps.push(...mezclar(qs));
+  }
+  for (let i = 0; i < marcas.length; i += 5){
+    const fila = marcas.slice(i, i + 5);
+    steps.push({type:'presentrow', kana: fila});
+    vistos.push(...fila);
+    const visto = previos.concat(vistos);
+    const qs = fila.filter(entra).map(k => preguntar(k, visto, 'k2r'));
+    menosVistos(base).slice(0, 2).forEach(k => qs.push(preguntar(k, visto, tipos(k)[0])));
+    steps.push(...mezclar(qs));
+  }
+  const todos = [...base, ...marcas].filter(entra);
+  const falta = k => (cuenta.get(k) || 0) < (marcas.includes(k) ? 2 : 3);
+  const cierre = [];
+  let t = 0, guard = 0;
+  while (todos.some(falta) && guard++ < 90){
+    const k = menosVistos(todos.filter(falta))[0], ts = tipos(k);
+    cierre.push(preguntar(k, pool, ts.includes('a2k') && !oido.has(k) ? 'a2k' : ts[t++ % ts.length]));
+  }
+  steps.push(...mezclar(cierre));
+  const lect = lecturasDe(L);
+  lect.forEach((w, i) => steps.push({type:'leer', word:w, n:i + 1, of:lect.length, open:false, keys:[...base, ...marcas]}));
+  return steps;
+}
+// Las palabras del cierre de una lección de kana: ejemplos de las fichas, escritos solo con kana ya enseñados.
+// Primero las que usan más kana de la lección; hasta tres, de dos kana o más (si no alcanzan, también de uno).
+function lecturasDe(L){
+  const pool = new Set(kanaPoolUpTo(L.id)), nuevos = new Set([...L.set, ...(L.daku || [])]);
+  const vistas = new Set(), cands = [];
+  L.set.forEach(k => {
+    const ex = KANA[k] && KANA[k].ex;
+    if (!ex || vistas.has(ex[0]) || ![...ex[0].replace(/\s/g, '')].every(c => pool.has(c))) return;
+    vistas.add(ex[0]);
+    cands.push({k:ex[0], r:ex[1], es:ex[2], n:[...new Set(ex[0])].filter(c => nuevos.has(c)).length});
+  });
+  const orden = shuffle(cands).sort((a, b) => b.n - a.n);
+  const largas = orden.filter(w => kanaUnits(w.k).length > 1);
+  return (largas.length >= 2 ? largas : orden).slice(0, 3);
 }
 
 // Repasos de unidad (una sola lógica para los tres; ver el manifiesto). Veinte preguntas, todas puntuadas:
@@ -2828,7 +2903,7 @@ function renderLesson(id){
   let body = '';
   if (L.type === 'kana'){
     body += '<div class="kana-grid">' + L.set.map(k => kanaCell(k)).join('') + '</div>';
-    body += '<p class="hint">Tocá cada kana para escucharlo, ver cómo recordarlo y practicar el trazo con el dedo.</p>';
+    body += '<p class="hint">Tocá cada kana para escucharlo y practicar el trazo con el dedo.</p>';
     if (L.daku){
       body += '<h2>Con marcas: ゛ y ゜</h2><p>' + jpify(esc(L.dakuIntro)) + '</p>';
       body += '<div class="kana-grid small">' + L.daku.map(k => kanaCell(k)).join('') + '</div>';
@@ -3116,6 +3191,7 @@ function setupTrace(root, k){
 
 /* ---------- Práctica ---------- */
 let Q = null;
+const PASOS = new Set(['present', 'presentk', 'presentrow', 'leer', 'hito']);   // pantallas de la práctica que no son preguntas: no puntúan
 function startQuiz(id){
   let items, back, title;
   if (id === 'repaso'){
@@ -3137,7 +3213,7 @@ function startQuiz(id){
     if (!L) return false;
     items = buildQuiz(L); back = '#/l/' + id; title = L.title;
   }
-  const scored = items.reduce((n, q) => n + (q.free || q.type === 'present' || q.type === 'hito' ? 0 : q.type === 'pairs' ? q.words.length : 1), 0);
+  const scored = items.reduce((n, q) => n + (q.free || PASOS.has(q.type) ? 0 : q.type === 'pairs' ? q.words.length : 1), 0);
   Q = {id, items, i:0, score:0, wrong:[], back, title, answered:false, placed:[], total:scored, repeats:0};
   if (id.indexOf('hito-') === 0) Q.hito = id.slice(5);
   return true;
@@ -3151,6 +3227,9 @@ function renderQuizScreen(){
   const q = Q.items[Q.i];
   if (q.type === 'present') return stepHTML(q);
   if (q.type === 'hito') return hitoHTML(q);
+  if (q.type === 'presentk') return presentKanaHTML(q);
+  if (q.type === 'presentrow') return presentRowHTML(q);
+  if (q.type === 'leer') return leerHTML(q);
   Q.answered = false; Q.placed = []; Q.shown = false; Q.sel = {l:null, r:null}; Q.matched = 0; Q.pairErr = 0; Q.pairFail = new Set();
   const thinkHide = Q.id === 'palabras' && S.settings.think && q.type !== 'order';
   return '<div class="quiz">' +
@@ -3185,6 +3264,55 @@ function stepHTML(q){
       enrichHTML(w.x) + '</div>' +
       '<button class="btn primary wide center" data-act="next">Seguir</button>' +
     '</div></div>';
+}
+// Presentar un kana (#7): el kana y su lectura, el cuadro para trazarlo y su pronunciación. Suena al llegar.
+function presentKanaHTML(q){
+  const k = q.kana, info = KANA[k];
+  return '<div class="quiz">' + stepTop() +
+    '<div class="present present-k">' +
+      '<div class="present-card"><div class="present-top"><span class="present-count">' + q.n + ' de ' + q.of + '</span><span class="badge-new">¡Kana nuevo!</span></div>' +
+      '<p class="pk-head"><span class="jp">' + esc(k) + '</span><b>' + esc(info.r) + '</b></p>' +
+      '<div class="trace-wrap">' + sq(k, 'trace-sq') + '<canvas aria-label="Zona para practicar el trazo"></canvas></div>' +
+      '<p class="pk-hint">Trazalo con el dedo, encima del modelo.</p>' +
+      '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(k) + '">' + ICON_PLAY + ' Escuchar</button><button class="btn small" data-act="clear">Borrar trazo</button></div>' +
+      '<div class="enr"><p class="enr-label">Pronunciación</p><p>' + jpify(esc(info.p)) + '</p></div></div>' +
+      '<button class="btn primary wide center" data-act="next">Seguir</button>' +
+    '</div></div>';
+}
+// Presentar una fila con marca (#7): arriba los kana que ya se conocen; abajo, los mismos con la marca.
+// Cada uno abre su ficha, con el audio y el trazo.
+function presentRowHTML(q){
+  const row = DAKU_ROWS.find(r => r.kana[0] === q.kana[0]), mark = KANA[q.kana[0]].mark;
+  return '<div class="quiz">' + stepTop() +
+    '<div class="present present-row">' +
+      '<div class="present-card"><div class="present-top"><span class="badge-new">¡Kana nuevos!</span></div>' +
+      '<p class="pr-title">Los mismos kana, con ' + (mark === '゜' ? 'un circulito' : 'dos rayitas') + '</p>' +
+      '<div class="kana-grid pr-base" aria-hidden="true">' + row.base.map(k => sq(k)).join('') + '</div>' +
+      '<div class="pr-arrows" aria-hidden="true">' + row.base.map(() => '<span>↓</span>').join('') + '</div>' +
+      '<div class="kana-grid small">' + row.kana.map(k => kanaCell(k)).join('') + '</div>' +
+      '<p class="pk-hint">Tocá cada kana para escucharlo y practicar el trazo.</p>' +
+      '<div class="enr"><p class="enr-label">Pronunciación</p><p>' + jpify(esc(row.note)) + '</p></div></div>' +
+      '<button class="btn primary wide center" data-act="next">Seguir</button>' +
+    '</div></div>';
+}
+// Cierre de la lección de kana (#7): una palabra real para leer, en dos momentos, como las frases de los hitos.
+// Primero la palabra sola, con los kana de la lección en verde; al tocar «Ver cómo se lee», el audio, la lectura y el significado.
+function leerHTML(q){
+  const w = q.word, L = LESSON[Q.id], u3 = L && L.unit >= 3;
+  const palabra = '<p class="jp hito-phrase">' + [...w.k].map(c => q.keys.includes(c) ? '<span class="key">' + esc(c) + '</span>' : esc(c)).join('') + '</p>';
+  const top = '<div class="present-top"><span class="present-count">' + q.n + ' de ' + q.of + '</span><span class="badge-new">¡Ya podés leer!</span></div>';
+  let card, btn;
+  if (!q.open){
+    card = '<div class="present-card pre">' + top + palabra + '<p class="hito-try">Probá leerla en voz alta.</p></div>';
+    btn = '<button class="btn primary wide center hito-go" data-act="hitoread">Ver cómo se lee</button>';
+  } else {
+    card = '<div class="present-card">' + top + palabra +
+      '<p class="present-rom" id="presRom"' + (u3 ? ' hidden' : '') + '>' + esc(w.r) + '</p>' +
+      '<p class="present-es">' + jpify(esc(w.es)) + '</p>' +
+      '<div class="present-actions"><button class="btn small" data-act="say" data-jp="' + esc(w.k) + '">' + ICON_PLAY + ' Escuchar</button>' + (u3 ? '<button class="btn small" data-act="presrom">Mostrar romaji</button>' : '') + '</div></div>';
+    btn = '<button class="btn primary wide center hito-go" data-act="next">' + (Q.i + 1 >= Q.items.length ? 'Ver resultado' : 'Seguir') + '</button>';
+  }
+  return '<div class="quiz">' + stepTop() + '<div class="present hito leer">' + card + btn + '</div></div>';
 }
 function stepTop(){
   return topNav(Q.back, 'Salir', (Q.i + 1) + ' de ' + Q.items.length);
@@ -3242,13 +3370,14 @@ function renderHitoClose(){
       '</div>' +
     '</div>';
 }
-function autoAudio(q){ return q.type === 'present' ? q.word.k : (q.show && q.show.audio) || null; }
+function autoAudio(q){ return q.type === 'present' ? q.word.k : q.type === 'presentk' ? q.kana : (q.show && q.show.audio) || null; }
 // Al aparecer una pantalla de la práctica: la tarjeta del hito suena con su fūrin; el resto, con su audio si lo tiene
 function onShow(q){
   if (!q) return;
   SFX.despertar();
   if (q.type === 'hito' && !q.open){ SFX.hito(); return; }
   const au = autoAudio(q); if (au) vozAlLlegar(au);
+  if (q.type === 'presentk'){ const pk = app.querySelector('.present-k'); if (pk) setupTrace(pk, q.kana); }
 }
 function promptHTML(q){
   const lab = '<p class="qlabel">' + jpify(esc(q.label)) + '</p>';
@@ -3885,9 +4014,9 @@ document.addEventListener('click', e => {
     case 'stay': closeSheet(true); break;
     // la hoja no se cierra antes: se va con la pantalla que sale
     case 'leave': { const h = t.dataset.href || '#/'; if (histDir(location.hash) === histDir(h)) closeSheet(true); else ir(h, true); break; }
-    case 'clear': { const r = t.closest('.sheet-back'); if (r && r._clear) r._clear(); break; }
+    case 'clear': { const r = t.closest('.sheet-back, .present-k'); if (r && r._clear) r._clear(); break; }
     case 'guide': { t.closest('.sheet').querySelector('.trace-sq').classList.toggle('hide-model', !t.checked); break; }
-    case 'hitoread': { const q = Q && Q.items[Q.i]; if (q && q.type === 'hito'){ q.open = true; app.innerHTML = renderQuizScreen(); speak(q.ph.k); const b = app.querySelector('.hito-go'); if (b) b.focus({preventScroll:true}); } break; }
+    case 'hitoread': { const q = Q && Q.items[Q.i]; if (q && (q.type === 'hito' || q.type === 'leer')){ q.open = true; app.innerHTML = renderQuizScreen(); speak(q.type === 'hito' ? q.ph.k : q.word.k); const b = app.querySelector('.hito-go'); if (b) b.focus({preventScroll:true}); } break; }
     case 'presrom': { const r = document.getElementById('presRom'); if (r){ r.hidden = !r.hidden; t.textContent = r.hidden ? 'Mostrar romaji' : 'Ocultar romaji'; } break; }
     case 'togglerom': {
       const bar = t.closest('.reveal-bar'), sig = bar && bar.nextElementSibling;
