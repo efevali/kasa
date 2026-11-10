@@ -33,6 +33,8 @@ Criterios que valen siempre:
 ## El ciclo
 
 1. **Revisión.** Se recorre la app en el teléfono, pantalla por pantalla y lección por lección. Cada observación (una captura con un comentario) se discute antes de registrarla.
+   - **Las lecciones se revisan con dos criterios fijos** (desde el 9/11/2026): que sea didáctica y tenga lógica pedagógica, y que sea coherente con el resto del curso en contenido, estrategia y tono. Claude revisa cada lección contra esos dos criterios, los diez principios y los ocho criterios de dinámica del [manifiesto](docs/manifiesto.md), y presenta lo que encuentra separado en «para corregir» y «para discutir». El dueño suma lo suyo y decide qué pasa a issue.
+   - **Si la revisión cambia el texto de una lección, el texto nuevo se aprueba antes de implementarlo,** como un boceto.
 2. **Issue.** Lo acordado se carga como issue con la plantilla «Observación». Se redacta para que alguien pueda implementarlo sin haber visto la conversación ni la captura.
 3. **Boceto.** Si el cambio es visual, se aprueba sobre un boceto (ver «Bocetos») y su código entra en la rama de la versión.
 4. **Tanda.** Los issues acordados se agrupan en el milestone de la versión en preparación. Cada tanda reúne un grupo de pantallas, para probar en el teléfono pocos cambios por vez: la 0.4.0, las pantallas generales (principal, Mis palabras, Tabla y Repaso de kana, Ajustes y apertura); después, una por unidad del curso, con su temario.
