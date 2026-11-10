@@ -42,6 +42,8 @@ Las fechas son de 2026.
 - **«は, ば y ぱ» se parte en dos lecciones** (9/11; #44, con la unidad 2): は por un lado; ば y ぱ por otro. Con el ciclo nuevo llegaría a unas 35 respuestas.
 - **Todo kana se lee en palabras** (9/11; #40 y #45). 18 de los 69 kana del tramo no aparecían en ninguna palabra. Se reemplazan palabras, sin pasar de seis por lección. を es la excepción: espera a los verbos.
 - **Oraciones antes, y generadas** (9/11; #43, con la unidad 2). «Y です», «Y ですか» y «はい / いいえ» se adelantan a Palabras 5 y 6, y las oraciones de práctica se arman con plantillas verificadas y el vocabulario aprendido, en lugar de listas fijas.
+- **La lección 1, recortada** (9/11; #54). «Cómo funciona el japonés I» venía de las primeras versiones: siete pantallas de texto y más de doce ideas antes del primer kana. Queda lo que hace falta para la unidad 1; las consonantes dobles, *tsu*, *fu*, la *r* y los tonos se anuncian en un párrafo y se explican donde llegan. Su práctica pregunta solo sobre lo que la lección enseña.
+- **Los minutos de cada lección se calculan** (9/11; #50): quince segundos por pantalla de la práctica más el texto a 150 palabras por minuto. *Descartado:* seguir escribiéndolos a mano en el temario: una lección de kana decía diez minutos con diez preguntas y una de palabras, siete con treinta pantallas.
 
 ## Lección de palabras
 

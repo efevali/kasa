@@ -1118,7 +1118,7 @@ const HTML_SCRIPTS = `
   <p class="es">Yo tomo café.</p>
   <dl class="legend">
     <div><dt class="s-h">Hiragana</dt><dd>Partículas, terminaciones y palabras japonesas. Con él se puede escribir cualquier palabra.</dd></div>
-    <div><dt class="s-k">Katakana</dt><dd>Los mismos sonidos con otras formas: palabras extranjeras como コーヒー, nombres como フェデリコ y onomatopeyas.</dd></div>
+    <div><dt class="s-k">Katakana</dt><dd>Los mismos sonidos con otras formas: palabras extranjeras como コーヒー, nombres como マリア y onomatopeyas.</dd></div>
     <div><dt class="s-kj">Kanji</dt><dd>Caracteres de origen chino que cargan el significado. Hay unos 2.000 de uso común y se aprenden de a poco.</dd></div>
   </dl>
 </div>`;
@@ -1139,60 +1139,51 @@ function W(list, ...ks){ return ks.map(k => { const w = list.find(x => x.k === k
 // Texto: **negrita**, *itálica*. Bloques: p, note, html, ex (ejemplos con audio) y mk (marca «dónde se retoma»).
 const UNITS = [
  {id:1, title:'Primeros pasos', kana:'あ〜そ', ro:'a–so',
-  desc:'Cómo funciona el japonés, las vocales, las filas か y さ con sus variantes y las primeras 24 palabras.',
+  desc:'Cómo funciona el japonés, las vocales, las filas か y さ con sus marcas y las primeras 24 palabras.',
   lessons:[
-   {id:'1-1', type:'concept', map:true, short:'Cómo funciona el japonés I', title:'Cómo funciona el japonés I: cómo se ve y cómo suena', min:10,
-    intro:'Antes de aprender el primer signo, un mapa del idioma: cómo se escribe y cómo suena. Todavía no hace falta leer nada: todo el japonés de esta lección va con romaji, su transcripción con nuestras letras.',
+   {id:'1-1', type:'concept', map:true, short:'Cómo funciona el japonés I', title:'Cómo funciona el japonés I: cómo se ve y cómo suena',
+    intro:'Antes de aprender a leer, un mapa del idioma: cómo se escribe y cómo suena. Todavía no hace falta leer nada: todo el japonés de esta lección va con romaji, su transcripción con nuestras letras.',
     sections:[
      {h:'Tres escrituras a la vez', b:[
        {p:'Una oración japonesa corriente mezcla tres sistemas de escritura. En esta, cada color es uno distinto:'},
        {html:HTML_SCRIPTS},
-       {p:'No hace falta aprender los tres a la vez. Este curso empieza por el hiragana, porque con él se puede escribir cualquier palabra.'},
+       {p:'El hiragana y el katakana son los **kana**: cada kana representa un sonido, no un significado. Este curso empieza por el hiragana, porque con él se puede escribir cualquier palabra.'},
        {p:'Los textos del curso van en hiragana y con espacios entre palabras, como en los libros para chicos. El japonés normal no deja espacios: los kanji ayudan a ver dónde empieza cada palabra.'},
        {mk:'El hiragana se aprende en las unidades 1 a 3; el katakana y los kanji, más adelante.'}]},
      {h:'Cómo vas a avanzar', b:[
        {p:'Vas a aprender el hiragana de a una fila por vez. Después de cada fila llegan palabras escritas solo con los kana que ya conocés, así que las vas a leer desde el principio.'},
-       {p:'Más adelante se suman lecciones de gramática, para armar oraciones con esas palabras, y de escucha.'},
-       {p:'Los saludos de todos los días llegan cuando ya podés leerlos. El primero, こんにちは (konnichiwa, hola), en la unidad 2.'}]},
+       {p:'Más adelante se suman lecciones de gramática, para armar oraciones con esas palabras, y de escucha. Los saludos llegan cuando ya podés leerlos: el primero, こんにちは (konnichiwa, hola), en la unidad 2.'}]},
      {h:'El romaji, un andamio', b:[
        {p:'El romaji escribe el japonés con nuestras letras. No es una escritura japonesa: es una transcripción pensada para extranjeros.'},
        {p:'Al principio te ayuda a pronunciar mientras aprendés los kana. Pero el ojo siempre se va a lo conocido: si leés el romaji, no estás leyendo japonés. Conviene soltarlo cuanto antes. Desde la unidad 3 aparece solo si tocás un botón.'},
-       {p:'Se lee casi como en español, con estas diferencias: la *j* suena como en inglés (*jeans*); la *sh*, como en inglés (*show*); la *h* es una aspiración suave, más leve que nuestra jota; la raya sobre una vocal (ā, ō) indica que es larga.'}]},
+       {p:'Se lee casi como en español, con estas diferencias: la *g* es siempre suave, como en «gato» (*ge* suena «gue» y *gi*, «gui»); la *j* y la *sh* suenan como en inglés (*jeans*, *show*); la *z* es sonora, como el zumbido de una abeja; la *h* es una aspiración suave, más leve que nuestra jota.'},
+       {p:'La raya sobre una vocal (ā, ō) indica que es larga.'}]},
      {h:'Cómo suena', b:[
        {p:'Buena noticia: las cinco vocales japonesas son prácticamente las del español. La u se dice con los labios menos redondeados, y a veces casi desaparece: です (desu, es) suena «des».'},
        {p:'El japonés se cuenta en pulsos (moras) de duración pareja, como golpes de metrónomo. Cada kana vale un pulso, incluida la ん (n) final:'},
        {ex:[{k:'にほん',r:'ni-ho-n',es:'Japón: tres pulsos'}]},
        {p:'Por eso alargar una vocal no es un detalle: suma un pulso y cambia la palabra.'},
        {ex:[{k:'おばさん',r:'obasan',es:'tía, señora (cuatro pulsos)'},{k:'おばあさん',r:'obāsan',es:'abuela, señora mayor (cinco pulsos)'}]},
-       {p:'Lo mismo pasa con las consonantes dobles, que suman una pausa de un pulso:'},
-       {ex:[{k:'きて',r:'kite',es:'vení'},{k:'きって',r:'kitte',es:'estampilla'}]},
        {mk:'La primera vocal larga aparece enseguida, en Palabras 1: いいえ (iie, no).'}]},
-     {h:'Tres sonidos que no existen en español', b:[
-       {p:'Casi todo el japonés se pronuncia con sonidos que ya tenés. Las excepciones son tres:'},
-       {p:'**tsu:** una t y una s pegadas, como en «tsunami».'},
-       {ex:[{k:'くつ',r:'kutsu',es:'zapatos'}]},
-       {p:'**fu:** se sopla con los labios apenas abiertos, como para enfriar la sopa, sin apoyar los dientes en el labio.'},
-       {ex:[{k:'ふじさん',r:'Fujisan',es:'monte Fuji'}]},
-       {p:'**r:** un toque suave de la lengua detrás de los dientes, como la r de «pero», nunca la de «perro».'},
-       {ex:[{k:'さくら',r:'sakura',es:'cerezo'}]},
-       {mk:'Los tres llegan en las unidades 2 y 3.'}]},
-     {h:'Los tonos, sin estudiarlos todavía', b:[
-       {p:'El español pronuncia una sílaba con más fuerza: *casa*, *casó*. El japonés, en cambio, sube y baja el tono entre pulsos, sin darle más fuerza a ninguno.'},
-       {p:'A veces el tono es lo único que separa dos palabras. あめ (ame) es «lluvia» si la *a* va más alta, y «caramelo» si la más alta es la *me*.'},
-       {p:'En la práctica, el contexto casi siempre resuelve la duda, y en la escritura normal los kanji las distinguen. Para empezar, alcanza con escuchar mucho e imitar la melodía de los audios.'}]}
+     {h:'Lo que vas a encontrar más adelante', b:[
+       {p:'**Consonantes dobles.** Una pausa de un pulso en medio de la palabra también la cambia: きて (kite) es «vení» y きって (kitte), «estampilla».'},
+       {p:'**Tres sonidos para afinar.** *tsu*, *fu* y la *r* no suenan como sugiere el romaji. Cada uno se explica cuando llega su kana.'},
+       {p:'**Los tonos.** El japonés no pronuncia una sílaba con más fuerza, como el español: sube y baja el tono. Para empezar, alcanza con escuchar e imitar la melodía de los audios.'},
+       {mk:'Las consonantes dobles llegan en la unidad 4; *tsu* y *fu*, en la 2; la *r*, en la 3.'}]}
     ],
     quiz:[
-     {q:'En el ejemplo, ¿con qué escritura va コーヒー (kōhī, café)?',o:['Katakana','Hiragana','Kanji','Romaji'],a:0,ex:'El katakana se usa para palabras de otros idiomas, nombres extranjeros y onomatopeyas.'},
+     {q:'¿Con qué escritura va una palabra extranjera como コーヒー (kōhī, café)?',o:['Katakana','Hiragana','Kanji','Romaji'],a:0,ex:'El katakana se usa para palabras de otros idiomas, nombres extranjeros y onomatopeyas.'},
      {q:'¿Qué se puede escribir solo con hiragana?',o:['Cualquier palabra japonesa','Solo las palabras extranjeras','Solo los nombres propios','Solo las partículas'],a:0,ex:'Todo el japonés se puede escribir en hiragana; por eso lo usan los libros para chicos.'},
+     {q:'¿Qué es el romaji?',o:['Una transcripción con nuestras letras','Una de las tres escrituras japonesas','El nombre del hiragana y el katakana juntos','La escritura de las palabras extranjeras'],a:0,ex:'El romaji no es una escritura japonesa: es una ayuda para extranjeros, y conviene soltarla cuanto antes.'},
+     {q:'En romaji, ¿cómo suena «ge»?',o:['«gue», como en «guerra»','«je», como en «jefe»','«ye», como en «yema»','«she», como en inglés'],a:0,ex:'La g del romaji es siempre suave, como en «gato»: «ge» suena «gue» y «gi», «gui».'},
      {q:'¿Cuántos pulsos tiene にほん (nihon, Japón)?',o:['3','2','4','5'],a:0,ex:'に, ほ y ん: la ん final cuenta como un pulso propio.'},
-     {q:'¿Qué distingue おばさん (obasan, tía) de おばあさん (obāsan, abuela)?',o:['Una vocal larga','El tono','Una consonante doble','La fuerza del acento'],a:0,ex:'La a larga dura un pulso más y cambia el significado.'},
-     {q:'あめ (ame) puede ser «lluvia» o «caramelo». Al hablar, ¿qué las distingue?',o:['El tono: qué parte va más alta','Una vocal larga','Una consonante doble','La fuerza del acento'],a:0,ex:'El japonés sube y baja el tono entre pulsos. Al escribir, los kanji las distinguen.'},
-     {q:'¿Cómo suena la r de さくら (sakura, cerezo)?',o:['Un toque suave de la lengua, como en «pero»','Como la rr de «perro»','Como la r francesa, en la garganta','Como la r inglesa, sin tocar el paladar'],a:0,ex:'La r japonesa es un toque breve, a veces cercano a una l, pero nunca vibrante.'}
+     {q:'¿Qué distingue おばさん (obasan, tía) de おばあさん (obāsan, abuela)?',o:['Una vocal larga','La primera consonante','El orden de los kana','Nada: son la misma palabra'],a:0,ex:'La a larga dura un pulso más y cambia el significado.'},
+     {q:'¿Cuál escuchaste?',audio:true,azar:true,o:[['おばさん','obasan · tía'],['おばあさん','obāsan · abuela']],ex:'La a larga de おばあさん (obāsan) dura un pulso más que la de おばさん (obasan).'}
     ]},
-   {id:'1-2', type:'kana', title:'Las cinco vocales', min:10, n:10,
+   {id:'1-2', type:'kana', title:'Las cinco vocales', n:10,
     intro:'El hiragana es un silabario: cada signo es una sílaba o una vocal sola. Empezamos por las cinco vocales, que suenan igual que en español. El resto del sistema se arma sobre ellas: ka es k + a, ki es k + i, y así.',
     set:['あ','い','う','え','お']},
-   {id:'1-3', type:'concept', map:true, short:'Cómo funciona el japonés II', title:'Cómo funciona el japonés II: cómo se arma una oración', min:10,
+   {id:'1-3', type:'concept', map:true, short:'Cómo funciona el japonés II', title:'Cómo funciona el japonés II: cómo se arma una oración',
     intro:'Ya sabés cómo se ve y cómo suena el japonés, y conocés sus cinco vocales. Ahora, cómo se ordenan las palabras. La lógica es muy distinta de la del español, pero muy pareja: con pocas ideas se entiende casi todo. Como en la parte I, todo el japonés va con romaji.',
     sections:[
      {h:'Lo importante va al final', b:[
@@ -1240,25 +1231,25 @@ const UNITS = [
      {q:'¿Qué cambia de たべます (tabemasu) a たべました (tabemashita)?',o:['El tiempo: pasa al pasado','La persona: pasa a «nosotros»','La cortesía: pasa a informal','Nada: son sinónimos'],a:0,ex:'El verbo cambia por tiempo, negación y cortesía, nunca por persona.'},
      {q:'¿Con qué nombre no se usa さん (san)?',o:['Con el propio','Con el de un desconocido','Con el de una mujer','Con el de un compañero de trabajo'],a:0,ex:'さん es trato respetuoso hacia otros; con el propio nombre sonaría presuntuoso.'}
     ]},
-   {id:'1-ka', type:'kana', title:'か y が', min:10, n:15,
+   {id:'1-ka', type:'kana', title:'か y が', n:15,
     intro:'Cada fila combina una consonante con las cinco vocales, siempre en el orden a, i, u, e, o. Esta es la fila de la k.',
     set:['か','き','く','け','こ'],
     daku:['が','ぎ','ぐ','げ','ご'],
     dakuIntro:'Con dos rayitas arriba a la derecha (゛, dakuten), la k se vuelve g: か pasa a が, き pasa a ぎ, y así. No son signos nuevos, sino el mismo kana con una marca: por eso conviene aprenderlos de a pares.'},
-   {id:'1-v1', type:'vocab', cycle:true, title:'Palabras 1', min:7, words:W(VOCAB_1,'あい','いえ','あお','かお','いいえ','えき'),
+   {id:'1-v1', type:'vocab', cycle:true, title:'Palabras 1', words:W(VOCAB_1,'あい','いえ','あお','かお','いいえ','えき'),
     intro:'Seis palabras escritas solo con las vocales y la fila か. Las vas a conocer de a dos y a practicarlas enseguida.'},
-   {id:'1-v2', type:'vocab', cycle:true, title:'Palabras 2', min:7, words:W(VOCAB_1,'うえ','あか','あき','かぎ','えいご','ここ'),
+   {id:'1-v2', type:'vocab', cycle:true, title:'Palabras 2', words:W(VOCAB_1,'うえ','あか','あき','かぎ','えいご','ここ'),
     intro:'Seis palabras más con los mismos kana, de a dos, como en Palabras 1.'},
-   {id:'1-sa', type:'kana', title:'さ y ざ', min:10, n:15,
+   {id:'1-sa', type:'kana', title:'さ y ざ', n:15,
     intro:'La fila de la s. La única excepción de pronunciación es し, que se lee «shi».',
     set:['さ','し','す','せ','そ'],
     daku:['ざ','じ','ず','ぜ','ぞ'],
     dakuIntro:'Con ゛, la s se vuelve z: さ pasa a ざ. Ojo con じ, que sigue la excepción de し: se lee «ji», como en el inglés «jeep», y no «zi».'},
-   {id:'1-v3', type:'vocab', cycle:true, title:'Palabras 3', min:7, words:W(VOCAB_1,'あさ','いす','しお','うし','そこ','いけ'),
+   {id:'1-v3', type:'vocab', cycle:true, title:'Palabras 3', words:W(VOCAB_1,'あさ','いす','しお','うし','そこ','いけ'),
     intro:'Seis palabras que ya usan la fila さ.'},
-   {id:'1-v4', type:'vocab', cycle:true, title:'Palabras 4', min:7, words:W(VOCAB_1,'かさ','すし','かぜ','おかし','すき','すいか'),
+   {id:'1-v4', type:'vocab', cycle:true, title:'Palabras 4', words:W(VOCAB_1,'かさ','すし','かぜ','おかし','すき','すいか'),
     intro:'El último grupo de la unidad: con estas ya son 24 palabras.'},
-   {id:'1-r', type:'review', title:'Repaso de la unidad 1', min:10,
+   {id:'1-r', type:'review', title:'Repaso de la unidad 1',
     rv:{kana:8, marked:3, words:8, puente:2},
     intro:'Veinte preguntas de toda la unidad: los kana de あ a そ con sus marcas, palabras de las cuatro lecciones y algunas ideas de «Cómo funciona el japonés», ahora con palabras que ya sabés leer. Al final, cada error indica de qué lección viene.',
     // preguntas puente: ideas de las lecciones de mapa, con kana ya enseñados; salen dos de cada una
@@ -1272,31 +1263,31 @@ const UNITS = [
     ]}
   ]},
  {id:2, title:'Decir qué es cada cosa', kana:'た〜ほ ん', ro:'ta–ho, n',
-  desc:'Filas た, な y は con sus variantes y la ん, cómo decir «X es Y», cómo preguntar y tus primeros saludos.',
+  desc:'Filas た, な y は con sus marcas y la ん, cómo decir «X es Y», cómo preguntar y tus primeros saludos.',
   lessons:[
-   {id:'2-ta', type:'kana', title:'た y だ', min:10, n:13,
+   {id:'2-ta', type:'kana', title:'た y だ', n:13,
     intro:'La fila de la t tiene dos excepciones: ち se lee «chi» y つ se lee «tsu», un sonido que no existe en español.',
     set:['た','ち','つ','て','と'],
     daku:['だ','で','ど'],
     dakuIntro:'Con ゛, la t se vuelve d: た pasa a だ, て pasa a で y と pasa a ど. También existen ぢ y づ, que suenan igual que じ y ず y casi no se usan.'},
-   {id:'2-v1', type:'vocab', cycle:true, title:'Palabras 5', min:7, words:W(VOCAB_2,'て','つくえ','たかい','がくせい','おおきい','たこ'),
+   {id:'2-v1', type:'vocab', cycle:true, title:'Palabras 5', words:W(VOCAB_2,'て','つくえ','たかい','がくせい','おおきい','たこ'),
     intro:'Seis palabras con la fila た y todo lo anterior.'},
-   {id:'2-v2', type:'vocab', cycle:true, title:'Palabras 6', min:7, words:W(VOCAB_2,'くち','とけい','ちいさい','でぐち','そう','くつ'),
+   {id:'2-v2', type:'vocab', cycle:true, title:'Palabras 6', words:W(VOCAB_2,'くち','とけい','ちいさい','でぐち','そう','くつ'),
     intro:'Seis palabras más. そう («así») va a ser clave para responder preguntas en la gramática de esta unidad.'},
-   {id:'2-na', type:'kana', title:'な y ん', min:10, n:12,
+   {id:'2-na', type:'kana', title:'な y ん', n:12,
     intro:'La fila de la n es completamente regular. Su kana más importante es の, una de las partículas más frecuentes del japonés, que vas a usar en la unidad 3. Y se suma ん, el único kana que es solo una consonante; aparece en muchísimas palabras.',
     set:['な','に','ぬ','ね','の','ん']},
-   {id:'2-v3', type:'vocab', cycle:true, title:'Palabras 7', min:7, words:W(VOCAB_2,'ねこ','さかな','なつ','あなた','なに','おかね'),
+   {id:'2-v3', type:'vocab', cycle:true, title:'Palabras 7', words:W(VOCAB_2,'ねこ','さかな','なつ','あなた','なに','おかね'),
     intro:'Seis palabras con la fila な, entre ellas dos que vas a necesitar para preguntar: あなた y なに.'},
-   {id:'2-ha', type:'kana', title:'は, ば y ぱ', min:12, n:16,
+   {id:'2-ha', type:'kana', title:'は, ば y ぱ', n:16,
     intro:'La fila de la h tiene una h aspirada, más suave que la «j» española, y ふ se lee «fu». Además, は y へ tienen doble vida como partículas: se leen «wa» y «e».',
     set:['は','ひ','ふ','へ','ほ'],
     daku:['ば','び','ぶ','べ','ぼ','ぱ','ぴ','ぷ','ぺ','ぽ'],
-    dakuIntro:'Esta fila tiene dos variantes. Con ゛, la h se vuelve b: は pasa a ば. Con el circulito ゜ (handakuten), exclusivo de esta fila, se vuelve p: は pasa a ぱ. Son 15 sonidos, pero solo 5 formas nuevas.',
+    dakuIntro:'Esta fila tiene dos marcas. Con ゛, la h se vuelve b: は pasa a ば. Con el circulito ゜ (handakuten), exclusivo de esta fila, se vuelve p: は pasa a ぱ. Son 15 sonidos, pero solo 5 formas nuevas.',
     uso:{q:'Llegás a una cena a las nueve de la noche. ¿Cómo saludás?',o:['こんばんは','こんにちは'],a:0,jp:'こんばんは',ex:'こんばんは es el saludo de la noche; こんにちは, el del día.'}},
-   {id:'2-v4', type:'vocab', cycle:true, title:'Palabras 8', min:7, words:W(VOCAB_2,'いぬ','はな','ひと','ふね','ふく','ほし'),
+   {id:'2-v4', type:'vocab', cycle:true, title:'Palabras 8', words:W(VOCAB_2,'いぬ','はな','ひと','ふね','ふく','ほし'),
     intro:'Seis palabras con la fila は. Con estas completás el vocabulario de la unidad.'},
-   {id:'2-g', type:'grammar', title:'X は Y です', min:15,
+   {id:'2-g', type:'grammar', title:'X は Y です',
     intro:'La primera estructura completa: decir qué es algo, preguntarlo y responder.',
     sections:[
      {h:'X は Y です: «X es Y»', b:[
@@ -1331,7 +1322,7 @@ const UNITS = [
      {q:'¿Cómo se pregunta «¿Qué es?»?',o:['なんですか。','なにですか。','ですなに。','なんか。'],a:0,ex:'なに se convierte en なん delante de です.',jp:'なんですか。'},
      {t:'order',q:'Armá: «Sí, así es.»',tiles:['はい、','そう','です'],jp:'はい、そうです。'}
     ]},
-   {id:'2-e', type:'listen', title:'Escucha', min:12, items:LISTEN_2,
+   {id:'2-e', type:'listen', title:'Escucha', items:LISTEN_2,
     intro:'Oraciones cortas. Primero escuchá sin leer. Buscá palabras que reconozcas y fijate si la oración termina en か: si termina así, es una pregunta. Recién después mirá el texto.',
     note:'Dos detalles que ya viste en «Cómo funciona el japonés»: lo que describe va antes, como en おおきい いぬ (perro grande), y la u de です casi no se escucha.',
     quiz:[
@@ -1339,7 +1330,7 @@ const UNITS = [
      {q:'¿Qué escuchaste?',o:['No, es un gato.','Sí, es un gato.','¿Es un gato?','No, es un perro.'],a:0,jp:'いいえ、ねこです。',audio:true},
      {q:'¿Qué escuchaste?',o:['El perro es grande.','Es un perro grande.','¿Es grande?','Es un gato grande.'],a:0,jp:'いぬは おおきいです。',audio:true,ex:'いぬは おおきいです: «en cuanto al perro, es grande».'}
     ]},
-   {id:'2-r', type:'review', title:'Repaso de la unidad 2', min:10,
+   {id:'2-r', type:'review', title:'Repaso de la unidad 2',
     rv:{kana:5, marked:2, prev:2, words:8, fixed:3, listen:1, extra:1},
     intro:'Veinte preguntas de toda la unidad: los kana de た a ほ y ん, con sus marcas, y algunos de la unidad 1; palabras de las cuatro lecciones, X は Y です, escucha y tus primeros saludos. Al final, cada error indica de qué lección viene.',
     extra:[
@@ -1350,27 +1341,27 @@ const UNITS = [
  {id:3, title:'Cosas y personas', kana:'ま〜を', ro:'ma–o',
   desc:'El resto del hiragana, más palabras, las frases de todos los días, posesión con の, これ, それ y あれ, la negación y un primer diálogo.',
   lessons:[
-   {id:'3-ma', type:'kana', title:'ま', min:8, n:10,
+   {id:'3-ma', type:'kana', title:'ま', n:10,
     intro:'La fila de la m es regular. Ojo con め y ぬ, que se parecen: め no tiene rulo al final. Y も es como し con dos rayas atravesadas.',
     set:['ま','み','む','め','も'],
     uso:{q:'En un restaurante, querés llamar al mozo. ¿Qué decís?',o:['すみません','いただきます','はじめまして','こんにちは'],a:0,jp:'すみません',ex:'すみません también sirve para llamar la atención de alguien.'}},
-   {id:'3-v1', type:'vocab', cycle:true, title:'Palabras 9', min:7, words:W(VOCAB_3,'なまえ','ともだち','みず','め','さむい','だいがくせい'),
+   {id:'3-v1', type:'vocab', cycle:true, title:'Palabras 9', words:W(VOCAB_3,'なまえ','ともだち','みず','め','さむい','だいがくせい'),
     intro:'Seis palabras con la fila ま y todo lo anterior.'},
-   {id:'3-ya', type:'kana', title:'や, わ y を', min:10, n:10,
+   {id:'3-ya', type:'kana', title:'や, わ y を', n:10,
     intro:'Los kana sueltos de la tabla. La fila や tiene solo tres: ya, yu y yo; ojo con la pronunciación porteña, や es «ia» y no «sha». わ se lee «wa». を se lee «o» y solo aparece como partícula.',
     set:['や','ゆ','よ','わ','を'],
     uso:{q:'Son las once de la noche y tu familia se va a dormir. ¿Qué decís?',o:['おやすみなさい','こんばんは','おはよう ございます','すみません'],a:0,jp:'おやすみなさい',ex:'こんばんは saluda al llegar; おやすみなさい despide al irse a dormir.'}},
-   {id:'3-v2', type:'vocab', cycle:true, title:'Palabras 10', min:7, words:W(VOCAB_3,'わたし','やま','でんわ','かばん','みみ','うみ'),
+   {id:'3-v2', type:'vocab', cycle:true, title:'Palabras 10', words:W(VOCAB_3,'わたし','やま','でんわ','かばん','みみ','うみ'),
     intro:'Seis palabras con や, わ y todo lo anterior. Por fin aparece わたし, «yo».'},
-   {id:'3-v3', type:'vocab', cycle:true, title:'Palabras 11', min:7, words:W(VOCAB_3,'にほん','にほんご','ほん','あめ','ゆき','せんせい'),
+   {id:'3-v3', type:'vocab', cycle:true, title:'Palabras 11', words:W(VOCAB_3,'にほん','にほんご','ほん','あめ','ゆき','せんせい'),
     intro:'Seis palabras. Fijate en にほん y にほんご: la ご final significa «idioma». Y あめ, «lluvia», es la del ejemplo de los tonos en «Cómo funciona el japonés I».'},
-   {id:'3-ra', type:'kana', title:'ら', min:8, n:10,
+   {id:'3-ra', type:'kana', title:'ら', n:10,
     intro:'Con esta lección completás el hiragana básico. La r japonesa es la «r» suave del español, la de «pero»: acá tenés ventaja sobre quienes hablan inglés.',
     set:['ら','り','る','れ','ろ'],
     uso:{q:'En el trabajo, te presentan a alguien. Ya dijiste はじめまして y tu nombre. ¿Con qué cerrás?',o:['よろしく おねがいします','ありがとう ございます','さようなら','すみません'],a:0,jp:'よろしく おねがいします',ex:'よろしく おねがいします cierra la presentación: «cuento con vos».'}},
-   {id:'3-v4', type:'vocab', cycle:true, title:'Palabras 12', min:7, words:W(VOCAB_3,'くるま','りんご','よる','だれ','さくら','とり'),
+   {id:'3-v4', type:'vocab', cycle:true, title:'Palabras 12', words:W(VOCAB_3,'くるま','りんご','よる','だれ','さくら','とり'),
     intro:'Seis palabras con la fila ら. Con estas completás el vocabulario de la unidad.'},
-   {id:'3-f', type:'phrases', title:'Frases de todos los días', min:10, nAuto:10,
+   {id:'3-f', type:'phrases', title:'Frases de todos los días', nAuto:10,
     items:W(PHRASES,'おはよう ございます','こんにちは','こんばんは','おやすみなさい','さようなら','ありがとう ございます','すみません','はじめまして','よろしく おねがいします','いただきます'),
     intro:'Las diez frases que fuiste destrabando, juntas. Ya sabés leerlas todas: ahora se trata de elegir la que corresponde a cada momento del día y a cada situación. Tocá cada una para escucharla.',
     quiz:[
@@ -1382,7 +1373,7 @@ const UNITS = [
      {q:'Conocés a un compañero nuevo. ¿Con qué frase abrís la presentación?',o:['はじめまして','よろしく おねがいします','さようなら','いただきます'],a:0,ex:'はじめまして abre; よろしく おねがいします cierra.'},
      {q:'¿Cómo se lee el último kana de こんばんは?',o:['wa','ha','ba','a'],a:0,jp:'こんばんは',ex:'Es la partícula は, que en los saludos se lee «wa».'}
     ]},
-   {id:'3-g', type:'grammar', title:'の, これ, それ, あれ y la negación', min:15,
+   {id:'3-g', type:'grammar', title:'の, これ, それ, あれ y la negación',
     words:W(VOCAB_3,'これ','それ','あれ'),
     intro:'Cuatro herramientas que multiplican lo que podés decir con X は Y です. Al completar la práctica, これ, それ y あれ se suman a Mis palabras.',
     sections:[
@@ -1417,7 +1408,7 @@ const UNITS = [
      {q:'¿Cómo se pregunta «¿Quién es?»?',o:['だれですか。','なんですか。','どれですか。','それですか。'],a:0,jp:'だれですか。'},
      {q:'En ふじさん (el monte Fuji), ¿qué es さん?',o:['«Montaña», con otra lectura: no es el honorífico','El honorífico, por respeto al monte','Un diminutivo','Parte del nombre, sin significado'],a:0,ex:'やま, «montaña», en palabras compuestas suele leerse さん.'}
     ]},
-   {id:'3-d', type:'dialogue', title:'Yamada y Kimura se presentan', min:15, lines:DIALOGUE_3,
+   {id:'3-d', type:'dialogue', title:'Yamada y Kimura se presentan', lines:DIALOGUE_3,
     intro:'Yamada y Kimura se conocen. Escuchá el diálogo completo sin leer, al menos dos veces. Después respondé las preguntas, y recién al final mirá el texto.',
     note:'なんの せんせい = «profesor de qué» (なに + の). Fijate también en cómo cada uno dice el nombre del otro con さん, pero el propio sin ella.',
     quiz:[
@@ -1430,7 +1421,7 @@ const UNITS = [
      {q:'¿Qué escuchaste?',o:['No soy estudiante.','Soy estudiante.','¿Sos estudiante?','Yo también soy estudiante.'],a:0,jp:'がくせいでは ありません。',audio:true},
      {q:'¿Qué escuchaste?',o:['¿Usted también es estudiante?','Usted es estudiante.','¿Usted no es estudiante?','¿De qué es estudiante?'],a:0,jp:'やまださんも がくせいですか。',audio:true}
     ]},
-   {id:'3-r', type:'review', title:'Repaso de la unidad 3', min:10,
+   {id:'3-r', type:'review', title:'Repaso de la unidad 3',
     rv:{kana:4, prev:2, words:8, fixed:4, frases:2},
     intro:'Veinte preguntas de toda la unidad, con kana de todo el hiragana: palabras de las cuatro lecciones, の, これ, それ y あれ, el diálogo y las frases de todos los días. Al final, cada error indica de qué lección viene.'}
   ]},
@@ -1639,6 +1630,8 @@ function phraseKeys(p){
 }
 
 function fixedQ(f){
+  // azar: la respuesta es una de las opciones, elegida cada vez; es lo que suena (#55)
+  if (f.azar){ const a = Math.floor(Math.random() * f.o.length); f = Object.assign({}, f, {a, jp: f.o[a][0]}); }
   if (f.t === 'order'){
     const idx = f.tiles.map((_, i) => i);
     let order = shuffle(idx), guard = 0;
@@ -2102,7 +2095,7 @@ let remoteRef = null, writing = false, pendingWrite = false, remoteTimer = null;
 let syncMode = 'local';
 // App instalable: versión de este código, con versionado semántico MAYOR.MENOR.PARCHE (ver README). Tiene que
 // coincidir con VERSION de sw.js: herramientas/version.py sube las dos juntas. ok = hay service worker (app publicada).
-const KASA_VERSION = {v: '0.4.1', fecha: '6/10/2026'};
+const KASA_VERSION = {v: '0.5.0', fecha: '10/11/2026'};
 const APPV = {ok: false, reg: null, nueva: false, buscando: false, recargar: false, ultima: 0};
 
 function saveLocal(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch(e){} }
@@ -2854,7 +2847,7 @@ function renderUnit(id){
   const primeraTrabada = u.lessons.find(l => !isUnlocked(l.id));
   const rows = u.lessons.map((l, i) => {
     const st = S.lessons[l.id];
-    const datos = TYPE_LABEL[l.type] + ', unos ' + l.min + ' minutos';
+    const datos = TYPE_LABEL[l.type] + ', unos ' + minutosDe(l) + ' minutos';
     if (!isUnlocked(l.id))
       return '<li><div class="lesson-row locked" aria-disabled="true"><span class="l-mark">' + ICON_LOCK + '</span><span class="l-body"><span class="l-title">' + jpify(esc(l.title)) + '</span><span class="l-meta">' + (l === primeraTrabada ? 'Se destraba al aprobar la anterior' : datos) + '</span></span></div></li>';
     const best = st && st.best ? '<span class="l-meta l-best"><span>Mejor resultado: ' + st.best + '\u00a0%.</span>' + (st.done ? '' : ' <span>Se aprueba con ' + PASS + '\u00a0%.</span>') + '</span>' : '';
@@ -3191,6 +3184,17 @@ function setupTrace(root, k){
   };
   c.addEventListener('pointerup', stop); c.addEventListener('pointercancel', stop); c.addEventListener('pointerleave', stop);
   root._clear = () => { pts = []; raws = []; emitted = 0; ctx.clearRect(0, 0, rect.width, rect.height); };
+}
+
+// Cuánto lleva una lección (#50): una misma regla para todas. Quince segundos por pantalla de la práctica
+// (presentaciones y preguntas), más el texto de la lección a 150 palabras por minuto. Se calcula una vez por sesión.
+const MINUTOS = {};
+function minutosDe(L){
+  if (MINUTOS[L.id]) return MINUTOS[L.id];
+  const texto = JSON.stringify([L.intro || '', L.sections || [], L.puente || []]).replace(/<[^>]+>/g, ' ');
+  const palabras = (texto.match(/[A-Za-zÁÉÍÓÚÑáéíóúñü]{2,}/g) || []).length;
+  const pasos = buildQuiz(L).length;
+  return MINUTOS[L.id] = Math.max(2, Math.round((pasos * 15 + palabras / 150 * 60) / 60));
 }
 
 /* ---------- Práctica ---------- */
