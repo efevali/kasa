@@ -373,6 +373,17 @@ body.sheet-open #more-btn,body.sheet-open #more-fade{opacity:0;pointer-events:no
 .scripts-line .s-kj{border-bottom:4px double currentColor}
 .scripts .rom,.scripts .es{margin:4px 0 0;font-size:16px}
 .legend{margin:14px 0 0;display:grid;gap:10px}
+/* La tabla del hiragana de la lección 1 */
+.tabla-h{margin:12px 0 18px;padding:12px 10px;background:var(--card);border:var(--bw) solid var(--edge);border-radius:16px}
+.th-row{display:grid;grid-template-columns:34px repeat(5,minmax(0,1fr));align-items:center;padding:3px 6px;border-radius:10px}
+.th-row.hoy{background:var(--ok-soft)}
+.th-letra{text-align:center;font-size:17px;font-weight:700;color:var(--ai)}
+.th-head{padding-bottom:6px}
+.th-cell{display:grid;justify-items:center;line-height:1.15;padding:3px 0}
+.th-cell .jp{font-size:23px}
+.th-cell .rom{font-size:12px}
+.th-key{display:flex;align-items:center;gap:8px;margin:10px 6px 0;font-size:14px;color:var(--ink-2)}
+.th-swatch{width:18px;height:18px;border-radius:5px;background:var(--ok-soft);border:1.5px solid var(--guide)}
 .legend div{display:grid;grid-template-columns:86px 1fr;gap:10px}
 .legend dt{font-weight:700;font-size:16px;justify-self:start;align-self:start;line-height:1.4}
 .legend dt.s-h{border-bottom:3px solid currentColor}.legend dt.s-k{border-bottom:3px dashed currentColor}.legend dt.s-kj{border-bottom:4px double currentColor}
@@ -1123,6 +1134,19 @@ const HTML_SCRIPTS = `
   </dl>
 </div>`;
 
+// La tabla del hiragana como figura de la lección 1. Arriba, las cinco vocales; a la izquierda, la consonante de
+// cada fila: así se ve que cada kana es consonante + vocal. Debajo de cada kana va su romaji, que muestra las
+// irregularidades (shi, chi, tsu, fu). Las primeras `deLaUnidad` filas van resaltadas: son las de la unidad.
+function tablaHiraganaHTML(deLaUnidad){
+  const consonantes = ['', 'k', 's', 't', 'n', 'h', 'm', 'y', 'r', 'w', ''];
+  return '<div class="tabla-h" role="table" aria-label="Tabla del hiragana">' +
+    '<div class="th-row th-head" role="row"><span></span>' + ['a', 'i', 'u', 'e', 'o'].map(v => '<span class="th-letra" role="columnheader">' + v + '</span>').join('') + '</div>' +
+    GOJUON.map((fila, i) =>
+    '<div class="th-row' + (i < deLaUnidad ? ' hoy' : '') + '" role="row"><span class="th-letra" role="rowheader">' + consonantes[i] + '</span>' +
+    fila.map(k => '<span class="th-cell" role="cell">' + (k ? '<span class="jp">' + k + '</span><span class="rom">' + KANA[k].r + '</span>' : '') + '</span>').join('') + '</div>').join('') +
+    '<p class="th-key"><span class="th-swatch" aria-hidden="true"></span>Las filas de esta unidad</p></div>';
+}
+
 const HTML_KOSOADO = `
 <div class="kosoado" role="list">
   <div role="listitem"><span class="jp">これ</span><span class="rom">kore</span><span>esto: cerca de quien habla</span></div>
@@ -1153,6 +1177,7 @@ const UNITS = [
        {p:'El hiragana y el katakana se llaman, juntos, los **kana**. Son silabarios. Nuestras letras representan sonidos sueltos, como la k o la a; cada kana, en cambio, representa una sílaba entera. か es «ka», y no se puede separar en k y a.'},
        {p:'Son pocos: 46 kana básicos, que con sus marcas y combinaciones alcanzan para escribir todo el idioma. Y son regulares: cada kana se lee siempre igual, con muy pocas excepciones.'},
        {p:'Los kana se ordenan en una tabla. Cada **fila** combina una consonante con las cinco vocales, con unas pocas irregularidades que vas a ver en la tabla. La primera fila son las vocales solas; la segunda es la fila de か: ka, ki, ku, ke, ko.'},
+       {html:tablaHiraganaHTML(3)},
        {p:'Algunas filas tienen además una versión con una **marca** que cambia la consonante; la más común son dos rayitas. か (ka) con la marca es が (ga).'},
        {p:'No hace falta memorizar la tabla ahora: es el mapa del camino. La tenés siempre a mano en «Tabla de kana».'},
        {mk:'En esta unidad aprendés las tres primeras filas: las vocales, か y さ, con sus marcas.'}]},
