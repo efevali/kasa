@@ -2,7 +2,20 @@
 
 Cómo aprende quien recorre las unidades 1 a 3 (31 lecciones), tal como están en la 0.4.1: cuánto practica cada cosa nueva, cuándo vuelve a encontrarla y si la usa en contextos nuevos. Queda para después el análisis de la estructura del curso completo y su comparación con cursos de referencia.
 
-**Estado: para discutir** (12/10/2026). Nada de esto está acordado. Lo que se acuerde se carga como issue y, si cambia una regla, pasa al [manifiesto](manifiesto.md) o al [registro de decisiones](decisiones.md). Este documento queda como el diagnóstico que les dio origen.
+**Estado: acordado el 9/11/2026.** Las propuestas se aprobaron y están cargadas como issues (ver [Qué se acordó](#qué-se-acordó)); los criterios pasaron al [manifiesto](manifiesto.md#los-ocho-criterios-de-dinámica) y las decisiones, al [registro](decisiones.md). Este documento queda como el diagnóstico que les dio origen, del 12/10/2026: no se actualiza cuando la app cambia.
+
+## Qué se acordó
+
+| Propuesta | Issue | Cuándo |
+|---|---|---|
+| P1. Ciclo para las lecciones de kana | #7 | 0.5.0 |
+| P1. Partir «は, ば y ぱ» en dos lecciones | #44 | Tanda de la unidad 2 |
+| P2. Que cada kana se lea en palabras | #40 (unidad 1) y #45 (unidades 2 y 3) | 0.5.0 y la tanda de cada unidad |
+| P3. Repaso por tiempo, con botón en la principal y aviso al entrar a la lección, nunca obligatorio | #9 | Versión propia, después de la 0.5.0 |
+| P4. Repasos de unidad acumulativos | #42 | Con #9, o antes |
+| P5. Oraciones antes, y generadas | #43 | Tanda de la unidad 2 |
+| P6. Detalles | #7 (el texto), #41, #46 y #47 | Por discutir, salvo el texto |
+| P7. Herramienta de medición | #48 | Por discutir |
 
 ## Cómo se hizo
 
@@ -100,7 +113,7 @@ La lógica de la lección de palabras, aplicada a los kana:
 
 - Tandas de dos o tres kana que se presentan (kana, sonido y trazo) y se preguntan enseguida; desde la segunda tanda vuelven los anteriores.
 - Los kana con marca, en una tanda propia después de su fila, presentados como lo que son: el mismo kana con una marca.
-- Una dosis mínima: tres recuperaciones por kana base y dos por kana con marca. Las lecciones de kana pasarían de 10 a 16 respuestas a entre 15 y 25, como las de palabras. «は, ば y ぱ» llegaría a unas 35: conviene partirla en dos (は; ば y ぱ).
+- Una dosis mínima: tres recuperaciones por kana base y dos por kana con marca. Las lecciones de kana pasarían de 10 a 16 respuestas a entre 15 y 25, como las de palabras. «は, ば y ぱ» llegaría a unas 35: se parte en dos (は; ば y ぱ). Acordado el 9/11.
 - Un cierre leyendo dos o tres palabras reales hechas con los kana nuevos, con audio para comprobar. Así se cumple el principio 3 dentro de la lección.
 
 Pide un tipo de pantalla nuevo («presentar kana»), con boceto. La unidad 1 tiene tres lecciones de kana (vocales, か y さ), así que entra naturalmente en la 0.5.0.
@@ -125,7 +138,8 @@ Respeta «Seis palabras por lección»: se reemplazan palabras, no se suman. Cad
   - **a.** Un botón «Repaso de hoy» en la principal cuando hay algo pendiente. Es simple, pero depende de que se elija.
   - **b.** Un calentamiento de cuatro a seis preguntas pendientes al empezar cada lección. No suma pantallas ni decisiones: se repasa siempre que se avanza.
   - **c.** Las dos.
-- Recomendación: **b**. Integra el repaso en el camino que ya existe, y lo pendiente del día también es un motivo para volver, que es la constancia que busca la prioridad 2.
+- La recomendación de este análisis era **b**: integra el repaso en el camino que ya existe.
+- **Acordado el 9/11:** el botón en la principal (a) más un aviso de «Repaso pendiente» al entrar a la lección, que se puede ignorar. Repasar nunca es obligatorio: «no quisiera obligar a repasar». Como el repaso queda a elección, P4 pesa más: los repasos de unidad son el único lugar del camino donde lo anterior vuelve seguro.
 
 Cambia el progreso guardado (cada elemento suma fecha e intervalo), y Mis palabras y Repaso de kana pasan a usarlo. Es el cambio más grande del documento y cruza toda la app: conviene una versión propia, separada de las unidades. El progreso actual se conserva; lo ya aprobado arranca como pendiente.
 
@@ -150,11 +164,11 @@ Cambia la ruta (y el manifiesto) y suma un generador de oraciones. Va con la uni
 
 ### P7. Medir cada unidad con una herramienta
 
-Un ayudante en `herramientas/`, como `boceto.py`, que abra la app real, genere cada práctica muchas veces y verifique los criterios de abajo. Así cada unidad nueva se mide igual, la mida quien la mida.
+Un ayudante en `herramientas/`, como `boceto.py`, que abra la app real, genere cada práctica muchas veces y verifique los criterios de abajo que se pueden contar. Así cada unidad nueva se mide igual, la mida quien la mida.
 
-## Criterios propuestos para cada unidad nueva
+## Criterios para cada unidad nueva
 
-Si se aprueban, se suman al manifiesto junto a los diez principios, y P7 los verifica.
+Aprobados el 9/11/2026. La versión vigente está en el [manifiesto](manifiesto.md#los-ocho-criterios-de-dinámica).
 
 1. **Presentar antes de preguntar.** Todo elemento nuevo se muestra (forma, sonido y significado) antes de su primera pregunta.
 2. **Dosis.** En su lección, cada elemento nuevo se recupera al menos tres veces (dos, los kana con marca), y al menos una de esas veces parte del significado, el sonido o un dibujo.

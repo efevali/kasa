@@ -1,6 +1,6 @@
 # Manifiesto y ruta del curso
 
-Qué es Kasa, qué principios gobiernan cada lección y por qué camino avanza el curso. Ante una duda de diseño, se resuelve contra este documento. Las decisiones puntuales, con su fecha y su motivo, están en el [registro de decisiones](decisiones.md); las reglas de interfaz, dibujos y sonidos, en la guía de estilo, al principio del CSS de `index.html`.
+Qué es Kasa, qué principios y criterios gobiernan cada lección y por qué camino avanza el curso. Ante una duda de diseño, se resuelve contra este documento. Las decisiones puntuales, con su fecha y su motivo, están en el [registro de decisiones](decisiones.md); las reglas de interfaz, dibujos y sonidos, en la guía de estilo, al principio del CSS de `index.html`.
 
 ## Qué es Kasa
 
@@ -27,6 +27,19 @@ Aprobados el 24/9/2026. Valen para todas las lecciones.
 8. **Una lógica por tipo de pantalla.** Las mismas reglas valen para todas las lecciones del mismo tipo.
 9. **Anunciar sin adelantar.** Cuando algo tiene una forma más avanzada o se retoma más adelante, se avisa cuándo llega, sin mostrarlo antes de tiempo. El aviso habla de lo que la persona va a vivir («en la unidad 2»), no de títulos de lecciones que todavía no conoce, y va solo donde aporta.
 10. **Los textos hablan del japonés y de lo que va a hacer quien estudia.** Nunca explican cómo está armado el curso, ni justifican sus decisiones, ni responden a alternativas que el usuario no conoce. Prueba: si una frase responde a una pregunta que solo haría quien conoce el diseño, sobra.
+
+## Los ocho criterios de dinámica
+
+Aprobados el 9/11/2026. Los principios dicen qué se puede mostrar y preguntar; estos criterios dicen cuánto se practica cada cosa, cuándo vuelve y cómo se usa. Salen del [análisis pedagógico](analisis-pedagogico.md) del tramo de hiragana. Cada unidad nueva se mide contra ellos; las unidades 1 a 3 todavía no los cumplen todos, y lo que falta está cargado como issues.
+
+1. **Presentar antes de preguntar.** Todo elemento nuevo se muestra (forma, sonido y significado) antes de su primera pregunta.
+2. **Dosis.** En su lección, cada elemento nuevo se recupera al menos tres veces (dos, los kana con marca), y al menos una de esas veces parte del significado, el sonido o un dibujo.
+3. **Cobertura.** Todo kana enseñado se lee en al menos una palabra del tramo. を es la excepción declarada: espera a los verbos.
+4. **Uso.** En cuanto los kana lo permiten, las palabras se usan en oraciones, y las oraciones de práctica se generan con el vocabulario aprendido.
+5. **Espaciado.** Todo lo aprobado vuelve por tiempo, no solo por el orden del camino. La app avisa cuándo toca repasar y nunca obliga.
+6. **Repasos acumulativos.** El repaso de una unidad incluye material de las anteriores.
+7. **Variedad.** Cada unidad practica lectura, escucha y armado; ninguna habilidad queda solo en reconocer.
+8. **Carga.** Hasta seis palabras nuevas por lección, y hasta seis formas de kana nuevas (sin contar las marcas).
 
 ## Ruta del curso
 
@@ -59,4 +72,4 @@ El hiragana se completa en la lección 26. El único cambio respecto del orden t
 | 9 · Dónde está cada cosa | あります e います, ubicaciones (うえ, した, なか) y ここ, そこ, あそこ. |
 | 10 · Primeros kanji | Números, 日, 月, 人, 山 y otros kanji básicos: lectura y uso. |
 
-Cada unidad nueva se diseña contra los diez principios antes de armarse: primero el plan (lecciones, palabras, frases, dibujos), después los bocetos, después el código.
+Cada unidad nueva se diseña contra los diez principios y los ocho criterios de dinámica antes de armarse: primero el plan (lecciones, palabras, frases, dibujos), después los bocetos, después el código.
